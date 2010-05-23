@@ -1,0 +1,59 @@
+:D,
+
+A simple calculator that works with whole numbers written in C/Python.
+
+The purpose of this implementation is only to show how a simple extension 
+C/Python that can help people who are starting with C/Python.
+
+In this cookbook show the two codes in C, the first is the pure C and 
+the second is the implementation for Python.
+
+I hope this cookbook possar help.
+
+Usage:
+>>> import pycalc
+>>>
+>>> help(pycalc)
+Help on module pycalc:
+
+NAME
+    pycalc
+
+FILE
+    /home/nycholas/project/o_lalertom/nycholas/src/nycholas/trunk/code/python/c/example-1/build/lib.linux-i686-2.6/pycalc.so
+
+FUNCTIONS
+    divides(...)
+        Divide two integers.
+    
+    multiplies(...)
+        Subtracts two integers.
+    
+    subtract(...)
+        Subtracts two integers.
+    
+    sum(...)
+        Sum two integers.
+
+>>>
+>>> dir(pycalc)
+['__doc__', '__file__', '__name__', '__package__', 'divides', 'multiplies', 'subtract', 'sum']
+>>>
+>>> pycalc.sum(123, 321)
+444
+>>>
+>>> pycalc.subtract(456, 321)
+135
+>>>
+>>> pycalc.multiplies(5, 25)
+125
+>>>
+>>> pycalc.divides(100, 5)
+20
+>>>
+
+
+-- 
+Until more and good luck, 
+Nycholas de Oliveira and Oliveira.
+
