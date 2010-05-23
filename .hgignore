@@ -10,5 +10,5 @@ syntax: glob
 .classpath
 .project
 .settings/*
-trunk/code/java/**/target/*
-trunk/code/groovy/grails/**/target/*
+code/java/**/target/*
+code/groovy/grails/**/target/*
