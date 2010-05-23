@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<datasources>
+	<local-tx-datasource>
+		<jndi-name>eDs</jndi-name>
+		<connection-url>jdbc:mysql://localhost:3306/e</connection-url>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<user-name>root</user-name>
+		<password>1q2w3e</password>
+		<min-pool-size>1</min-pool-size>
+		<max-pool-size>4</max-pool-size>
+	</local-tx-datasource>
+</datasources>

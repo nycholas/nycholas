@@ -1,0 +1,17 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+	<display-name>Simple Example - Java EJB3</display-name>
+
+	<servlet>
+		<servlet-name>artistServlet</servlet-name>
+		<servlet-class>hell.cenobites.code.java.ejb3.examples.two.servlets.ArtistServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>artistServlet</servlet-name>
+		<url-pattern>/artistServlet</url-pattern>
+	</servlet-mapping>
+</web-app>
