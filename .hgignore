@@ -1,0 +1,14 @@
+syntax: glob
+*.pyo
+*.pyc
+*.beam
+*~
+*.swp
+*.class
+*.out
+*.log
+.classpath
+.project
+.settings/*
+trunk/code/java/**/target/*
+trunk/code/groovy/grails/**/target/*
