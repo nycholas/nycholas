@@ -1,0 +1,4 @@
+$ qmake -project
+$ qmake
+$ make
+$ ./mainwindow-2

@@ -1,0 +1,41 @@
+<RCC>
+  <qresource prefix="/default">
+    <file>static/default/icons/22x22/dialog-cancel.png</file>
+    <file>static/default/icons/22x22/dialog-ok.png</file>
+    <file>static/default/icons/22x22/dialog-ok-apply.png</file>
+    <file>static/default/icons/22x22/im-status-message-edit.png</file>
+    <file>static/default/icons/22x22/edit-copy.png</file>
+    <file>static/default/icons/22x22/application-exit.png</file>
+    <file>static/default/icons/22x22/configure.png</file>
+    <file>static/default/icons/22x22/dialog-error.png</file>
+    <file>static/default/icons/22x22/dialog-information.png</file>
+    <file>static/default/icons/22x22/dialog-password.png</file>
+    <file>static/default/icons/22x22/dialog-warning.png</file>
+    <file>static/default/icons/22x22/document-new.png</file>
+    <file>static/default/icons/22x22/document-open-recent.png</file>
+    <file>static/default/icons/22x22/document-open-remote.png</file>
+    <file>static/default/icons/22x22/document-open.png</file>
+    <file>static/default/icons/22x22/document-print.png</file>
+    <file>static/default/icons/22x22/document-save-all.png</file>
+    <file>static/default/icons/22x22/document-save-as.png</file>
+    <file>static/default/icons/22x22/document-save.png</file>
+    <file>static/default/icons/22x22/edit-cut.png</file>
+    <file>static/default/icons/22x22/edit-delete.png</file>
+    <file>static/default/icons/22x22/edit-paste.png</file>
+    <file>static/default/icons/22x22/edit-redo.png</file>
+    <file>static/default/icons/22x22/edit-undo.png</file>
+    <file>static/default/icons/22x22/face-devilish.png</file>
+    <file>static/default/icons/22x22/help-about.png</file>
+    <file>static/default/icons/22x22/help-contents.png</file>
+    <file>static/default/icons/22x22/preferences-desktop.png</file>
+    <file>static/default/icons/22x22/project-open.png</file>
+    <file>static/default/icons/22x22/tools-report-bug.png</file>
+    <file>static/default/icons/22x22/video-display.png</file>
+    <file>static/default/icons/22x22/view-fullscreen.png</file>
+    <file>static/default/icons/22x22/view-left-close.png</file>
+    <file>static/default/icons/22x22/view-left-new.png</file>
+    <file>static/default/icons/22x22/view-refresh.png</file>
+    <file>static/default/icons/22x22/view-restore.png</file>
+    <file>static/default/icons/22x22/window-close.png</file>
+  </qresource>
+</RCC>

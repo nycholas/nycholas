@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MyListBands</class>
+ <widget class="QWidget" name="MyListBands">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>389</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>My List Band's</string>
+  </property>
+  <widget class="QWidget" name="gridWidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>9</x>
+     <y>9</y>
+     <width>361</width>
+     <height>371</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans Mono'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#aa0000;&quot;&gt;My List Band's&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QListWidget" name="listWidget">
+      <item>
+       <property name="text">
+        <string>Aerosmith</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>AC/DC</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>After Forever</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Airboune</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Alice In Chains</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>The Allman Brothers Band</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Angra</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Audioslave</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Avantasia</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Baltazares</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Baranga</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>The Black Crowes</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Black Label Society</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Black Sabbath</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Blitzkid</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Brasileiros S/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Bruce Dickinson</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Cachorro Grande</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Carey, Bell, Billy Branch, James Cotton</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Celso Blues Boy</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Chicago Blues Harmonica Project</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Chimaira</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Chris Cornell</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Cry of Love</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Death</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Deep Purple</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Dio</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Dirty Sweet</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Disturbed</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Dog Eat Dog</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>The Doors</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Dream Theater</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Driver By Truckers</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Edu Ardanuy</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Foo Fighters</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Garotos Podres</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Glenn Hughes</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Gnarls Barkley</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Godsmack</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Gramofocas</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Heaven and Hell</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Iced Earth</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Incubus</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Iron Maiden</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Jaded Sun</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>James Cotton &amp; Charlie Haden</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Jim Morrison</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Jimi Hendrix</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>The Johnny O. Band</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Judas Priest</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Kiss</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Led Zeppelin</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Living Colour</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Lynyrd Skynyrd</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Matanza</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Megadeath</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Metallica</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Misfits</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Motorocker</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Motörhead</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Murderdolls</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Nickelback</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Northern Kings</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>O Rappa</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Ozzy Osbourne</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Pantera</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>The Parlor Mob</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Planet Hemp</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Radiohead</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Ratos de Porão</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Red Hot Chili Peppers</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Rock Rocket</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Scott Weiland</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Seal</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Shaman</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Sonic Youth</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Soundgarden</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Steel Dragon</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Stevie Ray Vaughan</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Stone Temple Pilots</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Temple Of The Dog</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Van Halen</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Velhas Vírgens</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Wolfmother</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Zakk Wylde</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Zumbis do Espaço</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ZZ Top</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="pbExit">
+      <property name="text">
+       <string>Exit</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pbExit</sender>
+   <signal>clicked()</signal>
+   <receiver>MyListBands</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>215</x>
+     <y>327</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>214</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Window</class>
+ <widget class="QWidget" name="Window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>452</width>
+    <height>384</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Window</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/default/static/default/icons/22x22/face-devilish.png</normaloff>:/default/static/default/icons/22x22/face-devilish.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Preview</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Menu</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="checkBox">
+        <property name="text">
+         <string>CheckBox</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <widget class="QCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>CheckBox</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3" colspan="2">
+       <widget class="QRadioButton" name="radioButton">
+        <property name="text">
+         <string>RadioButton</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="5">
+       <widget class="QRadioButton" name="radioButton_2">
+        <property name="text">
+         <string>RadioButton</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Button</string>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/default/static/default/icons/22x22/tools-report-bug.png</normaloff>:/default/static/default/icons/22x22/tools-report-bug.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QToolButton" name="toolButton">
+        <property name="text">
+         <string>Toogle</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2" colspan="2">
+       <widget class="QToolButton" name="toolButton_2">
+        <property name="text">
+         <string>Toogle</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5">
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Disabled</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3" colspan="3">
+       <widget class="QScrollBar" name="horizontalScrollBar">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1" colspan="3">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="6">
+       <widget class="QListWidget" name="listWidget">
+        <item>
+         <property name="text">
+          <string>Aerosmith</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>AC/DC</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>After Forever</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Airboune</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Alice In Chains</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>The Allman Brothers Band</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Angra</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Audioslave</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Avantasia</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Baltazares</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Baranga</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>The Black Crowes</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Black Label Society</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Black Sabbath</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Blitzkid</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Brasileiros S/A</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bruce Dickinson</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cachorro Grande</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Carey, Bell, Billy Branch, James Cotton</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Celso Blues Boy</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Chicago Blues Harmonica Project</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Chimaira</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Chris Cornell</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cry of Love</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Death</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Deep Purple</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dio</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dirty Sweet</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Disturbed</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dog Eat Dog</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>The Doors</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dream Theater</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Driver By Truckers</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Edu Ardanuy</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Foo Fighters</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Garotos Podres</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Glenn Hughes</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Gnarls Barkley</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Godsmack</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Gramofocas</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Heaven and Hell</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Iced Earth</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Incubus</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Iron Maiden</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Jaded Sun</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>James Cotton &amp; Charlie Haden</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Jim Morrison</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Jimi Hendrix</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>The Johnny O. Band</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Judas Priest</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Kiss</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Led Zeppelin</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Living Colour</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Lynyrd Skynyrd</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Matanza</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Megadeath</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Metallica</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Misfits</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Motorocker</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Motörhead</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Murderdolls</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Nickelback</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Northern Kings</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>O Rappa</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ozzy Osbourne</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Pantera</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>The Parlor Mob</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Planet Hemp</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Radiohead</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ratos de Porão</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Red Hot Chili Peppers</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Rock Rocket</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Scott Weiland</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Seal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Shaman</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sonic Youth</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Soundgarden</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Steel Dragon</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Stevie Ray Vaughan</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Stone Temple Pilots</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Temple Of The Dog</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Van Halen</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Velhas Vírgens</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Wolfmother</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Zakk Wylde</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Zumbis do Espaço</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ZZ Top</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QSlider" name="horizontalSlider">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonAbout">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>About</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/dialog-information.png</normaloff>:/default/static/default/icons/22x22/dialog-information.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonApply">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>&amp;Apply</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonOk">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>&amp;OK</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/dialog-ok.png</normaloff>:/default/static/default/icons/22x22/dialog-ok.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCancel">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>&amp;Cancel</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/dialog-cancel.png</normaloff>:/default/static/default/icons/22x22/dialog-cancel.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

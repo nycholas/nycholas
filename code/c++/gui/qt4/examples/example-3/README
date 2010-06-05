@@ -1,0 +1,4 @@
+$ qmake -project
+$ qmake
+$ make
+$ ./example-3
