@@ -7,6 +7,7 @@ syntax: glob
 *.class
 *.out
 *.log
+*.core
 .classpath
 .project
 .settings/*
