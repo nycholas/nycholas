@@ -9,6 +9,7 @@ syntax: glob
 *.log
 *.core
 *.directory
+*.bak
 .classpath
 .project
 .settings/*
