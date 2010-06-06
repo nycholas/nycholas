@@ -8,10 +8,11 @@ syntax: glob
 *.out
 *.log
 *.core
-*.directory
 *.bak
+.directory
 .classpath
 .project
+.cproject
 .settings/*
 code/java/**/target/*
 code/groovy/grails/**/target/*
