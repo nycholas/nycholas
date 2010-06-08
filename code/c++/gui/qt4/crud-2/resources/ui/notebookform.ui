@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NotebookForm</class>
+ <widget class="QDialog" name="NotebookForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>623</width>
+    <height>448</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Notebook :: Form</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/default/static/default/icons/22x22/face-devilish.png</normaloff>:/default/static/default/icons/22x22/face-devilish.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(85, 85, 127);
+font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Add notebook</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="notebookGroupBox">
+        <property name="title">
+         <string>&amp;Notebook details</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="nameLabel">
+           <property name="text">
+            <string>&amp;Name:</string>
+           </property>
+           <property name="buddy">
+            <cstring>nameLineEdit</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QLabel" name="descriptionLabel">
+           <property name="text">
+            <string>&amp;Description:</string>
+           </property>
+           <property name="buddy">
+            <cstring>descriptionTextEdit</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0" colspan="3">
+          <widget class="QTextEdit" name="descriptionTextEdit"/>
+         </item>
+         <item row="4" column="0">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>407</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="4" column="2">
+          <widget class="QCheckBox" name="isActivedCheckBox">
+           <property name="text">
+            <string>Is &amp;Actived</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLineEdit" name="nameLineEdit"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="removePushButton">
+          <property name="text">
+           <string>&amp;Remove</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/edit-delete.png</normaloff>:/default/static/default/icons/22x22/edit-delete.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Del</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="savePushButton">
+          <property name="text">
+           <string>&amp;Save</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+S</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="saveAndContinueSavingPushButton">
+          <property name="text">
+           <string>Save and &amp;continue saving</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/dialog-ok.png</normaloff>:/default/static/default/icons/22x22/dialog-ok.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Shift+S</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="cancelPushButton">
+          <property name="text">
+           <string>&amp;Cancel</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/dialog-cancel.png</normaloff>:/default/static/default/icons/22x22/dialog-cancel.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+W</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>nameLineEdit</tabstop>
+  <tabstop>descriptionTextEdit</tabstop>
+  <tabstop>isActivedCheckBox</tabstop>
+  <tabstop>savePushButton</tabstop>
+  <tabstop>saveAndContinueSavingPushButton</tabstop>
+  <tabstop>removePushButton</tabstop>
+  <tabstop>cancelPushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

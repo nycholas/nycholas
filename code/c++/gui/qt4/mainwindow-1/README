@@ -1,4 +1,4 @@
-$ qmake -project
+$ qmake -project "UI_DIR = gui/widgets"
 $ qmake
 $ make
 $ ./mainwindow-1
