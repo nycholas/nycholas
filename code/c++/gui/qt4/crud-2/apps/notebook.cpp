@@ -53,87 +53,92 @@ void Notebook::newAction(void) {
 
 void Notebook::activateAction(void) {
 	/*QModelIndexList selecteds = notebookTableView->selectedIndexes();
-	QSqlDatabase::database().transaction();
-	for (int i = 0; i < selecteds.size(); i++) {
-		QModelIndex index = selecteds.at(i);
-		if (index.isValid()) {
-			QSqlRecord record = notebookModel->record(index.row());
-			int id = record.value(notebook_id).toInt();
+	 QSqlDatabase::database().transaction();
+	 for (int i = 0; i < selecteds.size(); i++) {
+	 QModelIndex index = selecteds.at(i);
+	 if (index.isValid()) {
+	 QSqlRecord record = notebookModel->record(index.row());
+	 int id = record.value(notebook_id).toInt();
 
-			NotebookModel *m = new NotebookModel(this);
-			NotebookModel::selectById(id, m);
-			m->setDateChanged(QDateTime::currentDateTime());
-			m->setIsActive(1);
-			if (!m->status()) {
-				QMessageBox::warning(0, qApp->tr("Notebook changed"), QString(
-						qApp->tr("Failure trying to register the record.")),
-						QMessageBox::Ok);
-				QSqlDatabase::database().rollback();
-				return;
-			}
-		}
-	}
-	QSqlDatabase::database().commit();
-	QMessageBox::information(0, qApp->tr("Notebook changed"), QString(qApp->tr(
-			"Successfully changed %1 notebook.")).arg(selecteds.size()),
-			QMessageBox::Ok);*/
+	 NotebookModel *m = new NotebookModel(this);
+	 NotebookModel::selectById(id, m);
+	 m->setDateChanged(QDateTime::currentDateTime());
+	 m->setIsActive(1);
+	 if (!m->status()) {
+	 QMessageBox::warning(0, qApp->tr("Notebook changed"), QString(
+	 qApp->tr("Failure trying to register the record.")),
+	 QMessageBox::Ok);
+	 QSqlDatabase::database().rollback();
+	 return;
+	 }
+	 }
+	 }
+	 QSqlDatabase::database().commit();
+	 QMessageBox::information(0, qApp->tr("Notebook changed"), QString(qApp->tr(
+	 "Successfully changed %1 notebook.")).arg(selecteds.size()),
+	 QMessageBox::Ok);*/
 }
 
 void Notebook::desactivateAction(void) {
 	/*QModelIndexList selecteds = notebookTableView->selectedIndexes();
-	QSqlDatabase::database().transaction();
-	for (int i = 0; i < selecteds.size(); i++) {
-		QModelIndex index = selecteds.at(i);
-		if (index.isValid()) {
-			QSqlRecord record = notebookModel->record(index.row());
-			int id = record.value(notebook_id).toInt();
+	 QSqlDatabase::database().transaction();
+	 for (int i = 0; i < selecteds.size(); i++) {
+	 QModelIndex index = selecteds.at(i);
+	 if (index.isValid()) {
+	 QSqlRecord record = notebookModel->record(index.row());
+	 int id = record.value(notebook_id).toInt();
 
-			NotebookModel *m = new NotebookModel(this);
-			NotebookModel::selectById(id, m);
-			m->setDateChanged(QDateTime::currentDateTime());
-			m->setIsActive(0);
-			if (!m->status()) {
-				QMessageBox::warning(0, qApp->tr("Notebook changed"), QString(
-						qApp->tr("Failure trying to register the record.")),
-						QMessageBox::Ok);
-				QSqlDatabase::database().rollback();
-				return;
-			}
-		}
-	}
-	QSqlDatabase::database().commit();
-	QMessageBox::information(0, qApp->tr("Notebook changed"), QString(qApp->tr(
-			"Successfully changed %1 notebook.")).arg(selecteds.size()),
-			QMessageBox::Ok);*/
+	 NotebookModel *m = new NotebookModel(this);
+	 NotebookModel::selectById(id, m);
+	 m->setDateChanged(QDateTime::currentDateTime());
+	 m->setIsActive(0);
+	 if (!m->status()) {
+	 QMessageBox::warning(0, qApp->tr("Notebook changed"), QString(
+	 qApp->tr("Failure trying to register the record.")),
+	 QMessageBox::Ok);
+	 QSqlDatabase::database().rollback();
+	 return;
+	 }
+	 }
+	 }
+	 QSqlDatabase::database().commit();
+	 QMessageBox::information(0, qApp->tr("Notebook changed"), QString(qApp->tr(
+	 "Successfully changed %1 notebook.")).arg(selecteds.size()),
+	 QMessageBox::Ok);*/
 }
 
 void Notebook::removeAction(void) {
 	/*QModelIndexList selecteds = notebookTableView->selectedIndexes();
-	QSqlDatabase::database().transaction();
-	for (int i = 0; i < selecteds.size(); i++) {
-		QModelIndex index = selecteds.at(i);
-		if (index.isValid()) {
-			QSqlRecord record = notebookModel->record(index.row());
-			int id = record.value(notebook_id).toInt();
+	 QSqlDatabase::database().transaction();
+	 for (int i = 0; i < selecteds.size(); i++) {
+	 QModelIndex index = selecteds.at(i);
+	 if (index.isValid()) {
+	 QSqlRecord record = notebookModel->record(index.row());
+	 int id = record.value(notebook_id).toInt();
 
-			NotebookModel *m = new NotebookModel(this);
-			NotebookModel::selectById(id, m);
-			if (!m->remove()) {
-				QMessageBox::warning(0, qApp->tr("Notebook deleted"), QString(
-						qApp->tr("Fails to remove the record.")),
-						QMessageBox::Ok);
-				QSqlDatabase::database().rollback();
-				return;
-			}
-		}
-	}
-	QSqlDatabase::database().commit();
-	QMessageBox::information(0, qApp->tr("Notebook deleted"), QString(qApp->tr(
-			"Successfully deleted %1 notebook.")).arg(selecteds.size()),
-			QMessageBox::Ok);*/
+	 NotebookModel *m = new NotebookModel(this);
+	 NotebookModel::selectById(id, m);
+	 if (!m->remove()) {
+	 QMessageBox::warning(0, qApp->tr("Notebook deleted"), QString(
+	 qApp->tr("Fails to remove the record.")),
+	 QMessageBox::Ok);
+	 QSqlDatabase::database().rollback();
+	 return;
+	 }
+	 }
+	 }
+	 QSqlDatabase::database().commit();
+	 QMessageBox::information(0, qApp->tr("Notebook deleted"), QString(qApp->tr(
+	 "Successfully deleted %1 notebook.")).arg(selecteds.size()),
+	 QMessageBox::Ok);*/
 }
 
-void Notebook::searchAction(void) {
+void Notebook::searchTextChangedAction(const QString &text) {
+	if (text.isEmpty() || text.isNull()) {
+		notebookModel->setFilter("");
+	} else {
+		notebookModel->setFilter(QString("name LIKE '%1\%'").arg(text));
+	}
 }
 
 void Notebook::closeAction(void) {
@@ -195,8 +200,8 @@ void Notebook::createActions(void) {
 	connect(deactivatePushButton, SIGNAL(released()), this,
 			SLOT(desactivateAction()));
 	connect(removePushButton, SIGNAL(released()), this, SLOT(removeAction()));
-	connect(searchLineEdit, SIGNAL(editingFinished()), this,
-			SLOT(searchAction()));
+	connect(searchLineEdit, SIGNAL(textChanged(const QString &)), this,
+			SLOT(searchTextChangedAction(const QString &)));
 	connect(closePushButton, SIGNAL(released()), this, SLOT(closeAction()));
 
 	connect(notebookTableView, SIGNAL(doubleClicked(const QModelIndex &)),

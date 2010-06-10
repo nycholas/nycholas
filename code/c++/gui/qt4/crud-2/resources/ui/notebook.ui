@@ -152,7 +152,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
 font: oblique 8pt &quot;DejaVu Sans Mono&quot;;</string>
           </property>
           <property name="text">
-           <string>Search...</string>
+           <string/>
           </property>
           <property name="dragEnabled">
            <bool>true</bool>

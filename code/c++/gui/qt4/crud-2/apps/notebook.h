@@ -53,9 +53,9 @@ private slots:
 	void activateAction(void);
 	void desactivateAction(void);
 	void removeAction(void);
-	void searchAction(void);
+	void searchTextChangedAction(const QString &text);
 	void closeAction(void);
-	void doubleClickedItemViewAction(const QModelIndex &);
+	void doubleClickedItemViewAction(const QModelIndex &index);
 
 private:
 	void createModels(void);
