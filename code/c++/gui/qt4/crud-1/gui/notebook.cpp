@@ -100,16 +100,11 @@ void Notebook::createViews(void) {
 }
 
 void Notebook::createActions(void) {
-	connect(model, SIGNAL(beforeInsert(QSqlRecord &)), this,
-			SLOT(beforeInsertNotebookItemAction()));
-	connect(model, SIGNAL(primeInsert(int, QSqlRecord &)), this,
-			SLOT(primeInsertNotebookItemAction(int, QSqlRecord &)));
-
 	connect(pushButtonNew, SIGNAL(released()), this, SLOT(newAction()));
 	//connect(pushButtonCancel, SIGNAL(released()), this, SLOT(closeAction()));
 
-	connect(tableViewList, SIGNAL(doubleClicked(const QModelIndex &)), this,
-			SLOT(doubleClickedItemViewAction(const QModelIndex &)));
+connect(tableViewList, SIGNAL(doubleClicked(const QModelIndex &)), this,
+		SLOT(doubleClickedItemViewAction(const QModelIndex &)));
 }
 
 void Notebook::updateWidgets(void) {
