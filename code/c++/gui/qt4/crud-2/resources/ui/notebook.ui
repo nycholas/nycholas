@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>679</width>
-    <height>519</height>
+    <width>734</width>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <iconset resource="resources.qrc">
     <normaloff>:/default/static/default/icons/22x22/face-devilish.png</normaloff>:/default/static/default/icons/22x22/face-devilish.png</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="2">
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="titleLabel">
@@ -60,7 +60,14 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
      </item>
     </layout>
    </item>
-   <item row="2" column="0" colspan="2">
+   <item row="1" column="0">
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -68,9 +75,9 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QPushButton" name="activatePushButton">
           <property name="text">
@@ -127,15 +134,19 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
          </spacer>
         </item>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QToolButton" name="searchAdvancedToolButton">
           <property name="text">
-           <string/>
+           <string>Search Advanced</string>
           </property>
-          <property name="pixmap">
-           <pixmap resource="resources.qrc">:/default/static/default/icons/22x22/page-zoom.png</pixmap>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/page-zoom.png</normaloff>:/default/static/default/icons/22x22/page-zoom.png</iconset>
           </property>
-          <property name="buddy">
-           <cstring>searchLineEdit</cstring>
+          <property name="shortcut">
+           <string>Ctrl+K</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -150,9 +161,6 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
           <property name="styleSheet">
            <string notr="true">color: rgb(170, 170, 255); 
 font: oblique 8pt &quot;DejaVu Sans Mono&quot;;</string>
-          </property>
-          <property name="text">
-           <string/>
           </property>
           <property name="dragEnabled">
            <bool>true</bool>
@@ -172,51 +180,132 @@ font: oblique 8pt &quot;DejaVu Sans Mono&quot;;</string>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="statusNotebookTableViewLabel">
-        <property name="styleSheet">
-         <string notr="true">color: rgb(85, 85, 255);</string>
-        </property>
-        <property name="text">
-         <string>0 group</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="statusNotebookTableViewLabel">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(85, 85, 255);</string>
+          </property>
+          <property name="text">
+           <string>0 notebook</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="latestPushButton">
+          <property name="text">
+           <string>&amp;Latest</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/go-previous-view.png</normaloff>:/default/static/default/icons/22x22/go-previous-view.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Shift+Left, Ctrl+Shift+PgUp</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="nextPushButton">
+          <property name="text">
+           <string>&amp;Next</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/go-previous.png</normaloff>:/default/static/default/icons/22x22/go-previous.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Left, Ctrl+PgUp</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="statusPaginationLabel">
+          <property name="text">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans Mono'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1&lt;/span&gt; - &lt;span style=&quot; font-weight:600;&quot;&gt;25&lt;/span&gt; de &lt;span style=&quot; font-weight:600;&quot;&gt;100&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="previousPushButton">
+          <property name="text">
+           <string>&amp;Previous</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/go-next.png</normaloff>:/default/static/default/icons/22x22/go-next.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Right, Ctrl+PgDown</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="oldestPushButton">
+          <property name="text">
+           <string>&amp;Oldest</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/go-next-view.png</normaloff>:/default/static/default/icons/22x22/go-next-view.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Shift+Right, Ctrl+Shift+PgDown</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QPushButton" name="closePushButton">
-     <property name="text">
-      <string>&amp;Close</string>
-     </property>
-     <property name="icon">
-      <iconset resource="resources.qrc">
-       <normaloff>:/default/static/default/icons/22x22/window-close.png</normaloff>:/default/static/default/icons/22x22/window-close.png</iconset>
-     </property>
-     <property name="shortcut">
-      <string>Ctrl+W</string>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
-    <spacer name="horizontalSpacer_3">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QLabel" name="statusLabel">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="closePushButton">
+       <property name="text">
+        <string>&amp;Close</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/window-close.png</normaloff>:/default/static/default/icons/22x22/window-close.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+W</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -226,6 +315,7 @@ font: oblique 8pt &quot;DejaVu Sans Mono&quot;;</string>
   <tabstop>deactivatePushButton</tabstop>
   <tabstop>removePushButton</tabstop>
   <tabstop>searchLineEdit</tabstop>
+  <tabstop>searchAdvancedToolButton</tabstop>
   <tabstop>notebookTableView</tabstop>
   <tabstop>closePushButton</tabstop>
  </tabstops>

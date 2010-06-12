@@ -109,7 +109,7 @@ void NotebookForm::removeAction(void) {
 	msgBox.setInformativeText(QString(qApp->tr(
 			"Are you sure you want to delete the selected notebook objects?\n"
 				"All of the following objects and their related items will be "
-				"deleted:\n\n\tNotebook: %1\n").arg(notebookModel->getName())));
+				"deleted:\n\nNotebook: %1\n").arg(notebookModel->getName())));
 	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No
 			| QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::No);

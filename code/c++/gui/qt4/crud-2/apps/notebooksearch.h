@@ -27,8 +27,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef NOTEBOOK_H
-#define NOTEBOOK_H
+#ifndef NOTEBOOKSEARCH_H
+#define NOTEBOOKSEARCH_H
 
 #include <QDebug>
 #include <QSqlQuery>
@@ -36,60 +36,35 @@
 #include <QSqlRelationalTableModel>
 #include <QSqlRelationalDelegate>
 #include <QSqlError>
-#include <QModelIndex>
-#include <QDateTime>
-#include <QTimer>
-#include <QMessageBox>
 
-#include "widgets/ui_notebook.h"
-#include "models/notebookmodel.h"
-#include "notebookform.h"
-#include "notebooksearch.h"
+#include "widgets/ui_notebooksearch.h"
 
-class Notebook: public QWidget, private Ui::Notebook {
-Q_OBJECT
+class NotebookSearch: public QDialog, private Ui::NotebookSearch {
+	Q_OBJECT
 
 private slots:
-	void newAction(void);
-	void activateAction(void);
-	void desactivateAction(void);
-	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
+	void searchAction(void);
+	void cancelAction(void);
 	void closeAction(void);
-	void doubleClickedItemViewAction(const QModelIndex &index);
-	void lastestAction(void);
-	void nextAction(void);
-	void previousAction(void);
-	void oldestAction(void);
 
 private:
-	void createModels(void);
-	void createViews(void);
 	void createActions(void);
 	void updateWidgets(void);
+	void updateForms(void);
+
+	void clear(void);
+	void focusDefault(void);
 
 	QSqlRelationalTableModel *notebookModel;
-	QSqlRelationalDelegate *notebookDelegate;
-	NotebookSearch *notebookSearch;
 
-public slots:
-	void updateModels(void);
-	void updateSearchForm(void);
-	void updateSearchFormClose(void);
+signals:
+	void formSearched(void);
+	void formSearchClose(void);
 
 public:
-	Notebook(QWidget *parent = 0);
-	~Notebook();
-
-	enum {
-		notebook_id = 0,
-		notebook_name = 1,
-		notebook_description = 2,
-		notebook_dateJoined = 3,
-		notebook_dateChanged = 4,
-		notebook_isActive = 5
-	};
+	NotebookSearch(QSqlRelationalTableModel *model, QDialog *parent = 0);
+	NotebookSearch(QDialog *parent = 0);
+	~NotebookSearch();
 };
 
-#endif /* NOTEBOOK_H_ */
+#endif /* NOTEBOOKSEARCH_H_ */

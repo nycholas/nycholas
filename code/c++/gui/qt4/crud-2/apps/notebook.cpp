@@ -32,11 +32,10 @@
 Notebook::Notebook(QWidget *parent) :
 	QWidget(parent) {
 	setupUi(this);
-	//statusTimer = new QTimer(this);
 	createModels();
-	createDelegates();
 	createViews();
 	createActions();
+	updateModels();
 	updateWidgets();
 }
 
@@ -52,85 +51,109 @@ void Notebook::newAction(void) {
 }
 
 void Notebook::activateAction(void) {
-	/*QModelIndexList selecteds = notebookTableView->selectedIndexes();
-	 QSqlDatabase::database().transaction();
-	 for (int i = 0; i < selecteds.size(); i++) {
-	 QModelIndex index = selecteds.at(i);
-	 if (index.isValid()) {
-	 QSqlRecord record = notebookModel->record(index.row());
-	 int id = record.value(notebook_id).toInt();
+	QModelIndex index = notebookTableView->currentIndex();
+	if (!index.isValid()) {
+		QMessageBox::warning(0, qApp->tr("No items."), qApp->tr(
+				"Please select an item to edit."), QMessageBox::Ok);
+		return;
+	}
 
-	 NotebookModel *m = new NotebookModel(this);
-	 NotebookModel::selectById(id, m);
-	 m->setDateChanged(QDateTime::currentDateTime());
-	 m->setIsActive(1);
-	 if (!m->status()) {
-	 QMessageBox::warning(0, qApp->tr("Notebook changed"), QString(
-	 qApp->tr("Failure trying to register the record.")),
-	 QMessageBox::Ok);
-	 QSqlDatabase::database().rollback();
-	 return;
-	 }
-	 }
-	 }
-	 QSqlDatabase::database().commit();
-	 QMessageBox::information(0, qApp->tr("Notebook changed"), QString(qApp->tr(
-	 "Successfully changed %1 notebook.")).arg(selecteds.size()),
-	 QMessageBox::Ok);*/
+	QSqlRecord record = notebookModel->record(index.row());
+	int id = record.value(notebook_id).toInt();
+
+	NotebookModel *m = new NotebookModel(this);
+	NotebookModel::selectById(id, m);
+	m->setDateChanged(QDateTime::currentDateTime());
+	m->setIsActive(1);
+	if (!m->status()) {
+		QMessageBox::warning(0, qApp->tr("Notebook changed"), QString(qApp->tr(
+				"Failure trying to register the record.")), QMessageBox::Ok);
+		return;
+	}
+	QMessageBox::information(0, qApp->tr("Notebook changed"), QString(qApp->tr(
+			"Successfully changed notebook.")), QMessageBox::Ok);
+	updateModels();
 }
 
 void Notebook::desactivateAction(void) {
-	/*QModelIndexList selecteds = notebookTableView->selectedIndexes();
-	 QSqlDatabase::database().transaction();
-	 for (int i = 0; i < selecteds.size(); i++) {
-	 QModelIndex index = selecteds.at(i);
-	 if (index.isValid()) {
-	 QSqlRecord record = notebookModel->record(index.row());
-	 int id = record.value(notebook_id).toInt();
+	QModelIndex index = notebookTableView->currentIndex();
+	if (!index.isValid()) {
+		QMessageBox::warning(0, qApp->tr("No items."), qApp->tr(
+				"Please select an item to edit."), QMessageBox::Ok);
+		return;
+	}
 
-	 NotebookModel *m = new NotebookModel(this);
-	 NotebookModel::selectById(id, m);
-	 m->setDateChanged(QDateTime::currentDateTime());
-	 m->setIsActive(0);
-	 if (!m->status()) {
-	 QMessageBox::warning(0, qApp->tr("Notebook changed"), QString(
-	 qApp->tr("Failure trying to register the record.")),
-	 QMessageBox::Ok);
-	 QSqlDatabase::database().rollback();
-	 return;
-	 }
-	 }
-	 }
-	 QSqlDatabase::database().commit();
-	 QMessageBox::information(0, qApp->tr("Notebook changed"), QString(qApp->tr(
-	 "Successfully changed %1 notebook.")).arg(selecteds.size()),
-	 QMessageBox::Ok);*/
+	QSqlRecord record = notebookModel->record(index.row());
+	int id = record.value(notebook_id).toInt();
+
+	NotebookModel *m = new NotebookModel(this);
+	NotebookModel::selectById(id, m);
+	m->setDateChanged(QDateTime::currentDateTime());
+	m->setIsActive(0);
+	if (!m->status()) {
+		QMessageBox::warning(0, qApp->tr("Notebook changed"), QString(qApp->tr(
+				"Failure trying to register the record.")), QMessageBox::Ok);
+		return;
+	}
+	QMessageBox::information(0, qApp->tr("Notebook changed"), QString(qApp->tr(
+			"Successfully changed notebook.")), QMessageBox::Ok);
+	updateModels();
 }
 
 void Notebook::removeAction(void) {
-	/*QModelIndexList selecteds = notebookTableView->selectedIndexes();
-	 QSqlDatabase::database().transaction();
-	 for (int i = 0; i < selecteds.size(); i++) {
-	 QModelIndex index = selecteds.at(i);
-	 if (index.isValid()) {
-	 QSqlRecord record = notebookModel->record(index.row());
-	 int id = record.value(notebook_id).toInt();
+	QModelIndex index = notebookTableView->currentIndex();
+	if (!index.isValid()) {
+		QMessageBox::warning(0, qApp->tr("No items."), qApp->tr(
+				"Please select an item to edit."), QMessageBox::Ok);
+		return;
+	}
 
-	 NotebookModel *m = new NotebookModel(this);
-	 NotebookModel::selectById(id, m);
-	 if (!m->remove()) {
-	 QMessageBox::warning(0, qApp->tr("Notebook deleted"), QString(
-	 qApp->tr("Fails to remove the record.")),
-	 QMessageBox::Ok);
-	 QSqlDatabase::database().rollback();
-	 return;
-	 }
-	 }
-	 }
-	 QSqlDatabase::database().commit();
-	 QMessageBox::information(0, qApp->tr("Notebook deleted"), QString(qApp->tr(
-	 "Successfully deleted %1 notebook.")).arg(selecteds.size()),
-	 QMessageBox::Ok);*/
+	QSqlRecord record = notebookModel->record(index.row());
+	int id = record.value(notebook_id).toInt();
+	QString name = record.value(notebook_name).toString();
+
+	QMessageBox msgBox;
+	msgBox.setText("Are you sure?");
+	msgBox.setInformativeText(QString(qApp->tr(
+			"Are you sure you want to delete the selected notebook objects?\n"
+				"All of the following objects and their related items will be "
+				"deleted:\n\nNotebook: %1\n").arg(name)));
+	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No
+			| QMessageBox::Cancel);
+	msgBox.setDefaultButton(QMessageBox::No);
+	int ret = msgBox.exec();
+	if (ret == QMessageBox::Cancel) {
+		return;
+	} else if (ret == QMessageBox::No)
+		return;
+
+	NotebookModel *m = new NotebookModel(this);
+	NotebookModel::selectById(id, m);
+	if (!m->remove()) {
+		QMessageBox::warning(0, qApp->tr("Notebook deleted"), QString(qApp->tr(
+				"Fails to remove the record.")), QMessageBox::Ok);
+		return;
+	}
+	QMessageBox::information(0, qApp->tr("Notebook deleted"), QString(qApp->tr(
+			"Successfully deleted notebook.")), QMessageBox::Ok);
+	updateModels();
+}
+
+void Notebook::searchAdvancedAction(bool checked) {
+	if (checked) {
+		notebookSearch = new NotebookSearch(notebookModel);
+		notebookSearch->setAttribute(Qt::WA_DeleteOnClose);
+		connect(notebookSearch, SIGNAL(formSearched()), this,
+				SLOT(updateSearchForm()));
+		connect(notebookSearch, SIGNAL(formSearchClose()), this,
+				SLOT(updateSearchFormClose()));
+		//connect(notebookSearch, SIGNAL(hide()), this, SLOT(formSearchClose()));
+		notebookSearch->show();
+		notebookSearch->raise();
+		notebookSearch->activateWindow();
+	} else {
+		notebookSearch->close();
+	}
 }
 
 void Notebook::searchTextChangedAction(const QString &text) {
@@ -139,6 +162,7 @@ void Notebook::searchTextChangedAction(const QString &text) {
 	} else {
 		notebookModel->setFilter(QString("name LIKE '%1\%'").arg(text));
 	}
+	updateModels();
 }
 
 void Notebook::closeAction(void) {
@@ -162,6 +186,26 @@ void Notebook::doubleClickedItemViewAction(const QModelIndex &index) {
 	form->show();
 }
 
+void Notebook::lastestAction(void) {
+	notebookModel->query().first();
+	updateModels();
+}
+
+void Notebook::nextAction(void) {
+	notebookModel->query().next();
+	updateModels();
+}
+
+void Notebook::previousAction(void) {
+	notebookModel->query().previous();
+	updateModels();
+}
+
+void Notebook::oldestAction(void) {
+	notebookModel->query().last();
+	updateModels();
+}
+
 void Notebook::createModels(void) {
 	notebookModel = new QSqlRelationalTableModel(this);
 	notebookModel->setTable("notebook");
@@ -171,17 +215,13 @@ void Notebook::createModels(void) {
 	notebookModel->setHeaderData(notebook_description, Qt::Horizontal,
 			qApp->tr("Description"));
 	notebookModel->setSort(notebook_id, Qt::DescendingOrder);
-	notebookModel->select();
-}
-
-void Notebook::createDelegates(void) {
-	notebookDelegate = new QSqlRelationalDelegate(notebookTableView);
 }
 
 void Notebook::createViews(void) {
 	notebookTableView->setModel(notebookModel);
-	notebookTableView->setItemDelegate(notebookDelegate);
-	notebookTableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	notebookTableView->setItemDelegate(new QSqlRelationalDelegate(
+			notebookTableView));
+	notebookTableView->setSelectionMode(QAbstractItemView::SingleSelection);
 	notebookTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 	notebookTableView->setColumnHidden(notebook_dateJoined, true);
 	notebookTableView->setColumnHidden(notebook_dateChanged, true);
@@ -200,21 +240,54 @@ void Notebook::createActions(void) {
 	connect(deactivatePushButton, SIGNAL(released()), this,
 			SLOT(desactivateAction()));
 	connect(removePushButton, SIGNAL(released()), this, SLOT(removeAction()));
+	connect(searchAdvancedToolButton, SIGNAL(toggled(bool)), this,
+			SLOT(searchAdvancedAction(bool)));
 	connect(searchLineEdit, SIGNAL(textChanged(const QString &)), this,
 			SLOT(searchTextChangedAction(const QString &)));
 	connect(closePushButton, SIGNAL(released()), this, SLOT(closeAction()));
 
 	connect(notebookTableView, SIGNAL(doubleClicked(const QModelIndex &)),
 			this, SLOT(doubleClickedItemViewAction(const QModelIndex &)));
+
+	connect(latestPushButton, SIGNAL(released()), this, SLOT(lastestAction()));
+	connect(nextPushButton, SIGNAL(released()), this, SLOT(nextAction()));
+	connect(previousPushButton, SIGNAL(released()), this,
+			SLOT(previousAction()));
+	connect(oldestPushButton, SIGNAL(released()), this, SLOT(oldestAction()));
 }
 
 void Notebook::updateWidgets(void) {
-	activatePushButton->hide();
-	deactivatePushButton->hide();
-	removePushButton->hide();
+	if (notebookModel->query().size() > 0) {
+		activatePushButton->show();
+		deactivatePushButton->show();
+		removePushButton->show();
+	} else {
+		activatePushButton->hide();
+		deactivatePushButton->hide();
+		removePushButton->hide();
+	}
 	statusLabel->hide();
 }
 
 void Notebook::updateModels(void) {
 	notebookModel->select();
+	qDebug() << "Query:" << notebookModel->query().lastQuery();
+
+	int size = notebookModel->query().size();
+	statusNotebookTableViewLabel->setText(size > 1 ? QString(qApp->tr(
+			"%1 notebooks")).arg(size) : QString(qApp->tr("%1 notebook")).arg(
+			size));
+	statusPaginationLabel->setText(QString(qApp->tr(
+			"<b>%1</b> - <b>%2</b> de <b>%3</b>")).arg(1).arg(25).arg(size));
+}
+
+void Notebook::updateSearchForm(void) {
+	searchLineEdit->clear();
+	updateModels();
+}
+
+void Notebook::updateSearchFormClose(void) {
+	searchLineEdit->clear();
+	searchAdvancedToolButton->setChecked(false);
+	updateModels();
 }

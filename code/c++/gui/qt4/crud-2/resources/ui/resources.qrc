@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="/default">
+    <file>static/default/icons/22x22/go-previous.png</file>
+    <file>static/default/icons/22x22/go-next-view.png</file>
+    <file>static/default/icons/22x22/go-next.png</file>
+    <file>static/default/icons/22x22/go-previous-view.png</file>
     <file>static/default/icons/22x22/page-zoom.png</file>
     <file>static/default/icons/22x22/dialog-cancel.png</file>
     <file>static/default/icons/22x22/dialog-ok.png</file>
