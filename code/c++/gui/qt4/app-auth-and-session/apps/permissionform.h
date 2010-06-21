@@ -27,8 +27,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef NOTEBOOK_H
-#define NOTEBOOK_H
+#ifndef PERMISSIONFORM_H
+#define PERMISSIONFORM_H
 
 #include <QDebug>
 #include <QSqlQuery>
@@ -41,34 +41,32 @@
 #include <QTimer>
 #include <QMessageBox>
 
-#include "widgets/ui_notebook.h"
-#include "models/notebookmodel.h"
-#include "notebookform.h"
-#include "notebooksearch.h"
+#include "widgets/ui_permissionform.h"
+#include "permissionmodel.h"
 
-class Notebook: public QWidget, private Ui::Notebook {
+class PermissionForm: public QDialog, private Ui::PermissionForm {
 Q_OBJECT
 
 private slots:
 	void timerStatusAction(void);
-	void newAction(void);
-	void activateAction(void);
-	void desactivateAction(void);
+	void saveAction(void);
+	void saveAndContinueSavingAction(void);
 	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
-	void closeAction(void);
-	void doubleClickedItemViewAction(const QModelIndex &index);
-	void lastestAction(void);
-	void nextAction(void);
-	void previousAction(void);
-	void oldestAction(void);
+	void cancelAction(void);
 
 private:
-	void createModels(void);
-	void createViews(void);
 	void createActions(void);
 	void updateWidgets(void);
+	void updateModels(void);
+	void updateForms(void);
+	void updateContentTypesComboBox(void);
+
+	void select(void);
+	bool save(void);
+	bool remove(void);
+
+	void clear(void);
+	void focusDefault(void);
 
 	void timerStatus(void);
 	void okStatus(const QString &msg);
@@ -77,27 +75,17 @@ private:
 	void errorStatus(const QString &msg);
 
 	QTimer *statusTimer;
-	QSqlRelationalTableModel *notebookModel;
-	QSqlRelationalDelegate *notebookDelegate;
-	NotebookSearch *notebookSearch;
+	PermissionModel *permissionModel;
 
-public slots:
-	void updateModels(void);
-	void updateSearchForm(void);
-	void updateSearchFormClose(void);
+signals:
+	void formAdded(void);
+	void formChanged(void);
+	void formDeleted(void);
 
 public:
-	Notebook(QWidget *parent = 0);
-	~Notebook();
-
-	enum {
-		notebook_id = 0,
-		notebook_name = 1,
-		notebook_description = 2,
-		notebook_dateJoined = 3,
-		notebook_dateChanged = 4,
-		notebook_isActive = 5
-	};
+	PermissionForm(QDialog *parent = 0);
+	PermissionForm(int id, QDialog *parent = 0);
+	~PermissionForm();
 };
 
-#endif /* NOTEBOOK_H_ */
+#endif /* PERMISSIONFORM_H_ */

@@ -27,8 +27,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef NOTEBOOK_H
-#define NOTEBOOK_H
+#ifndef PERMISSION_H
+#define PERMISSION_H
 
 #include <QDebug>
 #include <QSqlQuery>
@@ -41,12 +41,12 @@
 #include <QTimer>
 #include <QMessageBox>
 
-#include "widgets/ui_notebook.h"
-#include "models/notebookmodel.h"
-#include "notebookform.h"
-#include "notebooksearch.h"
+#include "widgets/ui_permission.h"
+#include "permissionmodel.h"
+#include "permissionform.h"
+#include "permissionsearch.h"
 
-class Notebook: public QWidget, private Ui::Notebook {
+class Permission: public QWidget, private Ui::Permission {
 Q_OBJECT
 
 private slots:
@@ -57,7 +57,6 @@ private slots:
 	void removeAction(void);
 	void searchAdvancedAction(bool checked);
 	void searchTextChangedAction(const QString &text);
-	void closeAction(void);
 	void doubleClickedItemViewAction(const QModelIndex &index);
 	void lastestAction(void);
 	void nextAction(void);
@@ -77,9 +76,9 @@ private:
 	void errorStatus(const QString &msg);
 
 	QTimer *statusTimer;
-	QSqlRelationalTableModel *notebookModel;
-	QSqlRelationalDelegate *notebookDelegate;
-	NotebookSearch *notebookSearch;
+	QSqlRelationalTableModel *permissionModel;
+	QSqlRelationalDelegate *permissionDelegate;
+	PermissionSearch *permissionSearch;
 
 public slots:
 	void updateModels(void);
@@ -87,17 +86,15 @@ public slots:
 	void updateSearchFormClose(void);
 
 public:
-	Notebook(QWidget *parent = 0);
-	~Notebook();
+	Permission(QWidget *parent = 0);
+	~Permission();
 
 	enum {
-		notebook_id = 0,
-		notebook_name = 1,
-		notebook_description = 2,
-		notebook_dateJoined = 3,
-		notebook_dateChanged = 4,
-		notebook_isActive = 5
+		permission_contentTypes = 0,
+		permission_id = 1,
+		permission_name = 2,
+		permission_codename = 3
 	};
 };
 
-#endif /* NOTEBOOK_H_ */
+#endif /* PERMISSION_H_ */

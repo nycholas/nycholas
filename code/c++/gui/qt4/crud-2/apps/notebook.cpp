@@ -32,6 +32,7 @@
 Notebook::Notebook(QWidget *parent) :
 	QWidget(parent) {
 	setupUi(this);
+	statusTimer = new QTimer(this);
 	createModels();
 	createViews();
 	createActions();
@@ -40,6 +41,11 @@ Notebook::Notebook(QWidget *parent) :
 }
 
 Notebook::~Notebook(void) {
+}
+
+void Notebook::timerStatusAction(void) {
+	statusLabel->hide();
+	statusLabel->setText("");
 }
 
 void Notebook::newAction(void) {
@@ -53,8 +59,7 @@ void Notebook::newAction(void) {
 void Notebook::activateAction(void) {
 	QModelIndex index = notebookTableView->currentIndex();
 	if (!index.isValid()) {
-		QMessageBox::warning(0, qApp->tr("No items."), qApp->tr(
-				"Please select an item to edit."), QMessageBox::Ok);
+		infoStatus(qApp->tr("Please select an item to edit."));
 		return;
 	}
 
@@ -66,20 +71,17 @@ void Notebook::activateAction(void) {
 	m->setDateChanged(QDateTime::currentDateTime());
 	m->setIsActive(1);
 	if (!m->status()) {
-		QMessageBox::warning(0, qApp->tr("Notebook changed"), QString(qApp->tr(
-				"Failure trying to register the record.")), QMessageBox::Ok);
+		errorStatus(qApp->tr("Failure trying to register the record."));
 		return;
 	}
-	QMessageBox::information(0, qApp->tr("Notebook changed"), QString(qApp->tr(
-			"Successfully changed notebook.")), QMessageBox::Ok);
+	okStatus(qApp->tr("Successfully changed notebook."));
 	updateModels();
 }
 
 void Notebook::desactivateAction(void) {
 	QModelIndex index = notebookTableView->currentIndex();
 	if (!index.isValid()) {
-		QMessageBox::warning(0, qApp->tr("No items."), qApp->tr(
-				"Please select an item to edit."), QMessageBox::Ok);
+		infoStatus(qApp->tr("Please select an item to edit."));
 		return;
 	}
 
@@ -91,20 +93,17 @@ void Notebook::desactivateAction(void) {
 	m->setDateChanged(QDateTime::currentDateTime());
 	m->setIsActive(0);
 	if (!m->status()) {
-		QMessageBox::warning(0, qApp->tr("Notebook changed"), QString(qApp->tr(
-				"Failure trying to register the record.")), QMessageBox::Ok);
+		errorStatus(qApp->tr("Failure trying to register the record."));
 		return;
 	}
-	QMessageBox::information(0, qApp->tr("Notebook changed"), QString(qApp->tr(
-			"Successfully changed notebook.")), QMessageBox::Ok);
+	okStatus(qApp->tr("Successfully changed notebook."));
 	updateModels();
 }
 
 void Notebook::removeAction(void) {
 	QModelIndex index = notebookTableView->currentIndex();
 	if (!index.isValid()) {
-		QMessageBox::warning(0, qApp->tr("No items."), qApp->tr(
-				"Please select an item to edit."), QMessageBox::Ok);
+		infoStatus(qApp->tr("Please select an item to edit."));
 		return;
 	}
 
@@ -130,12 +129,10 @@ void Notebook::removeAction(void) {
 	NotebookModel *m = new NotebookModel(this);
 	NotebookModel::selectById(id, m);
 	if (!m->remove()) {
-		QMessageBox::warning(0, qApp->tr("Notebook deleted"), QString(qApp->tr(
-				"Fails to remove the record.")), QMessageBox::Ok);
+		errorStatus(qApp->tr("Fails to remove the record."));
 		return;
 	}
-	QMessageBox::information(0, qApp->tr("Notebook deleted"), QString(qApp->tr(
-			"Successfully deleted notebook.")), QMessageBox::Ok);
+	okStatus(qApp->tr("Successfully deleted notebook."));
 	updateModels();
 }
 
@@ -171,8 +168,7 @@ void Notebook::closeAction(void) {
 
 void Notebook::doubleClickedItemViewAction(const QModelIndex &index) {
 	if (!index.isValid()) {
-		QMessageBox::warning(0, qApp->tr("No items."), qApp->tr(
-				"Please select an item to edit."), QMessageBox::Ok);
+		infoStatus(qApp->tr("Please select an item to edit."));
 		return;
 	}
 
@@ -234,6 +230,8 @@ void Notebook::createViews(void) {
 }
 
 void Notebook::createActions(void) {
+	connect(statusTimer, SIGNAL(timeout()), this, SLOT(timerStatusAction()));
+
 	connect(newPushButton, SIGNAL(released()), this, SLOT(newAction()));
 	connect(activatePushButton, SIGNAL(released()), this,
 			SLOT(activateAction()));
@@ -279,6 +277,42 @@ void Notebook::updateModels(void) {
 			size));
 	statusPaginationLabel->setText(QString(qApp->tr(
 			"<b>%1</b> - <b>%2</b> de <b>%3</b>")).arg(1).arg(25).arg(size));
+}
+
+void Notebook::timerStatus(void) {
+	statusTimer->start(3000);
+}
+
+void Notebook::okStatus(const QString &msg) {
+	statusLabel->setText(msg);
+	statusLabel->setStyleSheet("color: green; background-color: white;"
+		"margin: 2px; padding: 3px; border: 1px solid green;");
+	statusLabel->show();
+	timerStatus();
+}
+
+void Notebook::infoStatus(const QString &msg) {
+	statusLabel->setText(msg);
+	statusLabel->setStyleSheet("color: blue; background-color: white;"
+		"margin: 2px; padding: 3px; border: 1px solid blue;");
+	statusLabel->show();
+	timerStatus();
+}
+
+void Notebook::alertStatus(const QString &msg) {
+	statusLabel->setText(msg);
+	statusLabel->setStyleSheet("color: yellow; background-color: white;"
+		"margin: 2px; padding: 3px; border: 1px solid yellow;");
+	statusLabel->show();
+	timerStatus();
+}
+
+void Notebook::errorStatus(const QString &msg) {
+	statusLabel->setText(msg);
+	statusLabel->setStyleSheet("color: red; background-color: white;"
+		"margin: 2px; padding: 3px; border: 1px solid red;");
+	statusLabel->show();
+	timerStatus();
 }
 
 void Notebook::updateSearchForm(void) {

@@ -13,7 +13,7 @@
  *    and/or other materials provided with the distribution.
  *  * Neither the name of the Nycholas de Oliveira e Oliveira nor the names of
  *    its contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
+ *    this software without specific prior written user.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -27,54 +27,54 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#include "notebook.h"
+#include "user.h"
 
-NotebookForm::NotebookForm(QDialog *parent) :
+UserForm::UserForm(QDialog *parent) :
 	QDialog(parent) {
 	setupUi(this);
-	notebookModel = new NotebookModel(this);
+	userModel = new UserModel();
 	statusTimer = new QTimer(this);
 	createActions();
 	updateWidgets();
 }
 
-NotebookForm::NotebookForm(int id, QDialog *parent) :
+UserForm::UserForm(int id, QDialog *parent) :
 	QDialog(parent) {
 	setupUi(this);
-	notebookModel = new NotebookModel(this);
-	notebookModel->setId(id);
+	userModel = new UserModel();
+	userModel->setId(id);
 	statusTimer = new QTimer(this);
 	createActions();
 	updateWidgets();
 }
 
-NotebookForm::~NotebookForm(void) {
+UserForm::~UserForm(void) {
 }
 
-void NotebookForm::timerStatusAction(void) {
+void UserForm::timerStatusAction(void) {
 	statusLabel->hide();
 	statusLabel->setText("");
 }
 
-void NotebookForm::saveAction(void) {
+void UserForm::saveAction(void) {
 	if (!save()) {
 		errorStatus(qApp->tr("Failure trying to register the record."));
 	} else {
-		if (notebookModel->getId() > 0) {
+		if (userModel->getId() > 0) {
 			QMessageBox::information(
 					0,
-					qApp->tr("Notebook changed"),
+					qApp->tr("User changed"),
 					QString(qApp->tr(
-							"The notebook \"%1\" was changed successfully.")).arg(
-							notebookModel->getName()), QMessageBox::Ok);
+							"The user \"%1\" was changed successfully.")).arg(
+							userModel->getName()), QMessageBox::Ok);
 			emit formChanged();
 		} else {
 			QMessageBox::information(
 					0,
-					qApp->tr("Notebook added"),
+					qApp->tr("User added"),
 					QString(qApp->tr(
-							"The notebook \"%1\" was added successfully.")).arg(
-							notebookModel->getName()), QMessageBox::Ok);
+							"The user \"%1\" was added successfully.")).arg(
+							userModel->getName()), QMessageBox::Ok);
 			emit formAdded();
 		}
 		updateModels();
@@ -83,19 +83,19 @@ void NotebookForm::saveAction(void) {
 	}
 }
 
-void NotebookForm::saveAndContinueSavingAction(void) {
+void UserForm::saveAndContinueSavingAction(void) {
 	if (!save()) {
 		errorStatus(qApp->tr("Failure trying to register the record."));
 	} else {
-		if (notebookModel->getId() > 0) {
+		if (userModel->getId() > 0) {
 			okStatus(QString(qApp->tr(
-					"The notebook \"%1\" was changed successfully.")).arg(
-					notebookModel->getName()));
+					"The user \"%1\" was changed successfully.")).arg(
+					userModel->getName()));
 			emit formChanged();
 		} else {
 			okStatus(QString(qApp->tr(
-					"The notebook \"%1\" was added successfully.")).arg(
-					notebookModel->getName()));
+					"The user \"%1\" was added successfully.")).arg(
+					userModel->getName()));
 			emit formAdded();
 		}
 		updateModels();
@@ -103,13 +103,15 @@ void NotebookForm::saveAndContinueSavingAction(void) {
 	}
 }
 
-void NotebookForm::removeAction(void) {
+void UserForm::removeAction(void) {
 	QMessageBox msgBox;
 	msgBox.setText(qApp->tr("Are you sure?"));
-	msgBox.setInformativeText(QString(qApp->tr(
-			"Are you sure you want to delete the selected notebook objects?\n"
-				"All of the following objects and their related items will be "
-				"deleted:\n\nNotebook: %1\n").arg(notebookModel->getName())));
+	msgBox.setInformativeText(
+			QString(qApp->tr(
+					"Are you sure you want to delete the selected user objects?\n"
+						"All of the following objects and their related items will be "
+						"deleted:\n\nUser: %1\n").arg(
+					userModel->getName())));
 	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No
 			| QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::No);
@@ -124,8 +126,8 @@ void NotebookForm::removeAction(void) {
 	if (!remove()) {
 		errorStatus(qApp->tr("Fails to remove the record."));
 	} else {
-		QMessageBox::information(0, qApp->tr("Notebook deleted"), QString(
-				qApp->tr("Successfully deleted %1 notebook.")).arg("1"),
+		QMessageBox::information(0, qApp->tr("User deleted"), QString(
+				qApp->tr("Successfully deleted %1 user.")).arg("1"),
 				QMessageBox::Ok);
 		emit
 		formDeleted();
@@ -135,11 +137,11 @@ void NotebookForm::removeAction(void) {
 	}
 }
 
-void NotebookForm::cancelAction(void) {
+void UserForm::cancelAction(void) {
 	close();
 }
 
-void NotebookForm::createActions(void) {
+void UserForm::createActions(void) {
 	connect(statusTimer, SIGNAL(timeout()), this, SLOT(timerStatusAction()));
 
 	connect(savePushButton, SIGNAL(released()), this, SLOT(saveAction()));
@@ -149,29 +151,30 @@ void NotebookForm::createActions(void) {
 	connect(cancelPushButton, SIGNAL(released()), this, SLOT(cancelAction()));
 }
 
-void NotebookForm::updateWidgets(void) {
+void UserForm::updateWidgets(void) {
+	setWindowFlags(Qt::Dialog);
 	updateForms();
 	statusLabel->hide();
 }
 
-void NotebookForm::updateModels(void) {
-	notebookModel = new NotebookModel(this);
+void UserForm::updateModels(void) {
+	userModel = new UserModel();
 }
 
-void NotebookForm::updateForms(void) {
+void UserForm::updateForms(void) {
 	clear();
 	focusDefault();
-	if (notebookModel->getId() > 0) {
+	if (userModel->getId() > 0) {
 		select();
-		titleLabel->setText(qApp->tr("Change Notebook"));
-		notebookGroupBox->setTitle(qApp->tr("&Notebook details"));
+		titleLabel->setText(qApp->tr("Change User"));
+		formGroupBox->setTitle(qApp->tr("&User details"));
 		savePushButton->setText(qApp->tr("&Update"));
 		saveAndContinueSavingPushButton->setText(qApp->tr(
 				"Update and &continue saving"));
 		removePushButton->show();
 	} else {
-		titleLabel->setText(qApp->tr("Add Notebook"));
-		notebookGroupBox->setTitle(qApp->tr("&Notebook details"));
+		titleLabel->setText(qApp->tr("Add User"));
+		formGroupBox->setTitle(qApp->tr("&User details"));
 		savePushButton->setText(qApp->tr("&Save"));
 		saveAndContinueSavingPushButton->setText(qApp->tr(
 				"Save and &continue saving"));
@@ -180,40 +183,33 @@ void NotebookForm::updateForms(void) {
 	savePushButton->setDefault(true);
 }
 
-void NotebookForm::select(void) {
-	NotebookModel::selectById(notebookModel->getId(), notebookModel);
-	nameLineEdit->setText(notebookModel->getName());
-	descriptionTextEdit->setText(notebookModel->getDescription());
-	isActivedCheckBox->setChecked(notebookModel->getIsActive());
+void UserForm::select(void) {
+	UserModel::selectById(userModel->getId(), userModel);
+	nameLineEdit->setText(userModel->getName());
 }
 
-bool NotebookForm::save(void) {
-	notebookModel->setName(nameLineEdit->text());
-	notebookModel->setDescription(descriptionTextEdit->toPlainText());
-	notebookModel->setDateJoined(QDateTime::currentDateTime());
-	notebookModel->setIsActive(isActivedCheckBox->isChecked() ? 1 : 0);
-	return notebookModel->save();
+bool UserForm::save(void) {
+	userModel->setName(nameLineEdit->text());
+	return userModel->save();
 }
 
-bool NotebookForm::remove(void) {
-	return notebookModel->remove();
+bool UserForm::remove(void) {
+	return userModel->remove();
 }
 
-void NotebookForm::clear(void) {
+void UserForm::clear(void) {
 	nameLineEdit->clear();
-	descriptionTextEdit->clear();
-	isActivedCheckBox->setChecked(true);
 }
 
-void NotebookForm::focusDefault(void) {
+void UserForm::focusDefault(void) {
 	nameLineEdit->setFocus();
 }
 
-void NotebookForm::timerStatus(void) {
+void UserForm::timerStatus(void) {
 	statusTimer->start(3000);
 }
 
-void NotebookForm::okStatus(const QString &msg) {
+void UserForm::okStatus(const QString &msg) {
 	statusLabel->setText(msg);
 	statusLabel->setStyleSheet("color: green; background-color: white;"
 		"margin: 2px; padding: 3px; border: 1px solid green;");
@@ -221,7 +217,7 @@ void NotebookForm::okStatus(const QString &msg) {
 	timerStatus();
 }
 
-void NotebookForm::infoStatus(const QString &msg) {
+void UserForm::infoStatus(const QString &msg) {
 	statusLabel->setText(msg);
 	statusLabel->setStyleSheet("color: blue; background-color: white;"
 		"margin: 2px; padding: 3px; border: 1px solid blue;");
@@ -229,7 +225,7 @@ void NotebookForm::infoStatus(const QString &msg) {
 	timerStatus();
 }
 
-void NotebookForm::alertStatus(const QString &msg) {
+void UserForm::alertStatus(const QString &msg) {
 	statusLabel->setText(msg);
 	statusLabel->setStyleSheet("color: yellow; background-color: white;"
 		"margin: 2px; padding: 3px; border: 1px solid yellow;");
@@ -237,11 +233,10 @@ void NotebookForm::alertStatus(const QString &msg) {
 	timerStatus();
 }
 
-void NotebookForm::errorStatus(const QString &msg) {
+void UserForm::errorStatus(const QString &msg) {
 	statusLabel->setText(msg);
 	statusLabel->setStyleSheet("color: red; background-color: white;"
 		"margin: 2px; padding: 3px; border: 1px solid red;");
 	statusLabel->show();
 	timerStatus();
 }
-

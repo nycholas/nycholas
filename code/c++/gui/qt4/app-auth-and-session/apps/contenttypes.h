@@ -27,8 +27,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef NOTEBOOK_H
-#define NOTEBOOK_H
+#ifndef CONTENTTYPES_H
+#define CONTENTTYPES_H
 
 #include <QDebug>
 #include <QSqlQuery>
@@ -41,12 +41,12 @@
 #include <QTimer>
 #include <QMessageBox>
 
-#include "widgets/ui_notebook.h"
-#include "models/notebookmodel.h"
-#include "notebookform.h"
-#include "notebooksearch.h"
+#include "widgets/ui_contenttypes.h"
+#include "contenttypesmodel.h"
+#include "contenttypesform.h"
+#include "contenttypessearch.h"
 
-class Notebook: public QWidget, private Ui::Notebook {
+class ContentTypes: public QWidget, private Ui::ContentTypes {
 Q_OBJECT
 
 private slots:
@@ -57,7 +57,6 @@ private slots:
 	void removeAction(void);
 	void searchAdvancedAction(bool checked);
 	void searchTextChangedAction(const QString &text);
-	void closeAction(void);
 	void doubleClickedItemViewAction(const QModelIndex &index);
 	void lastestAction(void);
 	void nextAction(void);
@@ -77,9 +76,9 @@ private:
 	void errorStatus(const QString &msg);
 
 	QTimer *statusTimer;
-	QSqlRelationalTableModel *notebookModel;
-	QSqlRelationalDelegate *notebookDelegate;
-	NotebookSearch *notebookSearch;
+	QSqlRelationalTableModel *contentTypesModel;
+	QSqlRelationalDelegate *contentTypesDelegate;
+	ContentTypesSearch *contentTypesSearch;
 
 public slots:
 	void updateModels(void);
@@ -87,17 +86,15 @@ public slots:
 	void updateSearchFormClose(void);
 
 public:
-	Notebook(QWidget *parent = 0);
-	~Notebook();
+	ContentTypes(QWidget *parent = 0);
+	~ContentTypes();
 
 	enum {
-		notebook_id = 0,
-		notebook_name = 1,
-		notebook_description = 2,
-		notebook_dateJoined = 3,
-		notebook_dateChanged = 4,
-		notebook_isActive = 5
+		contenttype_id = 0,
+		contenttype_name = 1,
+		contenttype_appLabel = 2,
+		contenttype_model = 3
 	};
 };
 
-#endif /* NOTEBOOK_H_ */
+#endif /* CONTENTTYPES_H_ */

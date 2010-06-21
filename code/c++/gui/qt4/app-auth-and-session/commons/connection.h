@@ -27,77 +27,54 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef NOTEBOOK_H
-#define NOTEBOOK_H
+#ifndef CONNECTION_H
+#define CONNECTION_H
 
-#include <QDebug>
-#include <QSqlQuery>
-#include <QSqlRecord>
-#include <QSqlRelationalTableModel>
-#include <QSqlRelationalDelegate>
-#include <QSqlError>
-#include <QModelIndex>
-#include <QDateTime>
-#include <QTimer>
 #include <QMessageBox>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
 
-#include "widgets/ui_notebook.h"
-#include "models/notebookmodel.h"
-#include "notebookform.h"
-#include "notebooksearch.h"
+/**
+ * Creates a QSqlDatabase  connection that uses the driver referred to
+ * by type. If the type  is not recognized, the database connection
+ * will have no functionality.
+ * The currently available driver types are:
+ *
+ * QDB2       IBM DB2
+ * QIBASE     Borland InterBase Driver
+ * QMYSQL     MySQL Driver
+ * QOCI       Oracle Call Interface Driver
+ * QODBC      ODBC Driver (includes Microsoft SQL Server)
+ * QPSQL      PostgreSQL Driver
+ * QSQLITE    SQLite version 3 or above
+ * QSQLITE2   SQLite version 2
+ * QTDS       Sybase Adaptive Server
+ */
+static bool createConnection(void) {
+	QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+	db.setHostName("localhost");
+	db.setDatabaseName("appdb");
+	db.setUserName("root");
+	db.setPassword("1q2w3e");
+	if (!db.open()) {
+		QMessageBox::critical(0, qApp->tr("Cannot open database"), qApp->tr(
+				"Unable to establish a database connection.\n"
+					"This example needs SQLite support. Please read "
+					"the Qt SQL driver documentation for information how "
+					"to build it.\n\n"
+					"Click Cancel to exit."), QMessageBox::Cancel);
+		return false;
+	}
+	return true;
+}
 
-class Notebook: public QWidget, private Ui::Notebook {
-Q_OBJECT
+static void closeConnection(void) {
+	QSqlDatabase db = QSqlDatabase::database();
+	if (db.open()) {
+		db.removeDatabase("appdb");
+		db.close();
+	}
+}
 
-private slots:
-	void timerStatusAction(void);
-	void newAction(void);
-	void activateAction(void);
-	void desactivateAction(void);
-	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
-	void closeAction(void);
-	void doubleClickedItemViewAction(const QModelIndex &index);
-	void lastestAction(void);
-	void nextAction(void);
-	void previousAction(void);
-	void oldestAction(void);
-
-private:
-	void createModels(void);
-	void createViews(void);
-	void createActions(void);
-	void updateWidgets(void);
-
-	void timerStatus(void);
-	void okStatus(const QString &msg);
-	void infoStatus(const QString &msg);
-	void alertStatus(const QString &msg);
-	void errorStatus(const QString &msg);
-
-	QTimer *statusTimer;
-	QSqlRelationalTableModel *notebookModel;
-	QSqlRelationalDelegate *notebookDelegate;
-	NotebookSearch *notebookSearch;
-
-public slots:
-	void updateModels(void);
-	void updateSearchForm(void);
-	void updateSearchFormClose(void);
-
-public:
-	Notebook(QWidget *parent = 0);
-	~Notebook();
-
-	enum {
-		notebook_id = 0,
-		notebook_name = 1,
-		notebook_description = 2,
-		notebook_dateJoined = 3,
-		notebook_dateChanged = 4,
-		notebook_isActive = 5
-	};
-};
-
-#endif /* NOTEBOOK_H_ */
+#endif

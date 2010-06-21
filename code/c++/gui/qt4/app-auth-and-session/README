@@ -1,0 +1,4 @@
+$ mysql -u root -p << resources/db/mysql/create-database.sql
+$ qmake -project "QT += sql" "UI_DIR = apps/widgets"
+$ make
+$ ./app-auth-and-session

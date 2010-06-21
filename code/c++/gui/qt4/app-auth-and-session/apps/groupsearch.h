@@ -13,7 +13,7 @@
  *    and/or other materials provided with the distribution.
  *  * Neither the name of the Nycholas de Oliveira e Oliveira nor the names of
  *    its contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
+ *    this software without specific prior written group.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -27,8 +27,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef NOTEBOOK_H
-#define NOTEBOOK_H
+#ifndef GROUPSEARCH_H
+#define GROUPSEARCH_H
 
 #include <QDebug>
 #include <QSqlQuery>
@@ -36,68 +36,35 @@
 #include <QSqlRelationalTableModel>
 #include <QSqlRelationalDelegate>
 #include <QSqlError>
-#include <QModelIndex>
-#include <QDateTime>
-#include <QTimer>
-#include <QMessageBox>
 
-#include "widgets/ui_notebook.h"
-#include "models/notebookmodel.h"
-#include "notebookform.h"
-#include "notebooksearch.h"
+#include "widgets/ui_groupsearch.h"
 
-class Notebook: public QWidget, private Ui::Notebook {
-Q_OBJECT
+class GroupSearch: public QDialog, private Ui::GroupSearch {
+	Q_OBJECT
 
 private slots:
-	void timerStatusAction(void);
-	void newAction(void);
-	void activateAction(void);
-	void desactivateAction(void);
-	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
+	void searchAction(void);
+	void cancelAction(void);
 	void closeAction(void);
-	void doubleClickedItemViewAction(const QModelIndex &index);
-	void lastestAction(void);
-	void nextAction(void);
-	void previousAction(void);
-	void oldestAction(void);
 
 private:
-	void createModels(void);
-	void createViews(void);
 	void createActions(void);
 	void updateWidgets(void);
+	void updateForms(void);
 
-	void timerStatus(void);
-	void okStatus(const QString &msg);
-	void infoStatus(const QString &msg);
-	void alertStatus(const QString &msg);
-	void errorStatus(const QString &msg);
+	void clear(void);
+	void focusDefault(void);
 
-	QTimer *statusTimer;
-	QSqlRelationalTableModel *notebookModel;
-	QSqlRelationalDelegate *notebookDelegate;
-	NotebookSearch *notebookSearch;
+	QSqlRelationalTableModel *groupModel;
 
-public slots:
-	void updateModels(void);
-	void updateSearchForm(void);
-	void updateSearchFormClose(void);
+signals:
+	void formSearched(void);
+	void formSearchClose(void);
 
 public:
-	Notebook(QWidget *parent = 0);
-	~Notebook();
-
-	enum {
-		notebook_id = 0,
-		notebook_name = 1,
-		notebook_description = 2,
-		notebook_dateJoined = 3,
-		notebook_dateChanged = 4,
-		notebook_isActive = 5
-	};
+	GroupSearch(QSqlRelationalTableModel *model, QDialog *parent = 0);
+	GroupSearch(QDialog *parent = 0);
+	~GroupSearch();
 };
 
-#endif /* NOTEBOOK_H_ */
+#endif /* GROUPSEARCH_H_ */

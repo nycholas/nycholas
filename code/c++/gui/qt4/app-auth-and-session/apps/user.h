@@ -13,7 +13,7 @@
  *    and/or other materials provided with the distribution.
  *  * Neither the name of the Nycholas de Oliveira e Oliveira nor the names of
  *    its contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
+ *    this software without specific prior written user.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -27,8 +27,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef NOTEBOOK_H
-#define NOTEBOOK_H
+#ifndef USER_H
+#define USER_H
 
 #include <QDebug>
 #include <QSqlQuery>
@@ -41,12 +41,12 @@
 #include <QTimer>
 #include <QMessageBox>
 
-#include "widgets/ui_notebook.h"
-#include "models/notebookmodel.h"
-#include "notebookform.h"
-#include "notebooksearch.h"
+#include "widgets/ui_user.h"
+#include "usermodel.h"
+#include "userform.h"
+#include "usersearch.h"
 
-class Notebook: public QWidget, private Ui::Notebook {
+class User: public QWidget, private Ui::User {
 Q_OBJECT
 
 private slots:
@@ -57,7 +57,6 @@ private slots:
 	void removeAction(void);
 	void searchAdvancedAction(bool checked);
 	void searchTextChangedAction(const QString &text);
-	void closeAction(void);
 	void doubleClickedItemViewAction(const QModelIndex &index);
 	void lastestAction(void);
 	void nextAction(void);
@@ -77,9 +76,9 @@ private:
 	void errorStatus(const QString &msg);
 
 	QTimer *statusTimer;
-	QSqlRelationalTableModel *notebookModel;
-	QSqlRelationalDelegate *notebookDelegate;
-	NotebookSearch *notebookSearch;
+	QSqlRelationalTableModel *userModel;
+	QSqlRelationalDelegate *userDelegate;
+	UserSearch *userSearch;
 
 public slots:
 	void updateModels(void);
@@ -87,17 +86,13 @@ public slots:
 	void updateSearchFormClose(void);
 
 public:
-	Notebook(QWidget *parent = 0);
-	~Notebook();
+	User(QWidget *parent = 0);
+	~User();
 
 	enum {
-		notebook_id = 0,
-		notebook_name = 1,
-		notebook_description = 2,
-		notebook_dateJoined = 3,
-		notebook_dateChanged = 4,
-		notebook_isActive = 5
+		user_id = 0,
+		user_name = 1
 	};
 };
 
-#endif /* NOTEBOOK_H_ */
+#endif /* USER_H_ */

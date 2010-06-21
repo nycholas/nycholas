@@ -27,54 +27,54 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#include "notebook.h"
+#include "permission.h"
 
-NotebookForm::NotebookForm(QDialog *parent) :
+PermissionForm::PermissionForm(QDialog *parent) :
 	QDialog(parent) {
 	setupUi(this);
-	notebookModel = new NotebookModel(this);
+	permissionModel = new PermissionModel();
 	statusTimer = new QTimer(this);
 	createActions();
 	updateWidgets();
 }
 
-NotebookForm::NotebookForm(int id, QDialog *parent) :
+PermissionForm::PermissionForm(int id, QDialog *parent) :
 	QDialog(parent) {
 	setupUi(this);
-	notebookModel = new NotebookModel(this);
-	notebookModel->setId(id);
+	permissionModel = new PermissionModel();
+	permissionModel->setId(id);
 	statusTimer = new QTimer(this);
 	createActions();
 	updateWidgets();
 }
 
-NotebookForm::~NotebookForm(void) {
+PermissionForm::~PermissionForm(void) {
 }
 
-void NotebookForm::timerStatusAction(void) {
+void PermissionForm::timerStatusAction(void) {
 	statusLabel->hide();
 	statusLabel->setText("");
 }
 
-void NotebookForm::saveAction(void) {
+void PermissionForm::saveAction(void) {
 	if (!save()) {
 		errorStatus(qApp->tr("Failure trying to register the record."));
 	} else {
-		if (notebookModel->getId() > 0) {
+		if (permissionModel->getId() > 0) {
 			QMessageBox::information(
 					0,
-					qApp->tr("Notebook changed"),
+					qApp->tr("Permission changed"),
 					QString(qApp->tr(
-							"The notebook \"%1\" was changed successfully.")).arg(
-							notebookModel->getName()), QMessageBox::Ok);
+							"The permission \"%1\" was changed successfully.")).arg(
+							permissionModel->getName()), QMessageBox::Ok);
 			emit formChanged();
 		} else {
 			QMessageBox::information(
 					0,
-					qApp->tr("Notebook added"),
+					qApp->tr("Permission added"),
 					QString(qApp->tr(
-							"The notebook \"%1\" was added successfully.")).arg(
-							notebookModel->getName()), QMessageBox::Ok);
+							"The permission \"%1\" was added successfully.")).arg(
+							permissionModel->getName()), QMessageBox::Ok);
 			emit formAdded();
 		}
 		updateModels();
@@ -83,19 +83,19 @@ void NotebookForm::saveAction(void) {
 	}
 }
 
-void NotebookForm::saveAndContinueSavingAction(void) {
+void PermissionForm::saveAndContinueSavingAction(void) {
 	if (!save()) {
 		errorStatus(qApp->tr("Failure trying to register the record."));
 	} else {
-		if (notebookModel->getId() > 0) {
+		if (permissionModel->getId() > 0) {
 			okStatus(QString(qApp->tr(
-					"The notebook \"%1\" was changed successfully.")).arg(
-					notebookModel->getName()));
+					"The permission \"%1\" was changed successfully.")).arg(
+					permissionModel->getName()));
 			emit formChanged();
 		} else {
 			okStatus(QString(qApp->tr(
-					"The notebook \"%1\" was added successfully.")).arg(
-					notebookModel->getName()));
+					"The permission \"%1\" was added successfully.")).arg(
+					permissionModel->getName()));
 			emit formAdded();
 		}
 		updateModels();
@@ -103,13 +103,15 @@ void NotebookForm::saveAndContinueSavingAction(void) {
 	}
 }
 
-void NotebookForm::removeAction(void) {
+void PermissionForm::removeAction(void) {
 	QMessageBox msgBox;
 	msgBox.setText(qApp->tr("Are you sure?"));
-	msgBox.setInformativeText(QString(qApp->tr(
-			"Are you sure you want to delete the selected notebook objects?\n"
-				"All of the following objects and their related items will be "
-				"deleted:\n\nNotebook: %1\n").arg(notebookModel->getName())));
+	msgBox.setInformativeText(
+			QString(qApp->tr(
+					"Are you sure you want to delete the selected permission objects?\n"
+						"All of the following objects and their related items will be "
+						"deleted:\n\nPermission: %1\n").arg(
+					permissionModel->getName())));
 	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No
 			| QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::No);
@@ -124,8 +126,8 @@ void NotebookForm::removeAction(void) {
 	if (!remove()) {
 		errorStatus(qApp->tr("Fails to remove the record."));
 	} else {
-		QMessageBox::information(0, qApp->tr("Notebook deleted"), QString(
-				qApp->tr("Successfully deleted %1 notebook.")).arg("1"),
+		QMessageBox::information(0, qApp->tr("Permission deleted"), QString(
+				qApp->tr("Successfully deleted %1 permission.")).arg("1"),
 				QMessageBox::Ok);
 		emit
 		formDeleted();
@@ -135,11 +137,11 @@ void NotebookForm::removeAction(void) {
 	}
 }
 
-void NotebookForm::cancelAction(void) {
+void PermissionForm::cancelAction(void) {
 	close();
 }
 
-void NotebookForm::createActions(void) {
+void PermissionForm::createActions(void) {
 	connect(statusTimer, SIGNAL(timeout()), this, SLOT(timerStatusAction()));
 
 	connect(savePushButton, SIGNAL(released()), this, SLOT(saveAction()));
@@ -149,29 +151,31 @@ void NotebookForm::createActions(void) {
 	connect(cancelPushButton, SIGNAL(released()), this, SLOT(cancelAction()));
 }
 
-void NotebookForm::updateWidgets(void) {
+void PermissionForm::updateWidgets(void) {
+	setWindowFlags(Qt::Dialog);
 	updateForms();
 	statusLabel->hide();
 }
 
-void NotebookForm::updateModels(void) {
-	notebookModel = new NotebookModel(this);
+void PermissionForm::updateModels(void) {
+	permissionModel = new PermissionModel();
 }
 
-void NotebookForm::updateForms(void) {
+void PermissionForm::updateForms(void) {
 	clear();
 	focusDefault();
-	if (notebookModel->getId() > 0) {
+	updateContentTypesComboBox();
+	if (permissionModel->getId() > 0) {
 		select();
-		titleLabel->setText(qApp->tr("Change Notebook"));
-		notebookGroupBox->setTitle(qApp->tr("&Notebook details"));
+		titleLabel->setText(qApp->tr("Change Permission"));
+		formGroupBox->setTitle(qApp->tr("&Permission details"));
 		savePushButton->setText(qApp->tr("&Update"));
 		saveAndContinueSavingPushButton->setText(qApp->tr(
 				"Update and &continue saving"));
 		removePushButton->show();
 	} else {
-		titleLabel->setText(qApp->tr("Add Notebook"));
-		notebookGroupBox->setTitle(qApp->tr("&Notebook details"));
+		titleLabel->setText(qApp->tr("Add Permission"));
+		formGroupBox->setTitle(qApp->tr("&Permission details"));
 		savePushButton->setText(qApp->tr("&Save"));
 		saveAndContinueSavingPushButton->setText(qApp->tr(
 				"Save and &continue saving"));
@@ -180,40 +184,45 @@ void NotebookForm::updateForms(void) {
 	savePushButton->setDefault(true);
 }
 
-void NotebookForm::select(void) {
-	NotebookModel::selectById(notebookModel->getId(), notebookModel);
-	nameLineEdit->setText(notebookModel->getName());
-	descriptionTextEdit->setText(notebookModel->getDescription());
-	isActivedCheckBox->setChecked(notebookModel->getIsActive());
+void PermissionForm::updateContentTypesComboBox(void) {
+	QSqlRelationalTableModel *contentTypesModel = new QSqlRelationalTableModel(this);
+	contentTypesModel->setTable("app_content_type");
+	contentTypesModel->setHeaderData(2, Qt::Horizontal, trUtf8("Nome"));
+	contentTypesModel->setSort(2, Qt::AscendingOrder);
+	contentTypesModel->select();
+	contentTypesComboBox->setModel(contentTypesModel);
 }
 
-bool NotebookForm::save(void) {
-	notebookModel->setName(nameLineEdit->text());
-	notebookModel->setDescription(descriptionTextEdit->toPlainText());
-	notebookModel->setDateJoined(QDateTime::currentDateTime());
-	notebookModel->setIsActive(isActivedCheckBox->isChecked() ? 1 : 0);
-	return notebookModel->save();
+void PermissionForm::select(void) {
+	PermissionModel::selectById(permissionModel->getId(), permissionModel);
+	nameLineEdit->setText(permissionModel->getName());
+	codenameLineEdit->setText(permissionModel->getCodename());
 }
 
-bool NotebookForm::remove(void) {
-	return notebookModel->remove();
+bool PermissionForm::save(void) {
+	permissionModel->setName(nameLineEdit->text());
+	permissionModel->setCodename(codenameLineEdit->text());
+	return permissionModel->save();
 }
 
-void NotebookForm::clear(void) {
+bool PermissionForm::remove(void) {
+	return permissionModel->remove();
+}
+
+void PermissionForm::clear(void) {
 	nameLineEdit->clear();
-	descriptionTextEdit->clear();
-	isActivedCheckBox->setChecked(true);
+	codenameLineEdit->clear();
 }
 
-void NotebookForm::focusDefault(void) {
+void PermissionForm::focusDefault(void) {
 	nameLineEdit->setFocus();
 }
 
-void NotebookForm::timerStatus(void) {
+void PermissionForm::timerStatus(void) {
 	statusTimer->start(3000);
 }
 
-void NotebookForm::okStatus(const QString &msg) {
+void PermissionForm::okStatus(const QString &msg) {
 	statusLabel->setText(msg);
 	statusLabel->setStyleSheet("color: green; background-color: white;"
 		"margin: 2px; padding: 3px; border: 1px solid green;");
@@ -221,7 +230,7 @@ void NotebookForm::okStatus(const QString &msg) {
 	timerStatus();
 }
 
-void NotebookForm::infoStatus(const QString &msg) {
+void PermissionForm::infoStatus(const QString &msg) {
 	statusLabel->setText(msg);
 	statusLabel->setStyleSheet("color: blue; background-color: white;"
 		"margin: 2px; padding: 3px; border: 1px solid blue;");
@@ -229,7 +238,7 @@ void NotebookForm::infoStatus(const QString &msg) {
 	timerStatus();
 }
 
-void NotebookForm::alertStatus(const QString &msg) {
+void PermissionForm::alertStatus(const QString &msg) {
 	statusLabel->setText(msg);
 	statusLabel->setStyleSheet("color: yellow; background-color: white;"
 		"margin: 2px; padding: 3px; border: 1px solid yellow;");
@@ -237,11 +246,10 @@ void NotebookForm::alertStatus(const QString &msg) {
 	timerStatus();
 }
 
-void NotebookForm::errorStatus(const QString &msg) {
+void PermissionForm::errorStatus(const QString &msg) {
 	statusLabel->setText(msg);
 	statusLabel->setStyleSheet("color: red; background-color: white;"
 		"margin: 2px; padding: 3px; border: 1px solid red;");
 	statusLabel->show();
 	timerStatus();
 }
-

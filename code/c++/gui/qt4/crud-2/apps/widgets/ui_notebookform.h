@@ -1,14 +1,14 @@
 /********************************************************************************
-** Form generated from reading UI file 'notebookitem.ui'
+** Form generated from reading UI file 'notebookform.ui'
 **
-** Created: Sun Jun 6 17:27:24 2010
-**      by: Qt User Interface Compiler version 4.6.2
+** Created: Thu Jun 17 16:40:51 2010
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_NOTEBOOKITEM_H
-#define UI_NOTEBOOKITEM_H
+#ifndef UI_NOTEBOOKFORM_H
+#define UI_NOTEBOOKFORM_H
 
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
@@ -52,7 +52,7 @@ public:
     QSpacerItem *horizontalSpacer;
     QPushButton *savePushButton;
     QPushButton *saveAndContinueSavingPushButton;
-    QPushButton *cancelPushButtonCancel;
+    QPushButton *cancelPushButton;
 
     void setupUi(QDialog *NotebookForm)
     {
@@ -158,13 +158,13 @@ public:
 
         horizontalLayout->addWidget(saveAndContinueSavingPushButton);
 
-        cancelPushButtonCancel = new QPushButton(frame);
-        cancelPushButtonCancel->setObjectName(QString::fromUtf8("cancelPushButtonCancel"));
+        cancelPushButton = new QPushButton(frame);
+        cancelPushButton->setObjectName(QString::fromUtf8("cancelPushButton"));
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/default/static/default/icons/22x22/dialog-cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
-        cancelPushButtonCancel->setIcon(icon4);
+        cancelPushButton->setIcon(icon4);
 
-        horizontalLayout->addWidget(cancelPushButtonCancel);
+        horizontalLayout->addWidget(cancelPushButton);
 
 
         gridLayout_2->addLayout(horizontalLayout, 1, 0, 1, 1);
@@ -181,7 +181,7 @@ public:
         QWidget::setTabOrder(isActivedCheckBox, savePushButton);
         QWidget::setTabOrder(savePushButton, saveAndContinueSavingPushButton);
         QWidget::setTabOrder(saveAndContinueSavingPushButton, removePushButton);
-        QWidget::setTabOrder(removePushButton, cancelPushButtonCancel);
+        QWidget::setTabOrder(removePushButton, cancelPushButton);
 
         retranslateUi(NotebookForm);
 
@@ -191,9 +191,9 @@ public:
     void retranslateUi(QDialog *NotebookForm)
     {
         NotebookForm->setWindowTitle(QApplication::translate("NotebookForm", "Notebook :: Form", 0, QApplication::UnicodeUTF8));
-        titleLabel->setText(QApplication::translate("NotebookForm", "Change notebook", 0, QApplication::UnicodeUTF8));
+        titleLabel->setText(QApplication::translate("NotebookForm", "Add notebook", 0, QApplication::UnicodeUTF8));
         statusLabel->setText(QString());
-        notebookGroupBox->setTitle(QApplication::translate("NotebookForm", "&Add Notebook", 0, QApplication::UnicodeUTF8));
+        notebookGroupBox->setTitle(QApplication::translate("NotebookForm", "&Notebook details", 0, QApplication::UnicodeUTF8));
         nameLabel->setText(QApplication::translate("NotebookForm", "&Name:", 0, QApplication::UnicodeUTF8));
         descriptionLabel->setText(QApplication::translate("NotebookForm", "&Description:", 0, QApplication::UnicodeUTF8));
         isActivedCheckBox->setText(QApplication::translate("NotebookForm", "Is &Actived", 0, QApplication::UnicodeUTF8));
@@ -203,8 +203,8 @@ public:
         savePushButton->setShortcut(QApplication::translate("NotebookForm", "Ctrl+S", 0, QApplication::UnicodeUTF8));
         saveAndContinueSavingPushButton->setText(QApplication::translate("NotebookForm", "Save and &continue saving", 0, QApplication::UnicodeUTF8));
         saveAndContinueSavingPushButton->setShortcut(QApplication::translate("NotebookForm", "Ctrl+Shift+S", 0, QApplication::UnicodeUTF8));
-        cancelPushButtonCancel->setText(QApplication::translate("NotebookForm", "&Cancel", 0, QApplication::UnicodeUTF8));
-        cancelPushButtonCancel->setShortcut(QApplication::translate("NotebookForm", "Ctrl+W", 0, QApplication::UnicodeUTF8));
+        cancelPushButton->setText(QApplication::translate("NotebookForm", "&Cancel", 0, QApplication::UnicodeUTF8));
+        cancelPushButton->setShortcut(QApplication::translate("NotebookForm", "Ctrl+W", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
@@ -215,4 +215,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // UI_NOTEBOOKITEM_H
+#endif // UI_NOTEBOOKFORM_H

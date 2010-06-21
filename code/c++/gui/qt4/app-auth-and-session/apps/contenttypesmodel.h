@@ -27,77 +27,42 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef NOTEBOOK_H
-#define NOTEBOOK_H
+#ifndef CONTENTTYPESMODEL_H
+#define CONTENTTYPESMODEL_H
 
 #include <QDebug>
-#include <QSqlQuery>
+#include <QSqlQueryModel>
 #include <QSqlRecord>
-#include <QSqlRelationalTableModel>
-#include <QSqlRelationalDelegate>
-#include <QSqlError>
-#include <QModelIndex>
+#include <QSqlQuery>
 #include <QDateTime>
-#include <QTimer>
-#include <QMessageBox>
+#include <QVariant>
+#include <QColor>
 
-#include "widgets/ui_notebook.h"
-#include "models/notebookmodel.h"
-#include "notebookform.h"
-#include "notebooksearch.h"
-
-class Notebook: public QWidget, private Ui::Notebook {
-Q_OBJECT
-
-private slots:
-	void timerStatusAction(void);
-	void newAction(void);
-	void activateAction(void);
-	void desactivateAction(void);
-	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
-	void closeAction(void);
-	void doubleClickedItemViewAction(const QModelIndex &index);
-	void lastestAction(void);
-	void nextAction(void);
-	void previousAction(void);
-	void oldestAction(void);
-
+class ContentTypesModel {
 private:
-	void createModels(void);
-	void createViews(void);
-	void createActions(void);
-	void updateWidgets(void);
-
-	void timerStatus(void);
-	void okStatus(const QString &msg);
-	void infoStatus(const QString &msg);
-	void alertStatus(const QString &msg);
-	void errorStatus(const QString &msg);
-
-	QTimer *statusTimer;
-	QSqlRelationalTableModel *notebookModel;
-	QSqlRelationalDelegate *notebookDelegate;
-	NotebookSearch *notebookSearch;
-
-public slots:
-	void updateModels(void);
-	void updateSearchForm(void);
-	void updateSearchFormClose(void);
+	int id;
+	QString name;
+	QString appLabel;
+	QString model;
 
 public:
-	Notebook(QWidget *parent = 0);
-	~Notebook();
+	ContentTypesModel();
+	static void selectAll(QList<ContentTypesModel> *list);
+	static void selectById(int id, ContentTypesModel *contenttypeModel);
+	bool save(void);
+	bool insert(void);
+	bool update(void);
+	bool status(void);
+	bool remove(void);
 
-	enum {
-		notebook_id = 0,
-		notebook_name = 1,
-		notebook_description = 2,
-		notebook_dateJoined = 3,
-		notebook_dateChanged = 4,
-		notebook_isActive = 5
-	};
+	int getId(void);
+	void setId(int _id);
+	QString getName(void);
+	void setName(QString _name);
+	QString getAppLabel();
+	void setAppLabel(QString _appLabel);
+	QString getModel(void);
+	void setModel(QString _model);
 };
 
-#endif /* NOTEBOOK_H_ */
+#endif /* CONTENTTYPESMODEL_H_ */

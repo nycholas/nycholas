@@ -1,5 +1,5 @@
 /**
- * Simple example Qt - CRUD.
+ * Simple example Qt - Mainwindow with authentication and session.
  * Copyright (c) 2010, Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
  * All rights reserved.
  *
@@ -27,77 +27,49 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef NOTEBOOK_H
-#define NOTEBOOK_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-#include <QDebug>
-#include <QSqlQuery>
-#include <QSqlRecord>
-#include <QSqlRelationalTableModel>
-#include <QSqlRelationalDelegate>
-#include <QSqlError>
-#include <QModelIndex>
-#include <QDateTime>
-#include <QTimer>
-#include <QMessageBox>
+#include "widgets/ui_mainwindow.h"
+#include "login.h"
+#include "changepassword.h"
+#include "contenttypes.h"
+#include "permission.h"
+#include "group.h"
+#include "user.h"
 
-#include "widgets/ui_notebook.h"
-#include "models/notebookmodel.h"
-#include "notebookform.h"
-#include "notebooksearch.h"
+#include <QtCore/QSettings>
+#include <QtGui/QCloseEvent>
+#include <QtGui/QMdiSubWindow>
 
-class Notebook: public QWidget, private Ui::Notebook {
+class MainWindow: public QMainWindow, private Ui::MainWindow {
 Q_OBJECT
 
+public:
+	MainWindow(QMainWindow *parent = 0);
+	~MainWindow();
+
 private slots:
-	void timerStatusAction(void);
-	void newAction(void);
-	void activateAction(void);
-	void desactivateAction(void);
-	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
-	void closeAction(void);
-	void doubleClickedItemViewAction(const QModelIndex &index);
-	void lastestAction(void);
-	void nextAction(void);
-	void previousAction(void);
-	void oldestAction(void);
+	void closeWindowAction(void);
+	void quitMainWindowAction(void);
+
+	void changePassword(void);
+	void logout(void);
+
+	void contentTypesAction(void);
+	void permissionsAction(void);
+	void groupsAction(void);
+	void usersAction(void);
 
 private:
-	void createModels(void);
-	void createViews(void);
+	void isAuthentic(void);
+	void readSettings(void);
+	void writeSettings(void);
 	void createActions(void);
 	void updateWidgets(void);
 
-	void timerStatus(void);
-	void okStatus(const QString &msg);
-	void infoStatus(const QString &msg);
-	void alertStatus(const QString &msg);
-	void errorStatus(const QString &msg);
-
-	QTimer *statusTimer;
-	QSqlRelationalTableModel *notebookModel;
-	QSqlRelationalDelegate *notebookDelegate;
-	NotebookSearch *notebookSearch;
-
-public slots:
-	void updateModels(void);
-	void updateSearchForm(void);
-	void updateSearchFormClose(void);
-
-public:
-	Notebook(QWidget *parent = 0);
-	~Notebook();
-
-	enum {
-		notebook_id = 0,
-		notebook_name = 1,
-		notebook_description = 2,
-		notebook_dateJoined = 3,
-		notebook_dateChanged = 4,
-		notebook_isActive = 5
-	};
+protected:
+	virtual void closeEvent(QCloseEvent * event);
 };
 
-#endif /* NOTEBOOK_H_ */
+#endif /* MAINWINDOW_H */

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Notebook</class>
- <widget class="QWidget" name="Notebook">
+ <class>ContentTypes</class>
+ <widget class="QWidget" name="ContentTypes">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,10 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Notebook</string>
+   <string>Content Types</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
+   <iconset resource="../../../crud-2/resources/ui/resources.qrc">
     <normaloff>:/default/static/default/icons/22x22/face-devilish.png</normaloff>:/default/static/default/icons/22x22/face-devilish.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
@@ -27,7 +27,7 @@
 font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
        </property>
        <property name="text">
-        <string>Select notebook to change</string>
+        <string>Select content types to change</string>
        </property>
       </widget>
      </item>
@@ -47,10 +47,10 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
      <item>
       <widget class="QPushButton" name="newPushButton">
        <property name="text">
-        <string>&amp;Add notebook</string>
+        <string>&amp;Add content types</string>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
+        <iconset resource="../../../crud-2/resources/ui/resources.qrc">
          <normaloff>:/default/static/default/icons/22x22/document-new.png</normaloff>:/default/static/default/icons/22x22/document-new.png</iconset>
        </property>
        <property name="shortcut">
@@ -87,7 +87,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>&amp;Activate</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</iconset>
           </property>
           <property name="shortcut">
@@ -101,7 +101,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>&amp;Deactivate</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/dialog-ok.png</normaloff>:/default/static/default/icons/22x22/dialog-ok.png</iconset>
           </property>
           <property name="shortcut">
@@ -115,7 +115,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>&amp;Remove</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/edit-delete.png</normaloff>:/default/static/default/icons/22x22/edit-delete.png</iconset>
           </property>
           <property name="shortcut">
@@ -142,7 +142,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>Search Advanced</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/page-zoom.png</normaloff>:/default/static/default/icons/22x22/page-zoom.png</iconset>
           </property>
           <property name="shortcut">
@@ -173,7 +173,7 @@ font: oblique 8pt &quot;DejaVu Sans Mono&quot;;</string>
        </layout>
       </item>
       <item row="1" column="0">
-       <widget class="QTableView" name="notebookTableView">
+       <widget class="QTableView" name="contentTypesTableView">
         <property name="alternatingRowColors">
          <bool>true</bool>
         </property>
@@ -185,12 +185,12 @@ font: oblique 8pt &quot;DejaVu Sans Mono&quot;;</string>
       <item row="2" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLabel" name="statusNotebookTableViewLabel">
+         <widget class="QLabel" name="statusTableViewLabel">
           <property name="styleSheet">
            <string notr="true">color: rgb(85, 85, 255);</string>
           </property>
           <property name="text">
-           <string>0 notebook</string>
+           <string>0 content types</string>
           </property>
          </widget>
         </item>
@@ -213,7 +213,7 @@ font: oblique 8pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>&amp;Latest</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/go-previous-view.png</normaloff>:/default/static/default/icons/22x22/go-previous-view.png</iconset>
           </property>
           <property name="shortcut">
@@ -227,7 +227,7 @@ font: oblique 8pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>&amp;Next</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/go-previous.png</normaloff>:/default/static/default/icons/22x22/go-previous.png</iconset>
           </property>
           <property name="shortcut">
@@ -252,7 +252,7 @@ p, li { white-space: pre-wrap; }
            <string>&amp;Previous</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/go-next.png</normaloff>:/default/static/default/icons/22x22/go-next.png</iconset>
           </property>
           <property name="shortcut">
@@ -266,7 +266,7 @@ p, li { white-space: pre-wrap; }
            <string>&amp;Oldest</string>
           </property>
           <property name="icon">
-           <iconset resource="resources.qrc">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/go-next-view.png</normaloff>:/default/static/default/icons/22x22/go-next-view.png</iconset>
           </property>
           <property name="shortcut">
@@ -279,37 +279,6 @@ p, li { white-space: pre-wrap; }
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="closePushButton">
-       <property name="text">
-        <string>&amp;Close</string>
-       </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/default/static/default/icons/22x22/window-close.png</normaloff>:/default/static/default/icons/22x22/window-close.png</iconset>
-       </property>
-       <property name="shortcut">
-        <string>Ctrl+W</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <tabstops>
@@ -319,11 +288,14 @@ p, li { white-space: pre-wrap; }
   <tabstop>removePushButton</tabstop>
   <tabstop>searchLineEdit</tabstop>
   <tabstop>searchAdvancedToolButton</tabstop>
-  <tabstop>notebookTableView</tabstop>
-  <tabstop>closePushButton</tabstop>
+  <tabstop>contentTypesTableView</tabstop>
+  <tabstop>nextPushButton</tabstop>
+  <tabstop>previousPushButton</tabstop>
+  <tabstop>latestPushButton</tabstop>
+  <tabstop>oldestPushButton</tabstop>
  </tabstops>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../../../crud-2/resources/ui/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
