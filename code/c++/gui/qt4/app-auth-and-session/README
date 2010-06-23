@@ -1,4 +1,14 @@
+== COMPLILE
 $ mysql -u root -p << resources/db/mysql/create-database.sql
 $ qmake -project "QT += sql" "UI_DIR = apps/widgets"
 $ make
 $ ./app-auth-and-session
+
+== INFORMATION
+Username: admin
+Password: admin
+
+
+--
+So long and good luck,
+Nycholas de Oliveira e Oliveira.
