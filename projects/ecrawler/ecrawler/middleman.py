@@ -22,7 +22,6 @@ import ConfigParser
 
 import utils.constant as constant
 
-
 try:
     import abc
 
@@ -68,7 +67,7 @@ class Destiny(object):
         keys = config.get("forwards", "keys")
         destinations = [i.strip() for i in keys.split(",")]
         if forwards:
-            destinations = forwards
+            destinations = [i for i in forwards if i in destinations]
         logging.debug(":: Destinations: %s" % destinations)
         for destiny in destinations:
             logging.debug(":: Destiny: %s" % destiny)
