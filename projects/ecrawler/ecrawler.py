@@ -25,9 +25,12 @@ if sys.hexversion < 0x02040000:
     print "Please install it. The source for Python can be found at: " \
           "http://www.python.org/."
     sys.exit(-1)
+import os
 import logging
 import optparse
-import tempfile
+
+# Include base path in sytem path
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from ecrawler.utils import constant as constant
 from ecrawler.utils import debuger as debuger
@@ -35,9 +38,6 @@ from ecrawler.utils import logger as logger
 from ecrawler.utils import configure as configure
 from ecrawler.utils import i18n as i18n
 from ecrawler.orchestra_collector import Orchestra
-
-# Include base path in sytem path
-sys.path.append(constant.BASE_DIR)
 
 __version__ = 0.1
 
