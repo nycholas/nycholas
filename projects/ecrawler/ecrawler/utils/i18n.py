@@ -1,0 +1,55 @@
+# -*- coding: utf-8 -*-
+#
+# eCrawler - E-mail Crawler.
+# Copyright (C) 2010 by Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
+#
+# This file is part of eCrawler.
+#
+# eCrawler is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import os
+import sys
+import locale
+import logging
+
+import constant as constant
+
+def locale_dir():
+    logging.debug("In locale_dir()")
+    localedir = constant.LOCALE_DIR
+    if not os.path.exists(localedir):
+        logging.warning("Could not load the file internationalization {0}" \
+                        .format(localedir))
+        return ""
+    return localedir
+
+def gettext_locale(language=None):
+    logging.debug("In gettext_locale()")
+    if constant.USE_I18N:
+        try:
+            import gettext
+            from gettext import gettext as _
+            # TODO: Resolv directory locale system
+            if os.path.exists(constant.LOCALE_DIR):
+                path = constant.LOCALE_DIR
+            else:
+                logging.warning("Could not load the file internationalization")
+            gettext.install(constant.LOCALE_DOMAIN, localedir=path,
+                            unicode=True, codeset=language)
+        except Exception, e:
+            logging.warning(str(e))
+            import __builtin__
+            __builtin__.__dict__["_"] = lambda x: x
+    else:
+        import __builtin__
+        __builtin__.__dict__["_"] = lambda x: x

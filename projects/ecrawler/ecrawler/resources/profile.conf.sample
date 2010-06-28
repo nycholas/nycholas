@@ -1,0 +1,44 @@
+[ecrawler]
+hostname: imap.gmail.com
+port: 993
+username: nycholas
+password: HA!
+mailbox: UNSEEN
+directory: /tmp
+forwards:
+	<[(forward, sqlite3) (name, ecrawlerdb_test.db)
+	  (username, ) (password, )
+	  (hostname, ) (port, )]
+	emails {
+		(email_id, __ECRAWLER_EMAIL_ID__)
+		(email_from, __ECRAWLER_EMAIL_FROM__)
+		(email_subject, __ECRAWLER_EMAIL_SUBJECT__)
+		(email_to, __ECRAWLER_EMAIL_TO__)
+		(email_date, __ECRAWLER_EMAIL_DATE__)
+		(email_content, __ECRAWLER_EMAIL_CONTENT__)
+		(email_annex, __ECRAWLER_EMAIL_ANNEX__)
+	}>
+	<[(forward, oracle) (name, ecrawlerdb_test)
+	  (username, root) (password, 1q2w3e)
+	  (hostname, localhost) (port, 9321)]
+	email_tb {
+		(o_email_from, __ECRAWLER_EMAIL_FROM__)
+		(o_email_subject, __ECRAWLER_EMAIL_SUBJECT__)
+		(o_email_to, __ECRAWLER_EMAIL_TO__)
+		(o_new_column, My section)
+	}>
+	<[(forward, mysql) (name, ecrawlerdb_test)
+	  (username, root) (password, 1q2w3e)
+	  (hostname, ) (port, )]
+	email_tb1 {
+		(m1_email_from, __ECRAWLER_EMAIL_FROM__)
+		(m1_email_subject, __ECRAWLER_EMAIL_SUBJECT__)
+		(m1_email_to, __ECRAWLER_EMAIL_TO__)
+		(m1_new_column, My section)
+	}
+	email_tb2 {
+		(m2_email_from, __ECRAWLER_EMAIL_FROM__)
+		(m2_email_subject, __ECRAWLER_EMAIL_SUBJECT__)
+		(m2_email_to, __ECRAWLER_EMAIL_TO__)
+		(m2_new_column, My section)
+	}>
