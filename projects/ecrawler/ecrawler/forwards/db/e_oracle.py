@@ -28,4 +28,7 @@ class OracleForward(ForwardBase):
 
     def execute(self, items):
         logging.debug("In OracleForward::execute()")
-        logging.debug(":: Number of items: %s" % len(items))
+        logging.debug("++ items: %s" % str(items))
+        logging.debug(":: Number of items: %s" % len(items.get("tables")))
+        if not items:
+            return

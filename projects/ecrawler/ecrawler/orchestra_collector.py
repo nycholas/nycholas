@@ -117,7 +117,7 @@ class Orchestra(object):
         logging.debug("++ number_profiles: %s" % len(self.profiles))
 
         profiles = []
-        for profile in self.profiles:
+        for profile in self.profiles[:]:
             logging.info("Running profile: %s" % profile.get("profile"))
             logging.info("Connecting in %s:%d..." % (profile.get("hostname"), 
                                                      profile.get("port")))
@@ -132,8 +132,8 @@ class Orchestra(object):
             logging.info("Search mailbox (%s)..." % profile.get("mailbox"))
             resp, items = m.search(None, profile.get("mailbox"))
             items = items[0].split()
+            #items = ["36364", "36448"] # Emails test!
             items.reverse()
-            #items.append("36364") # Email test!
     
             logging.info("Number of unread emails: %d" % len(items))
     
@@ -147,7 +147,7 @@ class Orchestra(object):
             if number_threads > len(items):
                 number_threads = len(items)
             slices = [items[i::number_threads] for i in range(number_threads)]
-            threads = [Crawler(i, slices[i], profile) \
+            threads = [Crawler(i, slices[i], profile.copy()) \
                        for i in range(number_threads)]
             profiles.append(threads)
             
@@ -156,7 +156,7 @@ class Orchestra(object):
             for thread in threads:
                 logging.debug("[%d] - Running thread-%s..." % (i, thread))
                 thread.start()
-        for threads in profiles:
+        for i, threads in enumerate(profiles):
             logging.info("[%d] - Joining email crawlers..." % i)
             for thread in threads:
                 logging.debug("[%d] - Joining thread-%s..." % (i, thread))

@@ -90,13 +90,14 @@ class Crawler(threading.Thread):
             params = {
                 "email_id": email_id, "to": msg_to, "from": msg_from, 
                 "subject": msg_subject, "date": msg_date, 
-                "content": content_dir, "annex": annex_dir,
+                "content_dir": content_dir, "annex_dir": annex_dir,
             }
             logging.debug(":: params: %s" % str(params))
+            
             email_model = EmailModel(params)
             email_model.populate(self.forwards)
             email_models.append(email_model)
-
+            
             logging.info("%d-Reading email..." % self.id)
             is_content_text = False
             counter = 1

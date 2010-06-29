@@ -28,4 +28,8 @@ class MySQLForward(ForwardBase):
 
     def execute(self, items):
         logging.debug("In MySQLForward::execute()")
-        logging.debug(":: Number of items: %s" % len(items))
+        logging.debug("++ items: %s" % str(items))
+        logging.debug(":: Number of items: %s" % len(items.get("tables")))
+        if not items:
+            return
+        

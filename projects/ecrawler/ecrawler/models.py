@@ -18,7 +18,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import re
+import copy
 import logging
+
+from ecrawler.utils.commons import *
 
 
 class EmailModel(object):
@@ -38,8 +41,13 @@ class EmailModel(object):
         self.__from = opts.get("from")
         self.__subject = opts.get("subject")
         self.__date = opts.get("date")
-        self.__content = opts.get("content")
-        self.__annex = opts.get("annex")
+        self.__content_dir = opts.get("content_dir")
+        self.__content_files = search_files(opts.get("content_dir"))
+        self.__content = files_to_str(opts.get("content_dir"))
+        self.__annex_dir = opts.get("annex_dir")
+        self.__annex_zipfile = search_zipfile(opts.get("annex_dir"))
+        #self.__annex = file_to_bin(search_zipfile(opts.get("annex_dir")))
+        self.__annex = search_zipfile(opts.get("annex_dir"))
         self.tables = {}
         
     def get(self, key):
@@ -47,13 +55,14 @@ class EmailModel(object):
         
     def populate(self, forwards):
         logging.debug("In Email::populate()")
-        logging.debug("++ forwards: %s" % str(forwards))
-        for forward, confs in forwards.iteritems():
+        logging.debug("++ forwards: %s" % str(forwards))       
+        self.tables = copy.deepcopy(forwards) # ;-), Yeah! Deepcopy!
+        for forward, confs in self.tables.items():
             logging.debug(":: forward: %s" % str(forward))
             for table in confs.get("tables"):
                 logging.debug(":: table: %s" % str(table))
-                for t, columns in table.copy().iteritems():
-                    for k, v in columns.iteritems():
+                for t, columns in table.items():
+                    for k, v in columns.items():
                         logging.debug(":: key: %s, value: %s" % (k, v))
                         columns[k] = re.sub(EmailModel.EMAIL_ID, 
                                             self.__email_id, columns[k])
@@ -70,17 +79,7 @@ class EmailModel(object):
                         columns[k] = re.sub(EmailModel.EMAIL_ANNEX, 
                                             self.__annex, columns[k])
                 logging.debug(":: Populating table: %s" % (str(table),))
-        logging.debug(":: Table: %s" % (str(forwards),))
-        self.tables = forwards
-        
-    def to_dict(self, keyname):
-        logging.debug("In Email::to_dict()")
-        #return self.table.get(keyname)
-        
-    def to_tuple(self, keyname):
-        logging.debug("In Email::to_tuple()")
-        #table = self.table.get(keyname)
-        #return tuple(table.values())
+        logging.debug(":: Table populate: %s" % (str(self.tables),))
         
 
 if __name__ == "__main__":

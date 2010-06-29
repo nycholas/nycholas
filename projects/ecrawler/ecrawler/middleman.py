@@ -94,7 +94,8 @@ class Destiny(object):
                 logging.info("Loading module: %s..." % file_module)
                 run_module = __import__(file_module, locals(), globals(), -1)
                 clazzobj = type(clazz, (eval('run_module.%s' % clazz),), {})
-                self.add((destiny, clazzobj()))
+                if issubclass(clazzobj, ForwardBase):
+                    self.add((destiny, clazzobj()))
 
     def update(self, status):
         logging.debug("In Destiny::update()")

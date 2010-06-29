@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # eCrawler - E-mail Crawler.
@@ -25,15 +24,18 @@ if sys.hexversion < 0x02040000:
     print "Please install it. The source for Python can be found at: " \
           "http://www.python.org/."
     sys.exit(-1)
+import os
+
+# Include base path in sytem path for Python old.
+syspath = os.path.abspath(os.path.dirname(__file__))
+if not syspath in sys.path:
+    sys.path.append(syspath)
 
 from utils import constant as constant
 from utils import debuger as debuger
 from utils import logger as logger
 from utils import configure as configure
 from utils import i18n as i18n
-
-# Include base path in sytem path
-sys.path.append(constant.BASE_DIR)
 
 configure.sys_coding()
 debuger.sys_debugging()

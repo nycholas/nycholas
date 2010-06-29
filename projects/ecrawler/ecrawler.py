@@ -29,14 +29,11 @@ import os
 import logging
 import optparse
 
-# Include base path in sytem path
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+# Include base path in sytem path for Python old.
+syspath = os.path.abspath(os.path.dirname(__file__))
+if not syspath in sys.path:
+    sys.path.append(syspath)
 
-from ecrawler.utils import constant as constant
-from ecrawler.utils import debuger as debuger
-from ecrawler.utils import logger as logger
-from ecrawler.utils import configure as configure
-from ecrawler.utils import i18n as i18n
 from ecrawler.orchestra_collector import Orchestra
 
 __version__ = 0.1
@@ -48,39 +45,42 @@ def main(args):
         version="%prog " + str(__version__))
     parser.add_option("-o", "--hostname",
                       action="store", dest="hostname",
-                      help="Hostname")
-    parser.add_option("-p", "--port",
+                      help="Hostname of the server e-mail")
+    parser.add_option("-p", "--port", type="int",
                       action="store", dest="port",
-                      help="Port")
+                      help="Port of the server e-mail")
     parser.add_option("-u", "--username",
                       action="store", dest="username",
-                      help="Username")
+                      help="Username of the server e-mail")
     parser.add_option("-s", "--password",
                       action="store", dest="password",
-                      help="Password")
+                      help="Password of the server e-mail, " \
+                           "using a plaintext password")
     parser.add_option("-m", "--mailbox",
                       action="store", dest="mailbox",
-                      help="Mailbox")
+                      help="Mailbox of the server e-mail [default: UNSEEN]")
     parser.add_option("-d", "--directory",
                       action="store", dest="directory",
-                      help="Directory")
+                      help="Directory file-sharing [default: /tmp]")
     parser.add_option("-f", "--forwards",
                       action="store", dest="forwards",
-                      help="Forwards")
+                      help="Forwards objects.")
+    parser.add_option("-j", "--jobs", type="int",
+                      action="store", dest="jobs", default=5,
+                      help="Specifies  the  number of jobs (commands) to run " \
+                           "simultaneously.")
     parser.add_option("-t", "--test",
-                      action="store", dest="is_test",
+                      action="store_true", dest="is_test", default=False,
                       help="Test application with forward")
     (options, args) = parser.parse_args()
     logging.debug(":: options: %s" % options)
     logging.debug(":: args: %s" % args)
 
+    # Convert string in dictionary!
     opts = eval(str(options))
-    if args:
-        args = dict([i.split(":") for i in args])
-    else:
-        args = {}
+
     orchestra = Orchestra(opts=opts, args=args)
-    orchestra.start()
+    orchestra.start(int(options.jobs))
 
 
 if __name__ == '__main__':

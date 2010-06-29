@@ -25,26 +25,37 @@ except ImportError, e:
     logging.warning("!! Module sqlite3 not found")
     import sqlite as sqlite3
 
-from ecrawler.utils.constant import SHARE_DIR
 from ecrawler.middleman import ForwardBase
+from ecrawler.utils.commons import *
 
 
 class SQLite3Forward(ForwardBase):
-    def __init__(self, database=None):
+    def __init__(self):
         logging.debug("In SQLite3Forward::__init__()")
-        self.database = database or os.path.join(SHARE_DIR, "test",
-                                                 "ecrawlerdb_test.db")
-        logging.info("Connecting in database: %s..." % self.database)
-        self.conn = sqlite3.connect(self.database)
+        
+    def _zipfile_to_bin(self, zipfile):
+        logging.debug("In SQLite3Forward::_zipfile_to_bin()")
+        return sqlite3.Binary(zipfile)
+        
+    def _search_zipfile(self, items):
+        logging.debug("In SQLite3Forward::_search_zipfile()")
+        logging.debug(":: items: %s" % str(items))
+        for k, v in items.iteritems():
+            if v.find(".zip") != -1:
+                if os.path.exists(v) and os.path.isfile(v):
+                    items[k] = self._zipfile_to_bin(v)
 
     def execute(self, items):
         logging.debug("In SQLite3Forward::execute()")
-        logging.debug(":: Number of items: %s" % len(items))
+        logging.debug("++ items: %s" % str(items))
+        logging.debug(":: Number of items: %s" % len(items.get("tables")))
         if not items:
             return
-        self.clean() # For test!
+        
+        logging.info("Connecting in database: %s..." % items.get("name"))
+        self.conn = sqlite3.connect(items.get("name"))
 
-        for table in items.get("tables"):
+        for table in items.get("tables"):            
             logging.info("Genareting query...")
             query = self.generate_query(table)
             logging.debug(":: query: %s" % query)
@@ -56,12 +67,13 @@ class SQLite3Forward(ForwardBase):
         logging.info("Save (commit) the changes...")
         self.conn.commit()
 
-        #logging.info("Close connection database...")
-        #self.conn.close()
+        logging.info("Close connection database...")
+        self.conn.close()
 
     def execute_many(self, items):
         logging.debug("In SQLite3Forward::execute_many()")
         logging.debug(":: items: %s" % str(items))
+        [self._search_zipfile(i) for i in items]
         many = [tuple(i.values()) for i in items]
         logging.debug(":: Items for database: %s" % str(many))
         return many
@@ -87,30 +99,6 @@ class SQLite3Forward(ForwardBase):
 
         logging.info("Save (commit) the changes...")
         self.conn.commit()
-
-
-def test():
-    import os
-    from ecrawler.utils.constant import SHARE_DIR
-    from ecrawler.models import EmailModel
-
-    models = []
-    for i in range(10):
-        model = EmailModel()
-        model.id = i
-        model.email_id = i
-        model.from_ = "email_from-%d" % i
-        model.subject = "email_subject-%d" % i
-        model.to = "email_to-%d" % i
-        model.date = "email_date-%d" % i
-        model.content = "email_content-%d" % i
-        model.annex = None
-        models.append(model)
-
-    pathdb = os.path.join(SHARE_DIR, "test", "ecrawlerdb_test.db")
-    sql = SQLite3Forward(pathdb)
-    sql.clean()
-    sql.execute(models)
 
 
 if __name__ == "__main__":
