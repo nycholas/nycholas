@@ -32,11 +32,11 @@ from ecrawler.utils.commons import *
 class SQLite3Forward(ForwardBase):
     def __init__(self):
         logging.debug("In SQLite3Forward::__init__()")
-        
+
     def _zipfile_to_bin(self, zipfile):
         logging.debug("In SQLite3Forward::_zipfile_to_bin()")
         return sqlite3.Binary(zipfile)
-        
+
     def _search_zipfile(self, items):
         logging.debug("In SQLite3Forward::_search_zipfile()")
         logging.debug(":: items: %s" % str(items))
@@ -48,22 +48,28 @@ class SQLite3Forward(ForwardBase):
     def execute(self, items):
         logging.debug("In SQLite3Forward::execute()")
         logging.debug("++ items: %s" % str(items))
-        logging.debug(":: Number of items: %s" % len(items.get("tables")))
-        if not items:
+
+        tables = items.get("tables")
+        logging.debug(":: Number of items: %s" % len(tables))
+        if not tables:
             return
-        
+
         logging.info("Connecting in database: %s..." % items.get("name"))
         self.conn = sqlite3.connect(items.get("name"))
 
-        for table in items.get("tables"):            
-            logging.info("Genareting query...")
-            query = self.generate_query(table)
-            logging.debug(":: query: %s" % query)
+        logging.info("Genareting query...")
+        query = self.generate_query(tables[-1])
+        logging.debug(":: query: %s" % query)
 
-            logging.info("Running and inserting items in database...")
-            cur = self.conn.cursor()
-            cur.executemany(query, self.execute_many(table.values()))
-            logging.info("Insert a row of data")
+        t = []
+        for column in tables:
+            t.extend(self.execute_many(column.values()))
+
+        logging.info("Running and inserting items in database...")
+        cur = self.conn.cursor()
+        cur.executemany(query, t)
+        logging.info("Insert a row of data")
+
         logging.info("Save (commit) the changes...")
         self.conn.commit()
 
@@ -89,12 +95,12 @@ class SQLite3Forward(ForwardBase):
         query += keys + " values " + values
         return query
 
-    def clean(self):
+    def clean(self, table):
         logging.debug("In SQLite3Forward::clean()")
 
         logging.info("Running and delete items in database...")
         cur = self.conn.cursor()
-        cur.execute("delete from emails")
+        cur.execute("delete from %s" % table)
         logging.info("Delete a row of data")
 
         logging.info("Save (commit) the changes...")

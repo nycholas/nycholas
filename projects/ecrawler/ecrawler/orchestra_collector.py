@@ -28,7 +28,7 @@ from crawl_mail import Crawler
 
 class Orchestra(object):
     def __init__(self, opts={}, args={}, file_config=None):
-        hostname = opts.get("hostname") 
+        hostname = opts.get("hostname")
         port = opts.get("port")
         username = opts.get("username")
         password = opts.get("password")
@@ -39,7 +39,7 @@ class Orchestra(object):
         file_config = file_config or constant.PROFILE_FILE_CONF
         self.args = args
         self.profiles = []
-        
+
         logging.info("Loading config parser (%s)..." % file_config)
         config = ConfigParser.ConfigParser()
         config.read(file_config)
@@ -85,7 +85,7 @@ class Orchestra(object):
             }
             self.profiles.append(profile)
         logging.debug(":: profiles: %s" % self.profiles)
-        
+
     def parser_forwards(self, str_forwards):
         logging.debug("In Orchestra::parser_forwards()")
         str_forwards = str(str_forwards).strip()
@@ -110,39 +110,39 @@ class Orchestra(object):
                     .setdefault("tables", []).append(table_dict)
         logging.debug(":: forwards: %s" % str(forwards))
         return forwards
-        
+
     def start(self, number_threads=5):
         logging.debug("In Orchestra::start()")
         logging.debug("++ number_threads: %s" % number_threads)
         logging.debug("++ number_profiles: %s" % len(self.profiles))
 
         profiles = []
-        for profile in self.profiles[:]:
+        for profile in self.profiles:
             logging.info("Running profile: %s" % profile.get("profile"))
-            logging.info("Connecting in %s:%d..." % (profile.get("hostname"), 
+            logging.info("Connecting in %s:%d..." % (profile.get("hostname"),
                                                      profile.get("port")))
             m = imaplib.IMAP4_SSL(profile.get("hostname"), profile.get("port"))
-    
+
             logging.info("Authenticating with %s..." % profile.get("username"))
             m.login(profile.get("username"), profile.get("password"))
-    
+
             logging.info("Select a mailbox...")
             m.select()
-    
+
             logging.info("Search mailbox (%s)..." % profile.get("mailbox"))
             resp, items = m.search(None, profile.get("mailbox"))
             items = items[0].split()
             #items = ["36364", "36448"] # Emails test!
             items.reverse()
-    
+
             logging.info("Number of unread emails: %d" % len(items))
-    
+
             logging.info("Close connection...")
             m.close()
-    
+
             logging.info("Logout with %s..." % profile.get("username"))
             m.logout()
-    
+
             logging.info("Scaling threadings...")
             if number_threads > len(items):
                 number_threads = len(items)
@@ -150,7 +150,7 @@ class Orchestra(object):
             threads = [Crawler(i, slices[i], profile.copy()) \
                        for i in range(number_threads)]
             profiles.append(threads)
-            
+
         for i, threads in enumerate(profiles):
             logging.info("[%d] - Running email crawlers..." % i)
             for thread in threads:
