@@ -11,6 +11,7 @@ syntax: glob
 *.bak
 *.so
 *.o
+*.db
 .directory
 .classpath
 .project
