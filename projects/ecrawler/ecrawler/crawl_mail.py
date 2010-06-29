@@ -317,7 +317,7 @@ class Crawler(threading.Thread):
         findall = re.findall(r"([\w_.-]+@[\w_.-]+)", str_normalizer)
         if findall:
             return findall[-1]
-        return _("Email not informed")
+        return _("(Email not informed)")
 
     def get_mail_subject(self, st):
         logging.debug("In Crawler::get_mail_subject(%d)" % self.id)
@@ -349,7 +349,7 @@ class Crawler(threading.Thread):
     def get_mail_filename(self, filename, ext=""):
         logging.debug("In Crawler::get_mail_filename(%d)" % self.id)
         if not filename:
-            return _("filename%s"% (ext,))
+            return "filename%s"% (ext,)
         if isinstance(filename, tuple) or isinstance(filename, list):
             filename = "".join([fl for fl in filename if not fl is None])
         return mail_filename_normalizer("".join(filename.splitlines()))

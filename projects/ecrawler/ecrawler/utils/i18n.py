@@ -25,7 +25,7 @@ import logging
 import constant as constant
 
 def locale_dir():
-    logging.debug("In locale_dir()")
+    logging.debug("In i18n.locale_dir()")
     localedir = constant.LOCALE_DIR
     if not os.path.exists(localedir):
         logging.warning("Could not load the file internationalization {0}" \
@@ -34,14 +34,33 @@ def locale_dir():
     return localedir
 
 def gettext_locale(language=None):
-    logging.debug("In gettext_locale()")
+    logging.debug("In i18n.gettext_locale()")
+    locale.setlocale(locale.LC_ALL, '')
     if constant.USE_I18N:
         try:
             import gettext
             from gettext import gettext as _
+            
             # TODO: Resolv directory locale system
             if os.path.exists(constant.LOCALE_DIR):
                 path = constant.LOCALE_DIR
+                if language is None:
+                    lc = locale.getlocale()
+                    lc_test = ("%s.%s" % (lc[0], lc[1]), lc[0])
+                    language = lc_test[0]
+                    for i in lc_test:
+                        locale_path = os.path.join(path, i)
+                        if os.path.exists(locale_path):
+                            language = i
+                            break
+                else:
+                    lc_test = ("%s.UTF8" % language, language)
+                    language = lc_test[0]
+                    for i in lc_test:
+                        locale_path = os.path.join(path, i)
+                        if os.path.exists(locale_path):
+                            language = i
+                            break
             else:
                 logging.warning("Could not load the file internationalization")
             gettext.install(constant.LOCALE_DOMAIN, localedir=path,

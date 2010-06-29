@@ -17,13 +17,9 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import os
 import sys
-import glob
 import locale
 import logging
-import logging.handlers
-import logging.config
 
 import constant as constant
 

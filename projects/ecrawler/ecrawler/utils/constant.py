@@ -56,6 +56,5 @@ USER_CONFIG_DIR = os.path.join(HOME_DIR, PACKAGE_DIR)
 
 USE_I18N = True
 CODING = "utf-8"
-QT_CODING = "utf8"
 LOCALE_DOMAIN = NAME_UNIX
 LOCALE_DIR = os.path.abspath(os.path.join(SHARE_DIR, "locale"))
