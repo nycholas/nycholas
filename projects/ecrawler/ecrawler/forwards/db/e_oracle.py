@@ -29,17 +29,24 @@ class OracleForward(ForwardBase):
         logging.debug("In OracleForward::__init__()")
         
     def _zipfile_to_bin(self, zipfile):
-        logging.debug("In SQLite3Forward::_zipfile_to_bin()")
+        logging.debug("In OracleForward::_zipfile_to_bin()")
         return open(zipfile, "rb").read()
 
     def _search_zipfile(self, items):
-        logging.debug("In SQLite3Forward::_search_zipfile()")
+        logging.debug("In OracleForward::_search_zipfile()")
         logging.debug(":: items: %s" % str(items))
         for k, v in items.iteritems():
             if v.find(".zip") != -1:
                 if os.path.exists(v) and os.path.isfile(v):
                     self.cur.setinputsizes(eval("%s=cx_Oracle.BLOB") % k)
                     items[k] = self._zipfile_to_bin(v)
+                    
+    def _search_column(self, items, column, func):
+        logging.debug("In OracleForward::_search_column()")
+        logging.debug(":: column: %s" % str(column))
+        for k, v in items.iteritems():
+            if v == column:
+                items[k] = func(v)
 
     def execute(self, items):
         logging.debug("In OracleForward::execute()")
