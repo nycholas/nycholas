@@ -44,9 +44,7 @@ class OracleForward(ForwardBase):
     def _search_column(self, items, column, func):
         logging.debug("In OracleForward::_search_column()")
         logging.debug(":: column: %s" % str(column))
-        for k, v in items.iteritems():
-            if v == column:
-                items[k] = func(v)
+        items.setdefault(column, func(items.get(column)))
 
     def execute(self, items):
         logging.debug("In OracleForward::execute()")
