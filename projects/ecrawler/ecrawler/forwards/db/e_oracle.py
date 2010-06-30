@@ -38,7 +38,7 @@ class OracleForward(ForwardBase):
         for k, v in items.iteritems():
             if v.find(".zip") != -1:
                 if os.path.exists(v) and os.path.isfile(v):
-                    self.cur.setinputsizes(eval("%s=cx_Oracle.BLOB") % k)
+                    self.cur.setinputsizes(eval("%s=cx_Oracle.BLOB" % k))
                     items[k] = self._zipfile_to_bin(v)
                     
     def _search_column(self, items, column, func):
