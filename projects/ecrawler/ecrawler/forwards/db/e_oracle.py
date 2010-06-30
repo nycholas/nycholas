@@ -98,7 +98,7 @@ class OracleForward(ForwardBase):
         keys = "(" + "".join([i+"," for i in columns.keys()])[:-1] + ")"
         values = "("
         for i, value in enumerate(columns.values()):
-            values += ":"+i+"," 
+            values += ":"+(i+1)+"," 
         values = values[:-1] + ")"
         query += keys + " values " + values
         return query

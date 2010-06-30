@@ -70,8 +70,6 @@ class MySQLForward(ForwardBase):
         for column in tables:
             t.extend(self.execute_many(column.values()))
 
-        print t
-
         logging.info("Running and inserting items in database...")
         cur = self.conn.cursor()
         cur.executemany(query, t)
