@@ -96,6 +96,9 @@ class Destiny(object):
                 clazzobj = type(clazz, (eval('run_module.%s' % clazz),), {})
                 if issubclass(clazzobj, ForwardBase):
                     self.add((destiny, clazzobj()))
+                    
+    def emails_error(self):
+        return []
 
     def update(self, status):
         logging.debug("In Destiny::update()")

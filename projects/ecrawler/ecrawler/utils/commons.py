@@ -21,6 +21,7 @@ import os
 import re
 import glob
 import urllib
+import smtplib
 import logging
 from email.Header import decode_header
 from unicodedata import normalize
@@ -126,6 +127,15 @@ def file_to_bin(filepath):
     if not os.path.exists(filepath):
         return ""
     return open(filepath, "rb").read()
+
+def send_email(hostname, port, username, password, from_addr, to_addrs, msg):
+    logging.debug("In commons.send_email()")
+    server = smtplib.SMTP(hostname, port)
+    server.ehlo()
+    if username and password:
+        server.starttls()
+        server.login(username, password)
+    server.sendmail(from_addr, to_addrs, msg)
 
 
 if __name__ == "__main__":

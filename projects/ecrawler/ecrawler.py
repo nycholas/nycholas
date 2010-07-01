@@ -45,23 +45,24 @@ def main(args):
         version="%prog " + str(__version__))
     parser.add_option("-o", "--hostname",
                       action="store", dest="hostname",
-                      help="Hostname of the server e-mail")
+                      help="Hostname of the server e-mail (IMAP)")
     parser.add_option("-p", "--port", type="int",
                       action="store", dest="port",
-                      help="Port of the server e-mail")
+                      help="Port of the server e-mail (IMAP)")
     parser.add_option("-u", "--username",
                       action="store", dest="username",
-                      help="Username of the server e-mail")
+                      help="Username of the server e-mail (IMAP)")
     parser.add_option("-s", "--password",
                       action="store", dest="password",
-                      help="Password of the server e-mail, " \
+                      help="Password of the server e-mail (IMAP), " \
                            "using a plaintext password")
     parser.add_option("-m", "--mailbox",
                       action="store", dest="mailbox",
-                      help="Mailbox of the server e-mail [default: UNSEEN]")
+                      help="Mailbox of the server e-mail (IMAP) " \
+                           "[default: UNSEEN]")
     parser.add_option("-d", "--directory",
                       action="store", dest="directory",
-                      help="Directory file-sharing [default: /tmp]")
+                      help="Directory swap file-sharing [default: /tmp]")
     parser.add_option("-f", "--forwards",
                       action="store", dest="forwards",
                       help="Forwards objects.")

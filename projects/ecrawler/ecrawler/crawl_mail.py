@@ -21,12 +21,14 @@ import os
 import glob
 import time
 import email
+import socket
 import imaplib
 import zipfile
 import logging
 import threading
 import mimetypes
 
+from error import *
 from utils.commons import *
 from models import EmailModel
 from middleman import Destiny
@@ -55,22 +57,42 @@ class Crawler(threading.Thread):
 
         logging.info("%d-Connecting in %s:%d..." % (self.id, self.hostname, 
                                                     self.port))
-        m = imaplib.IMAP4_SSL(self.hostname, self.port)
+        try:
+            self._m = imaplib.IMAP4_SSL(self.hostname, self.port)
+        except (socket.gaierror, socket.error), e:
+                logging.error("!! %d-Error: %s [%s:%s]" % (self.id, str(e), 
+                              self.hostname, self.port))
+                raise ConnectionError, e
 
         logging.info("%d-Authenticating with %s..." % (self.id, self.username))
-        m.login(self.username, self.password)
+        try:
+            self._m.login(self.username, self.password)
+        except imaplib.IMAP4_SSL.error, e:
+                logging.error("!! %d-Error: %s [%s@%s:%s]" % (self.id, str(e), 
+                              self.username, self.hostname, self.port))
+                raise ConnectionError, e
 
         logging.info("%d-Select a mailbox..." % self.id)
-        m.select()
+        self._m.select()
 
         email_models = []
         for email_id in self.emails:
             logging.debug(":: %d-email_id: %s" % (self.id, email_id))
-            
-            resp, data = m.fetch(email_id, "(RFC822)")
-            email_body = data[0][1]
+            try:
+                resp, data = self._m.fetch(email_id, "(RFC822)")
+                email_body = data[0][1]
+            except imaplib.IMAP4_SSL.error, e:
+                logging.error("!! %d-Error: %s [email_id: %s]" % \
+                              (self.id, str(e), email_id))
+                continue
 
-            msg = email.message_from_string(email_body)
+            try:
+                msg = email.message_from_string(email_body)
+            except (email.Errors.MessageParseError, 
+                    email.Errors.HeaderParseError), e:
+                logging.error("!! %d-Error: %s [email_id: %s]" % \
+                              (self.id, str(e), email_id))
+                continue
             msg_from = self.get_mail_address(msg["From"])
             msg_subject = self.get_mail_subject(msg["Subject"])
             msg_to = self.get_mail_address(msg["To"])
@@ -94,9 +116,14 @@ class Crawler(threading.Thread):
             }
             logging.debug(":: params: %s" % str(params))
             
-            email_model = EmailModel(params)
-            email_model.populate(self.forwards)
-            email_models.append(email_model)
+            try:
+                email_model = EmailModel(params)
+                email_model.populate(self.forwards)
+                email_models.append(email_model)
+            except ModelError, e:
+                logging.error("!! %d-Error: %s [email_id: %s]" % \
+                              (self.id, str(e), email_id))
+                continue
             
             logging.info("%d-Reading email..." % self.id)
             is_content_text = False
@@ -133,7 +160,7 @@ class Crawler(threading.Thread):
                         fp.write(content)
                         fp.close()
                         logging.info("%d-Make email '\\Seen'" % self.id)
-                        m.store(email_id, "+FLAGS", r"(\Seen)")
+                        self._m.store(email_id, "+FLAGS", "\\Seen")
                         is_content_text = True
                         continue
 
@@ -150,7 +177,7 @@ class Crawler(threading.Thread):
                         fp.write(content)
                         fp.close()
                         logging.info("%d-Make email '\\Seen'" % self.id)
-                        m.store(email_id, "+FLAGS", r"(\Seen)")
+                        self._m.store(email_id, "+FLAGS", "\\Seen")
                         continue
                     ctypes = part.get_params()
                     if not ctypes:
@@ -198,7 +225,7 @@ class Crawler(threading.Thread):
                                 fp.write(content)
                                 fp.close()
                                 logging.info("%d-Make email '\\Seen'" % self.id)
-                                m.store(email_id, "+FLAGS", r"(\Seen)")
+                                self._m.store(email_id, "+FLAGS", "\\Seen")
                                 is_content_text = True
 
                             if not is_content_text and part.get_content_type() == "text/html":
@@ -215,7 +242,7 @@ class Crawler(threading.Thread):
                                 fp.write(content)
                                 fp.close()
                                 logging.info("%d-Make email '\\Seen'" % self.id)
-                                m.store(email_id, "+FLAGS", r"(\Seen)")
+                                self._m.store(email_id, "+FLAGS", "\\Seen")
                         if key == "filename":
                             logging.info("Found content filename...")
                             filename = val
@@ -233,27 +260,61 @@ class Crawler(threading.Thread):
                 fp.write(part.get_payload(decode=True))
                 fp.close()
 
-                logging.info("%d-Make email '\Seen'" % self.id)
-                m.store(email_id, "+FLAGS", r"(\Seen)")
+                logging.info("%d-Make email '\\Seen'" % self.id)
+                self._m.store(email_id, "+FLAGS", "\\Seen")
 
                 counter += 1
             logging.info("%d-Permanently remove deleted items..." % self.id)
-            m.expunge()
+            self._m.expunge()
 
             logging.info("%d-Creating zip file..." % self.id)
             zipfile = self.zip_attachment(annex_dir, email_id)
+        
+        try:
+            destinations = Destiny(self.forwards.keys())
+            destinations.execute(email_models)
+        except ForwardError, e:
+            logging.error("!! Error: %s" % str(e))
+            self.rollback(destinations.emails_error())
+        
+        logging.info("%d-Clean directories and files..." % self.id)
+        for email_id in self.emails:
+            logging.debug("%d-Remove directories and files: %s..." % (self.id, 
+                                                                      email_id))
+            self.rmdir(email_id)
             
-            #logging.info("%d-Remove directories and files..." % self.id)
-            #self.rmdir(email_id)
-
+        #self.rollback(self.emails) # ;-), For test!
+            
         logging.info("%d-Close connection..." % self.id)
-        m.close()
+        self._m.close()
 
         logging.info("%d-Logout with %s..." % (self.id, self.username))
-        m.logout()
+        self._m.logout()
         
-        destinations = Destiny(self.forwards.keys())
-        destinations.execute(email_models)
+    def rollback(self, emails):
+        logging.debug("In Crawler::rollback(%d)" % self.id)
+        logging.debug("++ %d-emails: %s" % (self.id, str(emails)))
+        try:
+            self._m.check()
+        except imaplib.IMAP4_SSL.error, e:
+            logging.error("!! Error: %s" % str(e))
+            raise RollbackError, e
+        logging.info("%d-Make emails '\\Unseen'" % self.id)
+        for email_id in emails:
+            logging.debug("%d-Make email '\\Unseen': %s" % (self.id, email_id))
+            self._m.store(email_id, "-FLAGS", "\\Seen")
+        logging.info("%d-Finish rollback" % self.id)
+        
+    def force_close(self):
+        logging.debug("In Crawler::force_close(%d)" % self.id)
+        try:
+            raise ConnectionError
+        finally:
+            logging.info("%d-Force close connection..." % self.id)
+            self._m.close()
+    
+            logging.info("%d-Force logout with %s..." % (self.id, self.username))
+            self._m.logout()
 
     def mkdir(self, email_id, directory):
         logging.debug("In Crawler::mkdir(%d)" % self.id)
@@ -263,7 +324,11 @@ class Crawler(threading.Thread):
         path = os.path.join(prefix_dir, email_id, directory)
         if not os.path.exists(path):
             logging.info(":: %d-Creating directory: %s" % (self.id, path))
-            os.makedirs(path)
+            try:
+                os.makedirs(path)
+            except OSError, e:
+                logging.error("!! Error: %s" % str(e))
+                raise StructureError, e
         return path
     
     def rmdir(self, email_id):
@@ -275,13 +340,23 @@ class Crawler(threading.Thread):
                 for filename in filenames:
                     path = os.path.join(dirpath, filename)
                     logging.debug(":: %d-Removing file %s..." % (self.id, path))
-                    os.remove(path)
+                    try:
+                        os.remove(path)
+                    except OSError, e:
+                        logging.error("!! Error: %s" % str(e))
+                        #raise StructureError, e
+                        continue
             for dirpath, dirnames, filenames in os.walk(email_dir):
                 for dirname in dirnames:
                     path = os.path.join(dirpath, dirname)
                     logging.debug(":: %d-Removing directory %s..." % (self.id, 
                                                                       path))
-                    os.removedirs(path)
+                    try:
+                        os.removedirs(path)
+                    except OSError, e:
+                        logging.error("!! Error: %s" % str(e))
+                        #raise StructureError, e
+                        continue
 
     def zip_attachment(self, path, email_id):
         logging.debug("In Crawler::zip_attachment(%d)" % self.id)

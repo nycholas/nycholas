@@ -5,6 +5,11 @@ username: nycholas
 password: HA!
 mailbox: UNSEEN
 directory: /tmp
+smtp_hostname: smtp.gmail.com
+smtp_port: 587
+smtp_username: nycholas
+smtp_password: HA!
+smtp_prefix: ecrawler
 forwards:
 	<[(forward, sqlite3) (name, ecrawlerdb_test.db)
 	  (username, ) (password, )
