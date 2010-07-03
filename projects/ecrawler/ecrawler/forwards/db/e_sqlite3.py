@@ -30,69 +30,74 @@ from ecrawler.utils.commons import *
 
 
 class SQLite3Forward(ForwardBase):
+    SQLITE3_INTEGER = "INTEGER"
+    SQLITE3_TEXT = "TEXT"
+    SQLITE3_BLOB = "BLOB"
+    SQLITE3_TYPES = (SQLITE3_INTEGER, SQLITE3_TEXT, SQLITE3_BLOB)
+
     def __init__(self):
         logging.debug("In SQLite3Forward::__init__()")
-
-    def _zipfile_to_bin(self, zipfile):
-        logging.debug("In SQLite3Forward::_zipfile_to_bin()")
-        return sqlite3.Binary(zipfile)
-
-    def _search_zipfile(self, items):
-        logging.debug("In SQLite3Forward::_search_zipfile()")
-        logging.debug(":: items: %s" % str(items))
-        for k, v in items.iteritems():
-            if v.find(".zip") != -1:
-                if os.path.exists(v) and os.path.isfile(v):
-                    items[k] = self._zipfile_to_bin(v)
 
     def execute(self, items):
         logging.debug("In SQLite3Forward::execute()")
         logging.debug("++ items: %s" % str(items))
-
-        tables = items.get("tables")
-        logging.debug(":: Number of items: %s" % len(tables))
-        if not tables:
+    
+        list_table = items.get("tables")
+        logging.info(":: Number of tables: %d" % len(list_table))
+        if not list_table:
             return
-
+        
         logging.info("Connecting in database: %s..." % items.get("name"))
         self.conn = sqlite3.connect(items.get("name"))
-
-        logging.info("Genareting query...")
-        query = self.generate_query(tables[-1])
-        logging.debug(":: query: %s" % query)
-
-        t = []
-        for column in tables:
-            t.extend(self.execute_many(column.values()))
-
-        logging.info("Running and inserting items in database...")
-        cur = self.conn.cursor()
-        cur.executemany(query, t)
-        logging.info("Insert a row of data")
-
+        
+        for tables in list_table:
+            for table, rows in tables.iteritems():
+                logging.info(":: Number of rows: %d" % len(rows))
+                
+                logging.info("Genareting query: %s..." % table)
+                query = self.generate_query(table, rows[-1])
+                logging.debug(":: query: %s" % query)
+        
+                logging.info("Running and inserting items in database...")
+                cur = self.conn.cursor()
+                cur.executemany(query, self.execute_many(rows))
+                logging.info("Insert a row of data")
         logging.info("Save (commit) the changes...")
         self.conn.commit()
-
+                
         logging.info("Close connection database...")
         self.conn.close()
 
-    def execute_many(self, items):
+    def execute_many(self, rows):
         logging.debug("In SQLite3Forward::execute_many()")
-        logging.debug(":: items: %s" % str(items))
-        [self._search_zipfile(i) for i in items]
-        many = [tuple(i.values()) for i in items]
+        logging.debug(":: rows: %s" % str(rows))
+        for row in rows[:]:
+            for column, value in row.copy().iteritems():
+                if column.find(":") != -1:
+                    (name_column, type_column) = column.split(":")
+                    if type_column == SQLite3Forward.SQLITE3_INTEGER:
+                        pass
+                    elif type_column == SQLite3Forward.SQLITE3_TEXT:
+                        pass
+                    elif type_column == SQLite3Forward.SQLITE3_BLOB:
+                        if os.path.exists(value) and os.path.isfile(value):
+                            row[column] = sqlite3.Binary(value)
+        many = [tuple(i.values()) for i in rows]
         logging.debug(":: Items for database: %s" % str(many))
         return many
 
-    def generate_query(self, items):
+    def generate_query(self, table, items):
         logging.debug("In SQLite3Forward::generate_query()")
-        table = items.keys()[0]
-        columns = items.values()[0]
-        query = "insert into " + table + " "
-        keys = "(" + "".join([i+"," for i in columns.keys()])[:-1] + ")"
-        #values = "(" + "".join([i+"," for i in columns.values()])[:-1] + ")"
-        values = "(" + "".join("?," for i in columns.values())[:-1] + ")"
-        query += keys + " values " + values
+        keys = ""
+        values = ""
+        for column, value in items.iteritems():
+            if column.find(":") != -1:
+                (column, type_column) = column.split(":")
+            keys += "%s," % column
+            values += "?," #values += "%s," % value
+        keys = "(%s)" % keys[:-1]
+        values = "(%s)" % values[:-1]
+        query = "insert into %s %s values %s" % (table, keys, values)
         return query
 
     def clean(self, table):

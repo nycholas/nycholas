@@ -20,6 +20,7 @@
 import logging
 import ConfigParser
 
+from error import *
 import utils.constant as constant
 
 try:
@@ -52,12 +53,18 @@ except ImportError, e:
 class Destiny(object):
     def __init__(self, forwards, file_config=None):
         logging.debug("In Destiny::__init__()")
-        self.file_config = file_config or constant.FORWARD_FILE_CONF
-        self._plugins = []
+        file_config = file_config or constant.FORWARD_FILE_CONF
+        self._plugins = {}
+        self._emails_error = []
 
-        logging.info("Loading config parser (%s)..." % self.file_config)
+        logging.info("Loading config parser (%s)..." % file_config)
         config = ConfigParser.ConfigParser()
-        config.read(self.file_config)
+        try:
+            config.read(file_config)
+        except (ConfigParser.MissingSectionHeaderError,
+                ConfigParser.ParsingError), e:
+            logging.error("!! Error: %s" % str(e))
+            raise ForwardParseError, e
         if not config.has_section("forwards"):
             logging.warning("Section forwards not found")
             return
@@ -87,56 +94,55 @@ class Destiny(object):
                 logging.info("Instantiating class: %s..." % clazz)
                 clazzobj = run_module.get(clazz)
                 if issubclass(clazzobj, ForwardBase):
-                    self.add((destiny, clazzobj()))
+                    self.add(destiny, clazzobj())
             except (NameError, ImportError), e:
                 logging.warning("!! Not module runpy: %s" % e)
                 file_module = "ecrawler.%s" % file_module
                 logging.info("Loading module: %s..." % file_module)
                 run_module = __import__(file_module, locals(), globals(), -1)
+                logging.info("Instantiating class: %s..." % clazz)
                 clazzobj = type(clazz, (eval('run_module.%s' % clazz),), {})
                 if issubclass(clazzobj, ForwardBase):
-                    self.add((destiny, clazzobj()))
+                    self.add(destiny, clazzobj())
                     
     def emails_error(self):
-        return []
+        return self._emails_error
 
     def update(self, status):
         logging.debug("In Destiny::update()")
         self._status = status
 
-    def add(self, plugin):
+    def add(self, destiny, plugin):
         logging.debug("In Destiny::add()")
-        logging.debug(":: plugin: %s" % str(plugin))
-        if not plugin in self._plugins:
-            self._plugins.append(plugin)
-        else:
-            if plugin is None:
-                self._plugins.append(None)
+        logging.debug("++ destiny: %s" % str(destiny))
+        logging.debug("++ plugin: %s" % str(plugin))
+        self._plugins.setdefault(destiny, []).append(plugin)
 
     def remove(self, plugin):
         logging.debug("In Destiny::remove()")
-        try:
-            self._plugins.remove(plugin)
-        except ValueError, e:
-            logging.error(e)
+        logging.debug("++ plugin: %s" % str(plugin))
+        if self._plugins.has_key(plugin):
+            del self._plugins[plugin]
 
-    def execute(self, items):
+    def execute(self, email_models):
         logging.debug("In Destiny::execute()")
-        for item in items:
-            for key, plugin in self._plugins:
-                plugin.execute(item.get(key))
-
-    def childs(self, index=None):
-        logging.debug("In Destiny::childs()")
-        if index is None:
-            return set(self._plugins)
-        return set(self._plugins[index])
-
-    def lenght(self, index=None):
-        logging.debug("In Destiny::lenght()")
-        if index is None:
-            return len(self.childs())
-        return len(self.childs(index))
+        if not email_models:
+            return
+        destinations = {}
+        for destiny in self._plugins.keys():            
+            destinations.setdefault(destiny, email_models[-1].get(destiny))
+        for email_model in email_models[:-1]:
+            for destiny in self._plugins.keys():
+                d_tables = destinations.get(destiny).get("tables")
+                for d_table in d_tables:
+                    for k, v in d_table.iteritems():
+                        m_tables = email_model.get(destiny).get("tables")
+                        for m_table in m_tables:
+                            if k in m_table:
+                                d_table.setdefault(k, []).extend(m_table[k])
+        for destiny, models in destinations.iteritems():
+            for forward in self._plugins.get(destiny):
+                forward.execute(models)
 
 
 if __name__ == "__main__":

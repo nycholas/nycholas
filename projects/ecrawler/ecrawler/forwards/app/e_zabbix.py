@@ -29,4 +29,8 @@ class ZabbixForward(ForwardBase):
     def execute(self, items):
         logging.debug("In ZabbixForward::execute()")
         logging.debug("++ items: %s" % str(items))
-        logging.debug(":: Number of items: %s" % len(items.get("tables")))
+        
+        list_table = items.get("tables")
+        logging.info(":: Number of tables: %d" % len(list_table))
+        if not list_table:
+            return

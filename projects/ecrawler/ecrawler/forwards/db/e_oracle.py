@@ -25,21 +25,20 @@ from ecrawler.middleman import ForwardBase
 
 
 class OracleForward(ForwardBase):
+    ORACLE_VARCHAR = "VARCHAR"
+    ORACLE_NVARCHAR2 = "NVARCHAR2"
+    ORACLE_LONG = "LONG"
+    ORACLE_CHAR = "CHAR"
+    ORACLE_NUMBER = "NUMBER"
+    ORACLE_FLOAT = "FLOAT"
+    ORACLE_DATE = "DATE"
+    ORACLE_TIMESTAMP = "TIMESTAMP"
+    ORACLE_CLOB = "CLOB"
+    ORACLE_BLOB = "BLOB"
+    ORACLE_BUILTIN = "BUILTIN"
+    
     def __init__(self):
         logging.debug("In OracleForward::__init__()")
-        
-    def _zipfile_to_bin(self, zipfile):
-        logging.debug("In OracleForward::_zipfile_to_bin()")
-        return open(zipfile, "rb").read()
-
-    def _search_zipfile(self, items):
-        logging.debug("In OracleForward::_search_zipfile()")
-        logging.debug(":: items: %s" % str(items))
-        for k, v in items.iteritems():
-            if v.find(".zip") != -1:
-                if os.path.exists(v) and os.path.isfile(v):
-                    self.cur.setinputsizes(eval("%s=cx_Oracle.BLOB" % k))
-                    items[k] = self._zipfile_to_bin(v)
                     
     def _search_column(self, items, column, func):
         logging.debug("In OracleForward::_search_column()")
@@ -50,9 +49,9 @@ class OracleForward(ForwardBase):
         logging.debug("In OracleForward::execute()")
         logging.debug("++ items: %s" % str(items))
 
-        tables = items.get("tables")
-        logging.debug(":: Number of items: %s" % len(tables))
-        if not tables:
+        list_table = items.get("tables")
+        logging.info(":: Number of tables: %d" % len(list_table))
+        if not list_table:
             return
         
         hostname = items.get("hostname") or "localhost"
@@ -66,44 +65,66 @@ class OracleForward(ForwardBase):
         self.conn = cx_Oracle.connect(items.get("username"), 
                                       items.get("password"), hostdb)
 
-        logging.info("Genareting query...")
-        query = self.generate_query(tables[-1])
-        logging.debug(":: query: %s" % query)
+        for tables in list_table:
+            for table, rows in tables.iteritems():
+                logging.info(":: Number of rows: %d" % len(rows))
+                
+                logging.info("Genareting query: %s..." % table)
+                query = self.generate_query(table, rows[-1])
+                logging.debug(":: query: %s" % query)
+                
+                self.execute_many(rows)
         
-        logging.info("Running and inserting items in database...")
-        self.cur = self.conn.cursor()
-
-        t = []
-        for column in tables:
-            t.extend(self.execute_many(column.values()))
-
-        self.cur.prepare(query)
-        self.cur.executemany(None, t)
-        logging.info("Insert a row of data")
-
+                logging.info("Running and inserting items in database...")
+                cur = self.conn.cursor()
+                cur.executemany(query, self.execute_many(rows))
+                logging.info("Insert a row of data")
         logging.info("Save (commit) the changes...")
         self.conn.commit()
 
         logging.info("Close connection database...")
         self.conn.close()
-
-    def execute_many(self, items):
+        
+    def execute_many(self, rows):
         logging.debug("In OracleForward::execute_many()")
-        logging.debug(":: items: %s" % str(items))
-        [self._search_zipfile(i) for i in items]
-        many = [tuple(i.values()) for i in items]
+        logging.debug(":: rows: %s" % str(rows))
+        for row in rows[:]:
+            for column, value in row.copy().iteritems():
+                logging.debug(":: column: %s, value: %s" % (str(column), 
+                                                            str(value)))
+                if column.find(":") != -1:
+                    slicers = column.split(":")
+                    (name_column, type_column) = slicers[0:2]
+                    if type_column == OracleForward.ORACLE_VARCHAR:
+                        pass
+                    elif type_column == OracleForward.ORACLE_BUILTIN:
+                        del row[column]
+                    elif type_column == OracleForward.ORACLE_BLOB:
+                        if os.path.exists(value) and os.path.isfile(value):
+                            self.cur.setinputsizes(column=cx_Oracle.BLOB)
+                            row[column] = open(value, "rb").read()
+        many = [tuple(i.values()) for i in rows]
         logging.debug(":: Items for database: %s" % str(many))
         return many
 
-    def generate_query(self, items):
+    def generate_query(self, table, items):
         logging.debug("In OracleForward::generate_query()")
-        table = items.keys()[0]
-        columns = items.values()[0]
-        query = "insert into " + table + " "
-        keys = "(" + "".join([i+"," for i in columns.keys()])[:-1] + ")"
-        values = "("
-        for i, value in enumerate(columns.values()):
-            values += ":"+str(i+1)+"," 
-        values = values[:-1] + ")"
-        query += keys + " values " + values
+        keys = ""
+        values = ""
+        for column, value in items.iteritems():
+            logging.debug(":: column: %s, value: %s" % (str(column), str(value)))
+            if column.find(":") != -1:
+                slicers = column.split(":")
+                (column, type_column) = slicers[0:2]
+            if type_column == OracleForward.ORACLE_BUILTIN:
+                value = value
+            elif type_column == OracleForward.ORACLE_BLOB:
+                value = ":%s" % column
+            else:
+                value = ":%s" % column
+            keys += "%s," % column
+            values += "%s," % value
+        keys = "(%s)" % keys[:-1]
+        values = "(%s)" % values[:-1]
+        query = "insert into %s %s values %s" % (table, keys, values)
         return query

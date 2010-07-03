@@ -70,6 +70,9 @@ def main(args):
                       action="store", dest="jobs", default=5,
                       help="Specifies  the  number of jobs (commands) to run " \
                            "simultaneously.")
+    parser.add_option("-r", "--remove",
+                      action="store_true", dest="is_remove", default=False,
+                      help="Remove files of directory swap [default: True]")
     parser.add_option("-t", "--test",
                       action="store_true", dest="is_test", default=False,
                       help="Test application with forward")

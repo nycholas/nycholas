@@ -52,8 +52,20 @@ class TransitionError(Error):
         self.next = next
         self.msg = msg
 
+        
+class ParseError(Error):
+    pass
 
-class ProfileParseError(Error):
+
+class LoggingParseError(ParseError):
+    pass
+
+
+class ProfileParseError(ParseError):
+    pass
+
+
+class ForwardParseError(ParseError):
     pass
 
 

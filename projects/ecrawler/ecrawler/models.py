@@ -46,38 +46,44 @@ class EmailModel(object):
         self.__content = files_to_str(opts.get("content_dir"))
         self.__annex_dir = opts.get("annex_dir")
         self.__annex_zipfile = search_zipfile(opts.get("annex_dir"))
-        #self.__annex = file_to_bin(search_zipfile(opts.get("annex_dir")))
         self.__annex = search_zipfile(opts.get("annex_dir"))
         self.tables = {}
         
-    def get(self, key):
+    def __str__(self):
+        return str(self.tables)
+        
+    def __populate(self, column):
+        d = {
+            EmailModel.EMAIL_ID: self.__email_id, 
+            EmailModel.EMAIL_TO: self.__to, 
+            EmailModel.EMAIL_FROM: self.__from,
+            EmailModel.EMAIL_SUBJECT: self.__subject, 
+            EmailModel.EMAIL_DATE: self.__date, 
+            EmailModel.EMAIL_CONTENT: self.__content, 
+            EmailModel.EMAIL_ANNEX: self.__annex
+        }
+        for k, v in d.iteritems():
+            column = re.sub(k, v, column)
+        return column
+        
+    def get(self, key=None):
+        if key is None:
+            return self.tables
         return self.tables.get(key)
         
     def populate(self, forwards):
         logging.debug("In Email::populate()")
         logging.debug("++ forwards: %s" % str(forwards))       
         self.tables = copy.deepcopy(forwards) # ;-), Yeah! Deepcopy!
-        for forward, confs in self.tables.items():
+        for forward, confs in self.tables.iteritems():
             logging.debug(":: forward: %s" % str(forward))
             for table in confs.get("tables"):
                 logging.debug(":: table: %s" % str(table))
-                for t, columns in table.items():
-                    for k, v in columns.items():
-                        logging.debug(":: key: %s, value: %s" % (k, v))
-                        columns[k] = re.sub(EmailModel.EMAIL_ID, 
-                                            self.__email_id, columns[k])
-                        columns[k] = re.sub(EmailModel.EMAIL_TO, 
-                                            self.__to, columns[k])
-                        columns[k] = re.sub(EmailModel.EMAIL_FROM, 
-                                            self.__from, columns[k])
-                        columns[k] = re.sub(EmailModel.EMAIL_SUBJECT, 
-                                            self.__subject, columns[k])
-                        columns[k] = re.sub(EmailModel.EMAIL_DATE, 
-                                            self.__date, columns[k])
-                        columns[k] = re.sub(EmailModel.EMAIL_CONTENT, 
-                                            self.__content, columns[k])
-                        columns[k] = re.sub(EmailModel.EMAIL_ANNEX, 
-                                            self.__annex, columns[k])
+                for table_name, columns in table.iteritems():
+                    for column in columns:
+                        for k, v in column.iteritems():
+                            logging.debug(":: key: %s, value: %s" % (k, v))
+                            column[k] = self.__populate(v)
                 logging.debug(":: Populating table: %s" % (str(table),))
         logging.debug(":: Table populate: %s" % (str(self.tables),))
         

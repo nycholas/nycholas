@@ -48,8 +48,9 @@ class Crawler(threading.Thread):
         self.mailbox = profile.get("mailbox")
         self.directory = profile.get("directory")
         self.forwards = profile.get("forwards")
+        self.is_remove = profile.get("is_remove")
         self.is_test = profile.get("is_test")
-
+        
     def run(self):
         logging.debug("In Crawler::run(%d)" % self.id)
         logging.debug(":: %d-emails(%d): %s" % (self.id, len(self.emails),
@@ -108,23 +109,6 @@ class Crawler(threading.Thread):
             (content_dir, annex_dir) = directories
             logging.debug("%d-Directories creates: %s" % (self.id, directories))
             
-            logging.info("%d-Populating email model..." % self.id)
-            params = {
-                "email_id": email_id, "to": msg_to, "from": msg_from, 
-                "subject": msg_subject, "date": msg_date, 
-                "content_dir": content_dir, "annex_dir": annex_dir,
-            }
-            logging.debug(":: params: %s" % str(params))
-            
-            try:
-                email_model = EmailModel(params)
-                email_model.populate(self.forwards)
-                email_models.append(email_model)
-            except ModelError, e:
-                logging.error("!! %d-Error: %s [email_id: %s]" % \
-                              (self.id, str(e), email_id))
-                continue
-            
             logging.info("%d-Reading email..." % self.id)
             is_content_text = False
             counter = 1
@@ -159,10 +143,11 @@ class Crawler(threading.Thread):
                         fp = open(path, "wb")
                         fp.write(content)
                         fp.close()
-                        logging.info("%d-Make email '\\Seen'" % self.id)
-                        self._m.store(email_id, "+FLAGS", "\\Seen")
-                        is_content_text = True
-                        continue
+                        if content.strip() != "":
+                            logging.info("%d-Make email '\\Seen'" % self.id)
+                            self._m.store(email_id, "+FLAGS", "\\Seen")
+                            is_content_text = True
+                            continue
 
                     if not is_content_text and part.get_content_type() == "text/html":
                         logging.info("%d-Content disposition: text/html" % self.id)
@@ -176,9 +161,11 @@ class Crawler(threading.Thread):
                         fp = open(path, "wb")
                         fp.write(content)
                         fp.close()
-                        logging.info("%d-Make email '\\Seen'" % self.id)
-                        self._m.store(email_id, "+FLAGS", "\\Seen")
-                        continue
+                        if content.strip() != "":
+                            logging.info("%d-Make email '\\Seen'" % self.id)
+                            self._m.store(email_id, "+FLAGS", "\\Seen")
+                            is_content_text = True
+                            continue
                     ctypes = part.get_params()
                     if not ctypes:
                         continue
@@ -224,9 +211,11 @@ class Crawler(threading.Thread):
                                 fp = open(path, "wb")
                                 fp.write(content)
                                 fp.close()
-                                logging.info("%d-Make email '\\Seen'" % self.id)
-                                self._m.store(email_id, "+FLAGS", "\\Seen")
-                                is_content_text = True
+                                if content.strip() != "":
+                                    logging.info("%d-Make email '\\Seen'" % self.id)
+                                    self._m.store(email_id, "+FLAGS", "\\Seen")
+                                    is_content_text = True
+                                    continue
 
                             if not is_content_text and part.get_content_type() == "text/html":
                                 logging.info("%d-Content disposition: text/html" % self.id)
@@ -241,11 +230,15 @@ class Crawler(threading.Thread):
                                 fp = open(path, "wb")
                                 fp.write(content)
                                 fp.close()
-                                logging.info("%d-Make email '\\Seen'" % self.id)
-                                self._m.store(email_id, "+FLAGS", "\\Seen")
+                                if content.strip() != "":
+                                    logging.info("%d-Make email '\\Seen'" % self.id)
+                                    self._m.store(email_id, "+FLAGS", "\\Seen")
+                                    is_content_text = True
+                                    continue
                         if key == "filename":
                             logging.info("Found content filename...")
                             filename = val
+                            attachment = True
                         if key == "attachment":
                             logging.info("Found content attachment...")
                             attachment = True
@@ -269,6 +262,22 @@ class Crawler(threading.Thread):
 
             logging.info("%d-Creating zip file..." % self.id)
             zipfile = self.zip_attachment(annex_dir, email_id)
+            
+            logging.info("%d-Populating email model..." % self.id)
+            params = {
+                "email_id": email_id, "to": msg_to, "from": msg_from, 
+                "subject": msg_subject, "date": msg_date, 
+                "content_dir": content_dir, "annex_dir": annex_dir,
+            }
+            logging.debug(":: params: %s" % str(params))
+            
+            try:
+                email_model = EmailModel(params)
+                email_model.populate(self.forwards)
+                email_models.append(email_model)
+            except ModelError, e:
+                logging.error("!! %d-Error: %s [email_id: %s]" % \
+                              (self.id, str(e), email_id))
         
         try:
             destinations = Destiny(self.forwards.keys())
@@ -277,11 +286,12 @@ class Crawler(threading.Thread):
             logging.error("!! Error: %s" % str(e))
             self.rollback(destinations.emails_error())
         
-        logging.info("%d-Clean directories and files..." % self.id)
-        for email_id in self.emails:
-            logging.debug("%d-Remove directories and files: %s..." % (self.id, 
-                                                                      email_id))
-            self.rmdir(email_id)
+        if self.is_remove:
+            logging.info("%d-Clean directories and files..." % self.id)
+            for email_id in self.emails:
+                logging.debug("%d-Remove directories and files: %s..." % \
+                              (self.id, email_id))
+                self.rmdir(email_id)
             
         #self.rollback(self.emails) # ;-), For test!
             

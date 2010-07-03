@@ -42,6 +42,7 @@ class Orchestra(object):
         smtp_prefix = opts.get("smtp_prefix")
         directory = opts.get("directory")
         forwards = opts.get("forwards")
+        is_remove = opts.get("is_remove")
         is_test = opts.get("is_test")
         file_config = file_config or constant.PROFILE_FILE_CONF
         self.args = args
@@ -51,7 +52,7 @@ class Orchestra(object):
         config = ConfigParser.ConfigParser()
         try:
             config.read(file_config)
-        except (ConfigParser.MissingSectionHeaderError, 
+        except (ConfigParser.MissingSectionHeaderError,
                 ConfigParser.ParsingError), e:
             logging.error("!! Error: %s" % str(e))
             raise ProfileParseError, e
@@ -115,7 +116,7 @@ class Orchestra(object):
                 logging.debug("forwards: %s" % forwards_opt)
                 if not forwards and forwards_opt:
                     forwards = forwards_opt
-            forwards = self.parser_forwards(forwards)
+            forwards = self.__parser_forwards(forwards)
             profile = {
                 "profile": section,
                 "hostname": hostname, "port": port,
@@ -123,13 +124,13 @@ class Orchestra(object):
                 "mailbox": mailbox, "directory": directory,
                 "smtp_hostname": smtp_hostname, "smtp_port": smtp_port,
                 "smtp_username": smtp_username, "smtp_password": smtp_password,
-                "smtp_prefix": smtp_prefix, "forwards": forwards, 
-                "is_test": is_test,
+                "smtp_prefix": smtp_prefix, "forwards": forwards,
+                "is_remove": is_remove, "is_test": is_test,
             }
             self.profiles.append(profile)
         logging.debug(":: profiles: %s" % self.profiles)
 
-    def parser_forwards(self, str_forwards):
+    def __parser_forwards(self, str_forwards):
         logging.debug("In Orchestra::parser_forwards()")
         str_forwards = str(str_forwards).strip()
         forwards = {}
@@ -148,7 +149,7 @@ class Orchestra(object):
                     c3 = [re.sub("\(|\)", "", i, re.DOTALL).split(",") for i in c2[0]]
                     columns = dict([[j.strip() for j in i] for i in c3])
                     table_dict = {}
-                    table_dict.setdefault(table, columns)
+                    table_dict.setdefault(table, [columns])
                     forwards.setdefault(database_dict["forward"], database_dict)
                     forwards.get(database_dict["forward"]) \
                         .setdefault("tables", []).append(table_dict)
@@ -164,20 +165,20 @@ class Orchestra(object):
         logging.debug("In Orchestra::start()")
         logging.debug("++ number_threads: %s" % number_threads)
         logging.debug("++ number_profiles: %s" % len(self.profiles))
-        
+
         if number_threads < 1:
             logging.warning("!! The number of jobs must be greater than zero")
             return
-        
+
         profiles = []
         for p in self.profiles:
             profile = p.get("profile")
-            hostname = p.get("hostname") 
+            hostname = p.get("hostname")
             port = p.get("port")
             username = p.get("username")
             password = p.get("password")
             mailbox = p.get("mailbox")
-            
+
             logging.info("Running profile: %s" % profile)
             logging.info("Connecting in %s:%d..." % (hostname, port))
             try:
@@ -190,18 +191,18 @@ class Orchestra(object):
             try:
                 m.login(username, password)
             except imaplib.IMAP4_SSL.error, e:
-                logging.error("!! Error: %s [%s@%s:%d]" % (str(e), 
-                              username, password, port))
+                logging.error("!! Error: %s [%s@%s:%d]" % (str(e),
+                              username, hostname, port))
                 raise ConnectionError, e
-                
-            logging.info("Select a mailbox (readonly=True)...")
-            m.select(readonly=True)
+
+            logging.info("Select a mailbox...")
+            m.select()
 
             logging.info("Search mailbox (%s)..." % mailbox)
             try:
                 resp, items = m.search(None, mailbox)
                 items = items[0].split()
-                items = ["36364", "36448"] # :]-, Emails test!
+                #items = ["36364", "36448", "36676", "36677"] # :]-, Emails test!
                 items.reverse()
             except imaplib.IMAP4_SSL.error, e:
                 logging.error("!! Error: %s [mailbox: %s]" % (str(e), mailbox))
@@ -210,10 +211,10 @@ class Orchestra(object):
                 finally:
                     logging.info("Close connection...")
                     m.close()
-                    
+
                     logging.info("Logout with %s..." % username)
                     m.logout()
-            
+
             logging.info("Number of unread emails: %d" % len(items))
 
             logging.info("Close connection...")

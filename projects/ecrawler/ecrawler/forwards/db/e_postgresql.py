@@ -29,6 +29,8 @@ class PostgreSQLForward(ForwardBase):
     def execute(self, items):
         logging.debug("In PostgreSQLForward::execute()")
         logging.debug("++ items: %s" % str(items))
-        logging.debug(":: Number of items: %s" % len(items.get("tables")))
-        if not items:
+        
+        list_table = items.get("tables")
+        logging.info(":: Number of tables: %d" % len(list_table))
+        if not list_table:
             return
