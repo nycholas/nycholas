@@ -29,6 +29,7 @@ from crawl_mail import Crawler
 
 
 class Orchestra(object):
+    
     def __init__(self, opts={}, args={}, file_config=None):
         hostname = opts.get("hostname")
         port = opts.get("port")
@@ -39,6 +40,8 @@ class Orchestra(object):
         smtp_port = opts.get("smtp_port")
         smtp_username = opts.get("smtp_username")
         smtp_password = opts.get("smtp_password")
+        smtp_from_addr = opts.get("smtp_from_addr")
+        smtp_to_addrs = opts.get("smtp_to_addrs")
         smtp_prefix = opts.get("smtp_prefix")
         directory = opts.get("directory")
         forwards = opts.get("forwards")
@@ -102,6 +105,14 @@ class Orchestra(object):
                 logging.debug("Options %s::smtp_password found" % section)
                 if not smtp_password:
                     smtp_password = config.get(section, "smtp_password")
+            if config.has_option(section, "smtp_from_addr"):
+                logging.debug("Options %s::smtp_from_addr not found" % section)
+                if not smtp_from_addr:
+                    smtp_from_addr = config.get(section, "smtp_from_addr")
+            if config.has_option(section, "smtp_to_addrs"):
+                logging.debug("Options %s::smtp_to_addrs not found" % section)
+                if not smtp_to_addrs:
+                    smtp_to_addrs = config.get(section, "smtp_to_addrs")
             if config.has_option(section, "smtp_prefix"):
                 logging.debug("Options %s::smtp_prefix not found" % section)
                 if not smtp_prefix:
@@ -124,6 +135,7 @@ class Orchestra(object):
                 "mailbox": mailbox, "directory": directory,
                 "smtp_hostname": smtp_hostname, "smtp_port": smtp_port,
                 "smtp_username": smtp_username, "smtp_password": smtp_password,
+                "smtp_from_addr": smtp_from_addr, "smtp_to_addrs": smtp_to_addrs, 
                 "smtp_prefix": smtp_prefix, "forwards": forwards,
                 "is_remove": is_remove, "is_test": is_test,
             }
@@ -242,6 +254,7 @@ class Orchestra(object):
                 logging.debug("[%d] - Joining thread-%s..." % (i, thread))
                 thread.join()
 
+        logging.info(":D, So long and good luck!")
         logging.debug("Done, HA!")
 
 

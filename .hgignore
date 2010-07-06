@@ -20,3 +20,4 @@ syntax: glob
 .settings/*
 code/java/**/target/*
 code/groovy/grails/**/target/*
+projects/ircarus/**/target/*

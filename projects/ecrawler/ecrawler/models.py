@@ -65,11 +65,14 @@ class EmailModel(object):
         for k, v in d.iteritems():
             column = re.sub(k, v, column)
         return column
-        
+    
     def get(self, key=None):
         if key is None:
             return self.tables
         return self.tables.get(key)
+    
+    def email_id(self):
+        return self.__email_id
         
     def populate(self, forwards):
         logging.debug("In Email::populate()")

@@ -35,6 +35,7 @@ from middleman import Destiny
 
 
 class Crawler(threading.Thread):
+    
     def __init__(self, id, emails, profile):
         logging.debug("In Crawler::__init__(%d)" % id)
         super(Crawler, self).__init__()
@@ -47,9 +48,17 @@ class Crawler(threading.Thread):
         self.password = profile.get("password")
         self.mailbox = profile.get("mailbox")
         self.directory = profile.get("directory")
+        self.smtp_hostname = profile.get("smtp_hostname")
+        self.smtp_port = profile.get("smtp_port")
+        self.smtp_username = profile.get("smtp_username")
+        self.smtp_password = profile.get("smtp_password")
+        self.smtp_from_addr = profile.get("smtp_from_addr")
+        self.smtp_to_addrs = profile.get("smtp_to_addrs")
+        self.smtp_prefix = profile.get("smtp_prefix")
         self.forwards = profile.get("forwards")
         self.is_remove = profile.get("is_remove")
         self.is_test = profile.get("is_test")
+        self._email_id_errors = []
         
     def run(self):
         logging.debug("In Crawler::run(%d)" % self.id)
@@ -82,9 +91,10 @@ class Crawler(threading.Thread):
             try:
                 resp, data = self._m.fetch(email_id, "(RFC822)")
                 email_body = data[0][1]
-            except imaplib.IMAP4_SSL.error, e:
+            except (TypeError, imaplib.IMAP4_SSL.error), e:
                 logging.error("!! %d-Error: %s [email_id: %s]" % \
                               (self.id, str(e), email_id))
+                self.add_email_error(email_id)
                 continue
 
             try:
@@ -93,7 +103,9 @@ class Crawler(threading.Thread):
                     email.Errors.HeaderParseError), e:
                 logging.error("!! %d-Error: %s [email_id: %s]" % \
                               (self.id, str(e), email_id))
+                self.add_email_error(email_id)
                 continue
+            
             msg_from = self.get_mail_address(msg["From"])
             msg_subject = self.get_mail_subject(msg["Subject"])
             msg_to = self.get_mail_address(msg["To"])
@@ -278,13 +290,16 @@ class Crawler(threading.Thread):
             except ModelError, e:
                 logging.error("!! %d-Error: %s [email_id: %s]" % \
                               (self.id, str(e), email_id))
+                self.add_email_error(email_id)
+                continue
         
         try:
             destinations = Destiny(self.forwards.keys())
             destinations.execute(email_models)
+            for email_id in destinations.email_errors():
+                self.add_email_error(email_id)
         except ForwardError, e:
             logging.error("!! Error: %s" % str(e))
-            self.rollback(destinations.emails_error())
         
         if self.is_remove:
             logging.info("%d-Clean directories and files..." % self.id)
@@ -292,8 +307,10 @@ class Crawler(threading.Thread):
                 logging.debug("%d-Remove directories and files: %s..." % \
                               (self.id, email_id))
                 self.rmdir(email_id)
+                #self.add_email_error(email_id) # ;-), Test!
             
-        #self.rollback(self.emails) # ;-), For test!
+        logging.info("%d-Running rollback..." % self.id)
+        self.rollback()
             
         logging.info("%d-Close connection..." % self.id)
         self._m.close()
@@ -301,18 +318,52 @@ class Crawler(threading.Thread):
         logging.info("%d-Logout with %s..." % (self.id, self.username))
         self._m.logout()
         
-    def rollback(self, emails):
-        logging.debug("In Crawler::rollback(%d)" % self.id)
-        logging.debug("++ %d-emails: %s" % (self.id, str(emails)))
+    def add_email_error(self, email_id):
+        logging.debug("In Crawler::add_email_error(%d)" % self.id)
+        logging.debug("++ %d-email_id: %s" % (self.id, email_id))
+        if not email_id in self._email_id_errors: 
+            self._email_id_errors.append(email_id)
+        
+    def rollback(self):
+        logging.debug("In Crawler::rollback(%d)" % self.id)        
+        if not self._email_id_errors:
+            return
         try:
             self._m.check()
         except imaplib.IMAP4_SSL.error, e:
             logging.error("!! Error: %s" % str(e))
             raise RollbackError, e
+        
         logging.info("%d-Make emails '\\Unseen'" % self.id)
-        for email_id in emails:
+        for email_id in self._email_id_errors:
             logging.debug("%d-Make email '\\Unseen': %s" % (self.id, email_id))
             self._m.store(email_id, "-FLAGS", "\\Seen")
+            
+        subject = "[%s] %s" % (self.smtp_prefix, 
+                               time.strftime("%a, %d %b %Y %H:%M:%S %z (%Z)"))
+        msg = """:D, 
+        
+Were reported some errors when running the collector:
+        
+    E-mails: %s
+
+
+--
+So long and good luck,
+Nycholas de Oliveira e Oliveira.
+        """ % str(self._email_id_errors)
+            
+        logging.debug("%d-Send email: %s" % (self.id, str(self._email_id_errors)))
+        try:
+            send_email(self.smtp_hostname, self.smtp_port, 
+                   self.smtp_username, self.smtp_password, 
+                   self.smtp_from_addr, self.smtp_to_addrs, 
+                   subject, msg)
+        except Exception, e:
+            logging.error("!! Error: %s" % str(e))
+            raise RollbackError, e
+        finally:
+            self._email_id_errors = []
         logging.info("%d-Finish rollback" % self.id)
         
     def force_close(self):

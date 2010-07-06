@@ -23,6 +23,7 @@ from ecrawler.middleman import ForwardBase
 
 
 class PostgreSQLForward(ForwardBase):
+    
     def __init__(self):
         logging.debug("In PostgreSQLForward::__init__()")
 

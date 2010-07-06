@@ -41,6 +41,7 @@ except ImportError, e:
     logging.warning("!! Not module abc: %s" % e)
 
     class ForwardBase(object):
+        
         def __init__(self):
             logging.debug("In ForwardBase::__init__()")
             logging.warning("ForwardBase::__init__() not implemented")
@@ -51,11 +52,12 @@ except ImportError, e:
 
 
 class Destiny(object):
+    
     def __init__(self, forwards, file_config=None):
         logging.debug("In Destiny::__init__()")
         file_config = file_config or constant.FORWARD_FILE_CONF
         self._plugins = {}
-        self._emails_error = []
+        self._email_id_errors = []
 
         logging.info("Loading config parser (%s)..." % file_config)
         config = ConfigParser.ConfigParser()
@@ -105,8 +107,15 @@ class Destiny(object):
                 if issubclass(clazzobj, ForwardBase):
                     self.add(destiny, clazzobj())
                     
-    def emails_error(self):
-        return self._emails_error
+    def add_email_error(self, email_id):
+        logging.debug("In Destiny::add_email_error()")
+        logging.debug("++ email_id: %s" % (email_id,))
+        if not email_id in self._email_id_errors: 
+            self._email_id_errors.append(email_id)
+            
+    def email_errors(self):
+        logging.debug("In Destiny::email_error()")
+        return self._email_id_errors
 
     def update(self, status):
         logging.debug("In Destiny::update()")
@@ -128,6 +137,7 @@ class Destiny(object):
         logging.debug("In Destiny::execute()")
         if not email_models:
             return
+        emails_id = []
         destinations = {}
         for destiny in self._plugins.keys():            
             destinations.setdefault(destiny, email_models[-1].get(destiny))
@@ -140,10 +150,16 @@ class Destiny(object):
                         for m_table in m_tables:
                             if k in m_table:
                                 d_table.setdefault(k, []).extend(m_table[k])
+            emails_id.append(email_model.email_id())
         for destiny, models in destinations.iteritems():
             for forward in self._plugins.get(destiny):
-                forward.execute(models)
-
+                try:
+                    forward.execute(models)
+                except Exception, e:
+                    logging.error("!! Error: %s" % (str(e),))
+                    for email_id in emails_id:
+                        self.add_email_error(email_id)
+                    continue
 
 if __name__ == "__main__":
     pass

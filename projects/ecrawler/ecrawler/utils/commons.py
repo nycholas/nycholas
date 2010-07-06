@@ -24,6 +24,7 @@ import urllib
 import smtplib
 import logging
 from email.Header import decode_header
+from email.mime.text import MIMEText
 from unicodedata import normalize
 
 def str_normalizer(st, coding):
@@ -128,14 +129,24 @@ def file_to_bin(filepath):
         return ""
     return open(filepath, "rb").read()
 
-def send_email(hostname, port, username, password, from_addr, to_addrs, msg):
+def send_email(hostname, port, username, password, 
+               from_addr, to_addrs, subject, msg):
     logging.debug("In commons.send_email()")
-    server = smtplib.SMTP(hostname, port)
-    server.ehlo()
-    if username and password:
-        server.starttls()
-        server.login(username, password)
-    server.sendmail(from_addr, to_addrs, msg)
+    msg = MIMEText(msg)
+    msg["Subject"] = subject
+    msg["From"] = from_addr
+    msg["To"] = to_addrs
+    try:
+        server = smtplib.SMTP(hostname, port)
+        server.ehlo()
+        if username and password:
+            server.starttls()
+            server.login(username, password)
+        server.sendmail(from_addr, to_addrs.split(","), msg.as_string())
+    except Exception, e:
+        raise Exception, e
+    finally:
+        server.quit()
 
 
 if __name__ == "__main__":

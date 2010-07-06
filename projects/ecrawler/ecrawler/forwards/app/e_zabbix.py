@@ -23,6 +23,7 @@ from ecrawler.middleman import ForwardBase
 
 
 class ZabbixForward(ForwardBase):
+    
     def __init__(self):
         logging.debug("In ZabbixForward::__init__()")
 
