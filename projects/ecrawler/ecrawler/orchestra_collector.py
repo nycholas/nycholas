@@ -58,6 +58,7 @@ class Orchestra(object):
         except (ConfigParser.MissingSectionHeaderError,
                 ConfigParser.ParsingError), e:
             logging.error("!! Error: %s" % str(e))
+            logging.error("Traceback:", exc_info=1)
             raise ProfileParseError, e
         for section in config.sections():
             logging.info("Loading profile %s..." % section)
@@ -72,6 +73,7 @@ class Orchestra(object):
                         port = int(config.get(section, "port"))
                     except TypeError, e:
                         logging.error("!! Error: %s" % str(e))
+                        logging.error("Traceback:", exc_info=1)
                         raise ProfileParseError, e
             if config.has_option(section, "username"):
                 logging.debug("Options %s::username found" % section)
@@ -96,6 +98,7 @@ class Orchestra(object):
                         smtp_port = int(config.get(section, "smtp_port"))
                     except TypeError, e:
                         logging.error("!! Error: %s" % str(e))
+                        logging.error("Traceback:", exc_info=1)
                         raise ProfileParseError, e
             if config.has_option(section, "smtp_username"):
                 logging.debug("Options %s::smtp_username found" % section)
@@ -167,6 +170,7 @@ class Orchestra(object):
                         .setdefault("tables", []).append(table_dict)
         except (ValueError, IndexError), e:
             logging.error("!! Error: %s" % str(e))
+            logging.error("Traceback:", exc_info=1)
             raise ProfileParseError, e
         logging.debug(":: forwards: %s" % str(forwards))
         if not forwards:
@@ -197,6 +201,7 @@ class Orchestra(object):
                 m = imaplib.IMAP4_SSL(hostname, port)
             except (socket.gaierror, socket.error), e:
                 logging.error("!! Error: %s [%s:%d]" % (str(e), hostname, port))
+                logging.error("Traceback:", exc_info=1)
                 raise ConnectionError, e
 
             logging.info("Authenticating with %s..." % username)
@@ -205,6 +210,7 @@ class Orchestra(object):
             except imaplib.IMAP4_SSL.error, e:
                 logging.error("!! Error: %s [%s@%s:%d]" % (str(e),
                               username, hostname, port))
+                logging.error("Traceback:", exc_info=1)
                 raise ConnectionError, e
 
             logging.info("Select a mailbox...")
@@ -218,6 +224,7 @@ class Orchestra(object):
                 items.reverse()
             except imaplib.IMAP4_SSL.error, e:
                 logging.error("!! Error: %s [mailbox: %s]" % (str(e), mailbox))
+                logging.error("Traceback:", exc_info=1)
                 try:
                     raise ConnectionError, e
                 finally:

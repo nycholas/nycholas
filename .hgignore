@@ -21,3 +21,5 @@ syntax: glob
 code/java/**/target/*
 code/groovy/grails/**/target/*
 projects/ircarus/**/target/*
+projects/ecrawler/build/*
+projects/ecrawler/dist/*

@@ -25,6 +25,7 @@ import socket
 import imaplib
 import zipfile
 import logging
+import traceback
 import threading
 import mimetypes
 
@@ -72,6 +73,7 @@ class Crawler(threading.Thread):
         except (socket.gaierror, socket.error), e:
                 logging.error("!! %d-Error: %s [%s:%s]" % (self.id, str(e), 
                               self.hostname, self.port))
+                logging.error("Traceback:", exc_info=1)
                 raise ConnectionError, e
 
         logging.info("%d-Authenticating with %s..." % (self.id, self.username))
@@ -80,6 +82,7 @@ class Crawler(threading.Thread):
         except imaplib.IMAP4_SSL.error, e:
                 logging.error("!! %d-Error: %s [%s@%s:%s]" % (self.id, str(e), 
                               self.username, self.hostname, self.port))
+                logging.error("Traceback:", exc_info=1)
                 raise ConnectionError, e
 
         logging.info("%d-Select a mailbox..." % self.id)
@@ -94,6 +97,7 @@ class Crawler(threading.Thread):
             except (TypeError, imaplib.IMAP4_SSL.error), e:
                 logging.error("!! %d-Error: %s [email_id: %s]" % \
                               (self.id, str(e), email_id))
+                logging.error("Traceback:", exc_info=1)
                 self.add_email_error(email_id)
                 continue
 
@@ -103,6 +107,7 @@ class Crawler(threading.Thread):
                     email.Errors.HeaderParseError), e:
                 logging.error("!! %d-Error: %s [email_id: %s]" % \
                               (self.id, str(e), email_id))
+                logging.error("Traceback:", exc_info=1)
                 self.add_email_error(email_id)
                 continue
             
@@ -290,6 +295,7 @@ class Crawler(threading.Thread):
             except ModelError, e:
                 logging.error("!! %d-Error: %s [email_id: %s]" % \
                               (self.id, str(e), email_id))
+                logging.error("Traceback:", exc_info=1)
                 self.add_email_error(email_id)
                 continue
         
@@ -300,6 +306,7 @@ class Crawler(threading.Thread):
                 self.add_email_error(email_id)
         except ForwardError, e:
             logging.error("!! Error: %s" % str(e))
+            logging.error("Traceback:", exc_info=1)
         
         if self.is_remove:
             logging.info("%d-Clean directories and files..." % self.id)
@@ -332,6 +339,7 @@ class Crawler(threading.Thread):
             self._m.check()
         except imaplib.IMAP4_SSL.error, e:
             logging.error("!! Error: %s" % str(e))
+            logging.error("Traceback:", exc_info=1)
             raise RollbackError, e
         
         logging.info("%d-Make emails '\\Unseen'" % self.id)
@@ -346,14 +354,16 @@ class Crawler(threading.Thread):
 Were reported some errors when running the collector:
         
     E-mails: %s
+    Traceback: %s
 
 
 --
 So long and good luck,
 Nycholas de Oliveira e Oliveira.
-        """ % str(self._email_id_errors)
+        """ % (str(self._email_id_errors), traceback.extract_stack())
             
-        logging.debug("%d-Send email: %s" % (self.id, str(self._email_id_errors)))
+        logging.debug("%d-Send email: %s" % (self.id, 
+                                             str(self._email_id_errors)))
         try:
             send_email(self.smtp_hostname, self.smtp_port, 
                    self.smtp_username, self.smtp_password, 
@@ -361,6 +371,7 @@ Nycholas de Oliveira e Oliveira.
                    subject, msg)
         except Exception, e:
             logging.error("!! Error: %s" % str(e))
+            logging.error("Traceback:", exc_info=1)
             raise RollbackError, e
         finally:
             self._email_id_errors = []
@@ -389,6 +400,7 @@ Nycholas de Oliveira e Oliveira.
                 os.makedirs(path)
             except OSError, e:
                 logging.error("!! Error: %s" % str(e))
+                logging.error("Traceback:", exc_info=1)
                 raise StructureError, e
         return path
     
@@ -405,6 +417,7 @@ Nycholas de Oliveira e Oliveira.
                         os.remove(path)
                     except OSError, e:
                         logging.error("!! Error: %s" % str(e))
+                        logging.error("Traceback:", exc_info=1)
                         #raise StructureError, e
                         continue
             for dirpath, dirnames, filenames in os.walk(email_dir):
@@ -416,6 +429,7 @@ Nycholas de Oliveira e Oliveira.
                         os.removedirs(path)
                     except OSError, e:
                         logging.error("!! Error: %s" % str(e))
+                        logging.error("Traceback:", exc_info=1)
                         #raise StructureError, e
                         continue
 
