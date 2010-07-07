@@ -35,7 +35,7 @@ def sys_logging():
                 print "!! Logger not initialize: %s" % fileconf
                 print "!! Logger error: %s" % e
         else:
-            filelog = os.path.join(constant.BASE_DIR, "share", "log"
+            filelog = os.path.join(constant.LOGGING_DIR,
                                    "%s.log" % constant.NAME_UNIX)
             level = constant.LOGGING_LEVEL
             logging.basicConfig(

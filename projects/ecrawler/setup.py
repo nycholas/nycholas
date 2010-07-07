@@ -37,10 +37,19 @@ long_description = """\
 eCrawler - E-mail Crawler.
 """
 
+def scripts():
+    path = os.path.join(os.curdir, "bin")
+    filename_ecrawler = "%s%secrawler" % (path, os.sep)
+    filename_get_email_by_id = "%s%sget_email_by_id" % (path, os.sep)
+    if os.path.exists(filename_ecrawler):
+        os.remove(filename_ecrawler)
+    os.link("ecrawler.py", filename_ecrawler)
+    return [filename_ecrawler, filename_get_email_by_id,]
+
 def data_files():
     data_files = []
-    data_path_src = os.path.curdir
-    data_path_dst = os.path.curdir
+    data_path_src = os.curdir
+    data_path_dst = os.curdir
     data_files.append((data_path_src, ["AUTHORS", "ChangeLog", "CONTRIBUTORS", 
                                    "COPYING", "COPYING.LESSER", "FAQ", 
                                    "INSTALL", "README", "THANKS", "TODO",]))
@@ -51,12 +60,6 @@ def data_files():
                        os.path.join(data_path_src, "logging.conf"), 
                        os.path.join(data_path_src, "profile.conf"), 
                        os.path.join(data_path_src, "profile.conf.sample"),]))
-    data_path_src = os.path.curdir
-    data_path_dst = os.path.join("share", "ecrawler")
-    data_files.append((data_path_dst,
-                      ["AUTHORS", "ChangeLog", "CONTRIBUTORS", "COPYING",
-                       "COPYING.LESSER", "FAQ", "INSTALL", "README", 
-                       "THANKS", "TODO",]))
     data_path_src = os.path.join("ecrawler", "resources")
     data_path_dst = os.path.join("share", "ecrawler", "resources")
     data_files.append((data_path_dst,
@@ -64,6 +67,16 @@ def data_files():
                        os.path.join(data_path_src, "logging.conf"), 
                        os.path.join(data_path_src, "profile.conf"), 
                        os.path.join(data_path_src, "profile.conf.sample"),]))
+    data_path_src = os.curdir
+    data_path_dst = os.path.join("share", "ecrawler")
+    data_files.append((data_path_dst,
+                      ["AUTHORS", "ChangeLog", "CONTRIBUTORS", "COPYING",
+                       "COPYING.LESSER", "FAQ", "INSTALL", "README", 
+                       "THANKS", "TODO",]))
+    data_path_src = os.path.join("ecrawler", "share", "log")
+    data_path_dst = os.path.join(os.path.expanduser("~"), ".ecrawler", "log")
+    data_files.append((data_path_dst,
+                      []))
     locale = os.path.join("share", "locale")
     try:
         langs = [i for i in os.listdir(locale) \
@@ -94,8 +107,7 @@ def run():
           platforms=["Many"],
           packages=["ecrawler", "ecrawler.forwards", "ecrawler.forwards.app", 
                     "ecrawler.forwards.db", "ecrawler.utils",],
-          scripts=["ecrawler.py", "bin%secrawler" % os.path.sep, 
-                   "bin%secrawler.bat" % os.path.sep,],
+          scripts=scripts(),
           data_files=data_files()
           )
 

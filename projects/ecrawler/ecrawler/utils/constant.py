@@ -31,15 +31,17 @@ NAME_BATTLE = "Night Crawler"
 NAME_UNIX = "ecrawler"
 
 HOME_DIR = os.path.abspath(os.path.expanduser("~"))
-PACKAGE_DIR = ".%s" % HOME_DIR
+PACKAGE_DIR = ".%s" % NAME_UNIX
 USER_CONFIG_DIR = os.path.join(HOME_DIR, PACKAGE_DIR)
 
 BASE_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                         os.pardir, os.pardir)
-SHARE_DIR = os.path.join(BASE_DIR, "share")
-RESOURCES_DIR = os.path.join(BASE_DIR, NAME_UNIX, "resources")
+SHARE_DIR = os.path.join("usr", NAME_UNIX, "share")
+if not os.path.exists(SHARE_DIR):
+    SHARE_DIR = os.path.join(BASE_DIR, "share")
+RESOURCES_DIR = os.path.join(USER_CONFIG_DIR, "resources")
 if not os.path.exists(RESOURCES_DIR):
-    RESOURCES_DIR = os.path.join(USER_CONFIG_DIR, "resources")
+    RESOURCES_DIR = os.path.join(BASE_DIR, NAME_UNIX, "resources")
 
 LOGGING_LEVELS = {
     "critical": logging.CRITICAL,
@@ -48,6 +50,9 @@ LOGGING_LEVELS = {
     "info": logging.INFO,
     "debug": logging.DEBUG
 }
+LOGGING_DIR = os.path.join(RESOURCES_DIR, "log")
+if not os.path.exists(LOGGING_DIR):
+    LOGGING_DIR = os.path.join(BASE_DIR, "share", "log")
 LOGGING_LEVEL = LOGGING_LEVELS.get("debug", logging.NOTSET)
 LOGGING_FILE_CONF = os.path.join(RESOURCES_DIR, "logging.conf")
 
