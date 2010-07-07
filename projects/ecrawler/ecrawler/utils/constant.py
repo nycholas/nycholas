@@ -30,10 +30,16 @@ VERSION_PROGRAM = "0.1"
 NAME_BATTLE = "Night Crawler"
 NAME_UNIX = "ecrawler"
 
+HOME_DIR = os.path.abspath(os.path.expanduser("~"))
+PACKAGE_DIR = ".%s" % HOME_DIR
+USER_CONFIG_DIR = os.path.join(HOME_DIR, PACKAGE_DIR)
+
 BASE_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                         os.pardir, os.pardir)
 SHARE_DIR = os.path.join(BASE_DIR, "share")
 RESOURCES_DIR = os.path.join(BASE_DIR, NAME_UNIX, "resources")
+if not os.path.exists(RESOURCES_DIR):
+    RESOURCES_DIR = os.path.join(USER_CONFIG_DIR, "resources")
 
 LOGGING_LEVELS = {
     "critical": logging.CRITICAL,
@@ -47,12 +53,8 @@ LOGGING_FILE_CONF = os.path.join(RESOURCES_DIR, "logging.conf")
 
 PROFILE_FILE_CONF = os.path.join(RESOURCES_DIR, "profile.conf")
 
-FORWARD_FILE_CONF = os.path.join(RESOURCES_DIR, "forward.conf")
 FORWARD_DIR = os.path.join(BASE_DIR, NAME_UNIX, "forwards")
-
-HOME_DIR = os.path.abspath(os.path.expanduser("~"))
-PACKAGE_DIR = ".%s" % HOME_DIR
-USER_CONFIG_DIR = os.path.join(HOME_DIR, PACKAGE_DIR)
+FORWARD_FILE_CONF = os.path.join(RESOURCES_DIR, "forward.conf")
 
 USE_I18N = True
 CODING = "utf-8"

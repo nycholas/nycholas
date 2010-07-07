@@ -39,13 +39,31 @@ eCrawler - E-mail Crawler.
 
 def data_files():
     data_files = []
-    data_files.append((".", ["AUTHORS", "ChangeLog", "CONTRIBUTORS", "COPYING",
-                             "COPYING.LESSER", "FAQ", "INSTALL", "README", 
-                             "THANKS", "TODO"]))
-    data_files.append((os.path.join("share", "ecrawler"),
+    data_path_src = os.path.curdir
+    data_path_dst = os.path.curdir
+    data_files.append((data_path_src, ["AUTHORS", "ChangeLog", "CONTRIBUTORS", 
+                                   "COPYING", "COPYING.LESSER", "FAQ", 
+                                   "INSTALL", "README", "THANKS", "TODO",]))
+    data_path_src = os.path.join("ecrawler", "resources")
+    data_path_dst = os.path.join(os.path.expanduser("~"), ".ecrawler", "resources")
+    data_files.append((data_path_dst,
+                      [os.path.join(data_path_src, "forward.conf"), 
+                       os.path.join(data_path_src, "logging.conf"), 
+                       os.path.join(data_path_src, "profile.conf"), 
+                       os.path.join(data_path_src, "profile.conf.sample"),]))
+    data_path_src = os.path.curdir
+    data_path_dst = os.path.join("share", "ecrawler")
+    data_files.append((data_path_dst,
                       ["AUTHORS", "ChangeLog", "CONTRIBUTORS", "COPYING",
                        "COPYING.LESSER", "FAQ", "INSTALL", "README", 
-                       "THANKS", "TODO"]))
+                       "THANKS", "TODO",]))
+    data_path_src = os.path.join("ecrawler", "resources")
+    data_path_dst = os.path.join("share", "ecrawler", "resources")
+    data_files.append((data_path_dst,
+                      [os.path.join(data_path_src, "forward.conf"), 
+                       os.path.join(data_path_src, "logging.conf"), 
+                       os.path.join(data_path_src, "profile.conf"), 
+                       os.path.join(data_path_src, "profile.conf.sample"),]))
     locale = os.path.join("share", "locale")
     try:
         langs = [i for i in os.listdir(locale) \
@@ -74,8 +92,7 @@ def run():
           description="""eCrawler - E-mail Crawler.""",
           long_description=long_description,
           platforms=["Many"],
-          packages=["ecrawler", "ecrawler.resources",
-                    "ecrawler.forwards", "ecrawler.forwards.app", 
+          packages=["ecrawler", "ecrawler.forwards", "ecrawler.forwards.app", 
                     "ecrawler.forwards.db", "ecrawler.utils",],
           scripts=["ecrawler.py", "bin%secrawler" % os.path.sep, 
                    "bin%secrawler.bat" % os.path.sep,],
