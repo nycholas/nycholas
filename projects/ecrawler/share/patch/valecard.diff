@@ -1,0 +1,56 @@
+diff -r 63170fdba28f projects/ecrawler/ecrawler/crawl_mail.py
+--- a/projects/ecrawler/ecrawler/crawl_mail.py	Fri Jul 09 11:50:17 2010 -0300
++++ b/projects/ecrawler/ecrawler/crawl_mail.py	Fri Jul 09 12:00:00 2010 -0300
+@@ -468,12 +468,12 @@
+         str_normalizer = "".join(mail_str_normalizer(address))
+         findall = re.findall(r"([\w_.-]+@[\w_.-]+)", str_normalizer)
+         if findall:
+-            return findall[-1]
++            return findall[-1].replace(";", "")
+         return _("(Email not informed)")
+ 
+     def get_mail_subject(self, st):
+         logging.debug("In Crawler::get_mail_subject(%d)" % self.id)
+-        return "".join(mail_str_normalizer(st))
++        return "".join(mail_str_normalizer(st)).replace(";", "")
+ 
+     def get_mail_datetime(self, date):
+         logging.debug("In Crawler::get_mail_datetime(%d)" % self.id)
+@@ -489,14 +489,14 @@
+         logging.debug("In Crawler::get_mail_content(%d)" % self.id)
+         if not charset:
+             return text
+-        return str_normalizer(text, charset)
++        return str_normalizer(text, charset).replace(";", "")
+ 
+     def get_mail_content_html(self, text, charset):
+         logging.debug("In Crawler::get_mail_content_html(%d)" % self.id)
+         text = no_tags(text)
+         if not charset:
+             return text
+-        return str_normalizer(text, charset)
++        return str_normalizer(text, charset).replace(";", "")
+ 
+     def get_mail_filename(self, filename, ext=""):
+         logging.debug("In Crawler::get_mail_filename(%d)" % self.id)
+@@ -504,7 +504,7 @@
+             return "filename%s"% (ext,)
+         if isinstance(filename, tuple) or isinstance(filename, list):
+             filename = "".join([fl for fl in filename if not fl is None])
+-        return mail_filename_normalizer("".join(filename.splitlines()))
++        return mail_filename_normalizer("".join(filename.splitlines())).replace(";", "")
+ 
+ 
+ if __name__ == "__main__":
+diff -r 63170fdba28f projects/ecrawler/ecrawler/utils/commons.py
+--- a/projects/ecrawler/ecrawler/utils/commons.py	Fri Jul 09 11:50:17 2010 -0300
++++ b/projects/ecrawler/ecrawler/utils/commons.py	Fri Jul 09 12:00:00 2010 -0300
+@@ -121,7 +121,7 @@
+             for filename in filenames:
+                 filepath = os.path.join(dirpath, filename)
+                 lst_st.append(open(filepath).read())
+-    return "".join(lst_st)
++    return "".join(lst_st).replace(";", "")
+ 
+ def file_to_bin(filepath):
+     logging.debug("In commons.file_to_bin()")
