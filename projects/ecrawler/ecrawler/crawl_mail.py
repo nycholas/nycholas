@@ -372,9 +372,11 @@ Nycholas de Oliveira e Oliveira.
         except Exception, e:
             logging.error("!! Error: %s" % str(e))
             logging.error("Traceback:", exc_info=1)
-            raise RollbackError, e
-        finally:
-            self._email_id_errors = []
+            try:
+                raise RollbackError, e
+            finally:
+                self._email_id_errors = []
+            
         logging.info("%d-Finish rollback" % self.id)
         
     def force_close(self):

@@ -24,7 +24,7 @@ import urllib
 import smtplib
 import logging
 from email.Header import decode_header
-from email.mime.text import MIMEText
+from email import MIMEText
 from unicodedata import normalize
 
 def str_normalizer(st, coding):
@@ -144,9 +144,10 @@ def send_email(hostname, port, username, password,
             server.login(username, password)
         server.sendmail(from_addr, to_addrs.split(","), msg.as_string())
     except Exception, e:
-        raise Exception, e
-    finally:
-        server.quit()
+        try:
+            raise Exception, e
+        finally:
+            server.quit()
 
 
 if __name__ == "__main__":
