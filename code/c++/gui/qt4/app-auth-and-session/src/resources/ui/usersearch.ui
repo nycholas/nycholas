@@ -14,7 +14,7 @@
    <string>User :: Search Advanced</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+   <iconset resource="resources.qrc">
     <normaloff>:/default/static/default/icons/22x22/face-devilish.png</normaloff>:/default/static/default/icons/22x22/face-devilish.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -104,7 +104,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
         <string>&amp;Search</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+        <iconset resource="resources.qrc">
          <normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</iconset>
        </property>
        <property name="shortcut">
@@ -118,7 +118,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
         <string>&amp;Cancel</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+        <iconset resource="resources.qrc">
          <normaloff>:/default/static/default/icons/22x22/dialog-cancel.png</normaloff>:/default/static/default/icons/22x22/dialog-cancel.png</iconset>
        </property>
        <property name="shortcut">
@@ -132,7 +132,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
         <string>&amp;Close</string>
        </property>
        <property name="icon">
-        <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+        <iconset resource="resources.qrc">
          <normaloff>:/default/static/default/icons/22x22/window-close.png</normaloff>:/default/static/default/icons/22x22/window-close.png</iconset>
        </property>
        <property name="shortcut">
@@ -151,7 +151,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
   <tabstop>closePushButton</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../crud-2/resources/ui/resources.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>

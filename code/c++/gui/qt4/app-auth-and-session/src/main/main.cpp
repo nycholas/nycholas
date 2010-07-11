@@ -31,9 +31,9 @@
 #include <QtGui/QApplication>
 #include <QtCore/QCoreApplication>
 
-#include "commons/connection.h"
-#include "apps/mainwindow.h"
-#include "apps/login.h"
+#include "core/connection.h"
+#include "gui/mainwindow.h"
+#include "gui/login.h"
 
 int main(int argc, char *argv[]) {
 	qDebug() << "** Init application **";
