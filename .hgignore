@@ -15,6 +15,7 @@ syntax: glob
 moc_*
 qrc_*
 ui_*.h
+.qmake/*
 .directory
 .classpath
 .project
