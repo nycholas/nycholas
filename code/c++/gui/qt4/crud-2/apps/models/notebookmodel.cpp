@@ -29,22 +29,80 @@
  */
 #include "notebookmodel.h"
 
-NotebookModel::NotebookModel(QObject *parent) :
-	QSqlQueryModel(parent) {
-	id = 0;
+NotebookModel::NotebookModel(int id, QObject *parent, QSqlDatabase db) :
+	QSqlRelationalTableModel(parent, db) {
+	_id = id;
+	_f = "";
+	_begin = 0;
+	_limit = 25;
 }
 
-/*QVariant NotebookModel::data(const QModelIndex &index, int role) const {
- QVariant value = QSqlQueryModel::data(index, role);
- if (value.isValid() && role == Qt::DisplayRole) {
- if (index.column() == 0)
- return value.toString().prepend("#");
- else if (index.column() == 2)
- return value.toString().toUpper();
+void NotebookModel::paginator(void) {
+	QString f = _f.isEmpty() ? "1=1" : _f;
+	setFilter(QString("%1 %2 LIMIT %3, %4 --").arg(f).arg(orderByClause()).arg(
+			_begin).arg(_limit));
+	select();
+}
+
+int NotebookModel::count(void) {
+	QSqlQuery query;
+	QString f = _f.isEmpty() ? "1=1" : _f;
+	query.prepare(QString("SELECT count(id) FROM notebook WHERE %1").arg(f));
+	if (!query.exec())
+		return 0;
+	int count = 0;
+	if (query.next())
+		count = query.value(0).toInt();
+	return count;
+}
+
+QString NotebookModel::f(void) {
+	return _f;
+}
+
+void NotebookModel::setF(const QString &f) {
+	_f = f;
+}
+
+int NotebookModel::begin(void) {
+	return _begin;
+}
+
+void NotebookModel::setBegin(int begin) {
+	_begin = begin;
+}
+
+int NotebookModel::limit(void) {
+	return _limit;
+}
+
+void NotebookModel::setLimit(int limit) {
+	_limit = limit;
+}
+
+/*void NotebookModel::selectAll(QList<NotebookModel> *list) {
+ QSqlQuery query;
+ query.prepare("SELECT * FROM notebook");
+ if (!query.exec())
+ return;
+ int idCol = query.record().indexOf("id");
+ int nameCol = query.record().indexOf("name");
+ int descriptionCol = query.record().indexOf("description");
+ int dateJoinedCol = query.record().indexOf("date_joined");
+ int dateChangedCol = query.record().indexOf("date_changed");
+ int isActiveCol = query.record().indexOf("is_active");
+ while (query.next()) {
+ NotebookModel m;
+ m.setId(query.value(idCol).toInt());
+ m.setName(query.value(nameCol).toString());
+ m.setDescription(query.value(descriptionCol).toString());
+ m.setDateJoined(QDateTime::fromString(
+ query.value(dateJoinedCol).toString(), "yyyy-MM-dd hh:mm:ss"));
+ m.setDateChanged(QDateTime::fromString(
+ query.value(dateChangedCol).toString(), "yyyy-MM-dd hh:mm:ss"));
+ m.setIsActive((query.value(isActiveCol).toBool() ? true : false));
+ list->append(m);
  }
- if (role == Qt::TextColorRole && index.column() == 1)
- return qVariantFromValue(QColor(Qt::blue));
- return value;
  }*/
 
 void NotebookModel::selectById(int id, NotebookModel *n) {
@@ -74,7 +132,7 @@ void NotebookModel::selectById(int id, NotebookModel *n) {
 }
 
 bool NotebookModel::save(void) {
-	if (getId() > 0) {
+	if (_id > 0) {
 		return update();
 	}
 	return insert();
@@ -85,10 +143,10 @@ bool NotebookModel::insert(void) {
 	query.prepare(
 			"INSERT INTO notebook (name, description, date_joined, is_active) "
 				"VALUES (:name, :description, :date_joined, :is_active)");
-	query.bindValue(":name", name);
-	query.bindValue(":description", description);
-	query.bindValue(":date_joined", dateJoined.toString("yyyy-MM-dd hh:mm:ss"));
-	query.bindValue(":is_active", isActive);
+	query.bindValue(":name", _name);
+	query.bindValue(":description", _description);
+	query.bindValue(":date_joined", _dateJoined.toString("yyyy-MM-dd hh:mm:ss"));
+	query.bindValue(":is_active", _isActive);
 	return query.exec();
 }
 
@@ -98,11 +156,11 @@ bool NotebookModel::update(void) {
 		"SET name=:name, description=:description, "
 		"date_changed=:date_changed, is_active=:is_active "
 		"WHERE id=:id");
-	query.bindValue(":id", id);
-	query.bindValue(":name", name);
-	query.bindValue(":description", description);
-	query.bindValue(":date_changed", dateChanged);
-	query.bindValue(":is_active", isActive);
+	query.bindValue(":id", _id);
+	query.bindValue(":name", _name);
+	query.bindValue(":description", _description);
+	query.bindValue(":date_changed", _dateChanged);
+	query.bindValue(":is_active", _isActive);
 	return query.exec();
 }
 
@@ -111,9 +169,9 @@ bool NotebookModel::status(void) {
 	query.prepare("UPDATE notebook "
 		"SET date_changed=:date_changed, is_active=:is_active "
 		"WHERE id=:id");
-	query.bindValue(":id", id);
-	query.bindValue(":date_changed", dateChanged);
-	query.bindValue(":is_active", isActive);
+	query.bindValue(":id", _id);
+	query.bindValue(":date_changed", _dateChanged);
+	query.bindValue(":is_active", _isActive);
 	return query.exec();
 }
 
@@ -121,54 +179,54 @@ bool NotebookModel::remove(void) {
 	QSqlQuery query;
 	query.prepare("DELETE FROM notebook "
 		"WHERE id=:id");
-	query.bindValue(":id", id);
+	query.bindValue(":id", _id);
 	return query.exec();
 }
 
 int NotebookModel::getId(void) {
-	return id;
+	return _id;
 }
 
-void NotebookModel::setId(int _id) {
-	id = _id;
+void NotebookModel::setId(int id) {
+	_id = id;
 }
 
 QString NotebookModel::getName(void) {
-	return name;
+	return _name;
 }
 
-void NotebookModel::setName(QString _name) {
-	name = _name;
+void NotebookModel::setName(QString name) {
+	_name = name;
 }
 
 QString NotebookModel::getDescription(void) {
-	return description;
+	return _description;
 }
 
-void NotebookModel::setDescription(QString _description) {
-	description = _description;
+void NotebookModel::setDescription(QString description) {
+	_description = description;
 }
 
 QDateTime NotebookModel::getDateJoined(void) {
-	return dateJoined;
+	return _dateJoined;
 }
 
-void NotebookModel::setDateJoined(QDateTime _dateJoined) {
-	dateJoined = _dateJoined;
+void NotebookModel::setDateJoined(QDateTime dateJoined) {
+	_dateJoined = dateJoined;
 }
 
 QDateTime NotebookModel::getDateChanged(void) {
-	return dateChanged;
+	return _dateChanged;
 }
 
-void NotebookModel::setDateChanged(QDateTime _dateChanged) {
-	dateChanged = _dateChanged;
+void NotebookModel::setDateChanged(QDateTime dateChanged) {
+	_dateChanged = dateChanged;
 }
 
 int NotebookModel::getIsActive(void) {
-	return isActive;
+	return _isActive;
 }
 
-void NotebookModel::setIsActive(int _isActive) {
-	isActive = _isActive;
+void NotebookModel::setIsActive(int isActive) {
+	_isActive = isActive;
 }

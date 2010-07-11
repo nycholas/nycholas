@@ -12,6 +12,9 @@ syntax: glob
 *.so
 *.o
 *.db
+moc_*
+qrc_*
+ui_*.h
 .directory
 .classpath
 .project

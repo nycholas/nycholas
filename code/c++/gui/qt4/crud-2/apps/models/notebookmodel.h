@@ -31,27 +31,44 @@
 #define NOTEBOOKMODEL_H
 
 #include <QDebug>
+#include <QSqlRelationalTableModel>
 #include <QSqlQueryModel>
+#include <QSqlDatabase>
 #include <QSqlRecord>
 #include <QSqlQuery>
 #include <QDateTime>
 #include <QVariant>
 #include <QColor>
+#include <QList>
 
-class NotebookModel: public QSqlQueryModel {
+class NotebookModel: public QSqlRelationalTableModel {
 Q_OBJECT
 
 private:
-	int id;
-	QString name;
-	QString description;
-	QDateTime dateJoined;
-	QDateTime dateChanged;
-	int isActive;
+	int _id;
+	QString _name;
+	QString _description;
+	QDateTime _dateJoined;
+	QDateTime _dateChanged;
+	int _isActive;
+
+	QString _f;
+	int _begin;
+	int _limit;
 
 public:
-	NotebookModel(QObject *parent = 0);
-	//QVariant data(const QModelIndex &item, int role) const;
+	NotebookModel(int id = 0, QObject *parent = 0, QSqlDatabase db =
+			QSqlDatabase());
+	void paginator(void);
+	int count(void);
+	QString f(void);
+	void setF(const QString &f = "");
+	int begin(void);
+	void setBegin(int begin);
+	int limit(void);
+	void setLimit(int limit);
+
+	//static void selectAll(QList<NotebookModel> *list);
 	static void selectById(int id, NotebookModel *notebookModel);
 	bool save(void);
 	bool insert(void);

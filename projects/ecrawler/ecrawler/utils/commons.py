@@ -30,12 +30,12 @@ from unicodedata import normalize
 def str_normalizer(st, coding):
     """Description here.
     
-    >>> str_normalizer('', 'utf-8')
-    ''
+    >>> str_normalizer("", "utf-8")
+    ""
     """
     logging.debug("In commons.str_normalizer()")
     try:
-        return normalize('NFKD', st.decode(coding)).encode('ascii', 'ignore')
+        return normalize("NFKD", st.decode(coding)).encode("ascii", "ignore")
     except UnicodeDecodeError: # Ex.: us-ascii (ć)
         return st
     except LookupError: # Ex.: unicode-1-1-ascii
@@ -44,8 +44,8 @@ def str_normalizer(st, coding):
 def mail_str_normalizer(st):
     """Description here.
     
-    >>> mail_str_normalizer('')
-    ['']
+    >>> mail_str_normalizer("")
+    [""]
     """
     logging.debug("In commons.mail_str_normalizer()")
     try:
@@ -63,29 +63,29 @@ def mail_str_normalizer(st):
 def mail_filename_normalizer(st):
     """Description here.
     
-    >>> mail_filename_normalizer('')
-    ''
+    >>> mail_filename_normalizer("")
+    ""
     """
     logging.debug("In commons.mail_filename_normalizer()")
     st = urllib.unquote(st)
-    st = re.sub(r'filename\*.?[0-9].?\=', '', st)
-    st = ''.join(mail_str_normalizer(st))
-    return st.replace(' ', '_').replace('/', '_').replace(';', '')
+    st = re.sub(r"filename\*.?[0-9].?\=", "", st)
+    st = "".join(mail_str_normalizer(st))
+    return st.replace(" ", "_").replace("/", "_").replace(";", "")
 
-def no_tags(st, repl=''):
+def no_tags(st, repl=""):
     """Find HTML tags and replace using regular expressions.
 
-    >>> no_tags('<tag>no tags</tag>')
-    'no tags'
-    >>> no_tags('')
-    ''
-    >>> no_tags('<tag attr="val">no tags</tag>')
-    'no tags'
-    >>> no_tags('<tag attr="val"></tag>')
-    ''
+    >>> no_tags("<tag>no tags</tag>")
+    "no tags"
+    >>> no_tags("")
+    ""
+    >>> no_tags("<tag attr="val">no tags</tag>")
+    "no tags"
+    >>> no_tags("<tag attr="val"></tag>")
+    ""
     """
     logging.debug("In commons.no_tags()")
-    return re.sub(r'<.*?>', repl, str(st))
+    return re.sub(r"<.*?>", repl, str(st))
 
 def search_files(dirpath):
     logging.debug("In commons.search_files()")

@@ -45,10 +45,12 @@
 #include "models/notebookmodel.h"
 
 class NotebookForm: public QDialog, private Ui::NotebookForm {
-Q_OBJECT
+	Q_OBJECT
 
 private slots:
 	void timerStatusAction(void);
+	void nextAction(void);
+	void previousAction(void);
 	void saveAction(void);
 	void saveAndContinueSavingAction(void);
 	void removeAction(void);
@@ -76,14 +78,14 @@ private:
 	QTimer *statusTimer;
 	NotebookModel *notebookModel;
 
-signals:
+	signals:
 	void formAdded(void);
 	void formChanged(void);
 	void formDeleted(void);
+	void sendStatus(const QString &msg, int code);
 
 public:
-	NotebookForm(QDialog *parent = 0);
-	NotebookForm(int id, QDialog *parent = 0);
+	NotebookForm(NotebookModel *model, QDialog *parent = 0);
 	~NotebookForm();
 };
 

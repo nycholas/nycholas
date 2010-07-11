@@ -37,6 +37,7 @@ Notebook::Notebook(QWidget *parent) :
 	createViews();
 	createActions();
 	updateModels();
+	createSearchAdvanceWidget();
 	updateWidgets();
 }
 
@@ -49,10 +50,13 @@ void Notebook::timerStatusAction(void) {
 }
 
 void Notebook::newAction(void) {
-	NotebookForm *form = new NotebookForm();
+	notebookModel->setId(0);
+	NotebookForm *form = new NotebookForm(notebookModel);
 	connect(form, SIGNAL(formAdded()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formChanged()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formDeleted()), this, SLOT(updateModels()));
+	connect(form, SIGNAL(sendStatus(const QString &, int)), this,
+			SLOT(updateStatus(const QString &, int)));
 	form->show();
 }
 
@@ -66,7 +70,7 @@ void Notebook::activateAction(void) {
 	QSqlRecord record = notebookModel->record(index.row());
 	int id = record.value(notebook_id).toInt();
 
-	NotebookModel *m = new NotebookModel(this);
+	NotebookModel *m = new NotebookModel(0, this);
 	NotebookModel::selectById(id, m);
 	m->setDateChanged(QDateTime::currentDateTime());
 	m->setIsActive(1);
@@ -88,7 +92,7 @@ void Notebook::desactivateAction(void) {
 	QSqlRecord record = notebookModel->record(index.row());
 	int id = record.value(notebook_id).toInt();
 
-	NotebookModel *m = new NotebookModel(this);
+	NotebookModel *m = new NotebookModel(0, this);
 	NotebookModel::selectById(id, m);
 	m->setDateChanged(QDateTime::currentDateTime());
 	m->setIsActive(0);
@@ -119,14 +123,14 @@ void Notebook::removeAction(void) {
 				"deleted:\n\nNotebook: %1\n").arg(name)));
 	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No
 			| QMessageBox::Cancel);
-	msgBox.setDefaultButton(QMessageBox::No);
+	msgBox.setDefaultButton(QMessageBox::Yes);
 	int ret = msgBox.exec();
 	if (ret == QMessageBox::Cancel) {
 		return;
 	} else if (ret == QMessageBox::No)
 		return;
 
-	NotebookModel *m = new NotebookModel(this);
+	NotebookModel *m = new NotebookModel(0, this);
 	NotebookModel::selectById(id, m);
 	if (!m->remove()) {
 		errorStatus(qApp->tr("Fails to remove the record."));
@@ -136,29 +140,32 @@ void Notebook::removeAction(void) {
 	updateModels();
 }
 
-void Notebook::searchAdvancedAction(bool checked) {
-	if (checked) {
-		notebookSearch = new NotebookSearch(notebookModel);
-		notebookSearch->setAttribute(Qt::WA_DeleteOnClose);
-		connect(notebookSearch, SIGNAL(formSearched()), this,
-				SLOT(updateSearchForm()));
-		connect(notebookSearch, SIGNAL(formSearchClose()), this,
-				SLOT(updateSearchFormClose()));
-		//connect(notebookSearch, SIGNAL(hide()), this, SLOT(formSearchClose()));
+void Notebook::createSearchAdvanceWidget(void) {
+	notebookSearch = new NotebookSearch(notebookModel);
+	connect(notebookSearch, SIGNAL(formSearched()), this, SLOT(
+			updateSearchForm()));
+	connect(notebookSearch, SIGNAL(formSearchClose()), this, SLOT(
+			updateSearchFormClose()));
+}
+
+void Notebook::searchAdvancedAction(void) {
+	if (!notebookSearch->isVisible()) {
 		notebookSearch->show();
 		notebookSearch->raise();
 		notebookSearch->activateWindow();
 	} else {
-		notebookSearch->close();
+		notebookSearch->hide();
 	}
 }
 
-void Notebook::searchTextChangedAction(const QString &text) {
+void Notebook::searchTextChangedAction() {
+	QString text = searchLineEdit->text();
 	if (text.isEmpty() || text.isNull()) {
-		notebookModel->setFilter("");
+		notebookModel->setF("");
 	} else {
-		notebookModel->setFilter(QString("name LIKE '%1\%'").arg(text));
+		notebookModel->setF(QString("name LIKE '%1\%'").arg(text));
 	}
+	notebookModel->setBegin(0);
 	updateModels();
 }
 
@@ -166,7 +173,7 @@ void Notebook::closeAction(void) {
 	close();
 }
 
-void Notebook::doubleClickedItemViewAction(const QModelIndex &index) {
+void Notebook::selectedItemViewAction(const QModelIndex &index) {
 	if (!index.isValid()) {
 		infoStatus(qApp->tr("Please select an item to edit."));
 		return;
@@ -174,36 +181,41 @@ void Notebook::doubleClickedItemViewAction(const QModelIndex &index) {
 
 	QSqlRecord record = notebookModel->record(index.row());
 	int id = record.value(notebook_id).toInt();
+	notebookModel->setId(id);
 
-	NotebookForm *form = new NotebookForm(id);
+	NotebookForm *form = new NotebookForm(notebookModel);
 	connect(form, SIGNAL(formAdded()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formChanged()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formDeleted()), this, SLOT(updateModels()));
+	connect(form, SIGNAL(sendStatus(const QString &, int)), this,
+			SLOT(updateStatus(const QString &, int)));
 	form->show();
 }
 
 void Notebook::lastestAction(void) {
-	notebookModel->query().first();
+	notebookModel->setBegin(0);
 	updateModels();
 }
 
 void Notebook::nextAction(void) {
-	notebookModel->query().next();
+	notebookModel->setBegin(notebookModel->begin() - notebookModel->limit());
 	updateModels();
 }
 
 void Notebook::previousAction(void) {
-	notebookModel->query().previous();
+	notebookModel->setBegin(notebookModel->begin() + notebookModel->limit());
 	updateModels();
 }
 
 void Notebook::oldestAction(void) {
-	notebookModel->query().last();
+	int count = notebookModel->count();
+	int limit = notebookModel->limit();
+	notebookModel->setBegin((limit * count / limit) - limit);
 	updateModels();
 }
 
 void Notebook::createModels(void) {
-	notebookModel = new QSqlRelationalTableModel(this);
+	notebookModel = new NotebookModel(0, this);
 	notebookModel->setTable("notebook");
 	notebookModel->setHeaderData(notebook_id, Qt::Horizontal, qApp->tr("Id"));
 	notebookModel->setHeaderData(notebook_name, Qt::Horizontal,
@@ -227,6 +239,8 @@ void Notebook::createViews(void) {
 
 	QHeaderView *header = notebookTableView->horizontalHeader();
 	header->setStretchLastSection(true);
+connect(header, SIGNAL(sortIndicatorChanged(int, Qt::SortOrder)), this,
+		SLOT(updateModels()));
 }
 
 void Notebook::createActions(void) {
@@ -235,17 +249,17 @@ void Notebook::createActions(void) {
 	connect(newPushButton, SIGNAL(released()), this, SLOT(newAction()));
 	connect(activatePushButton, SIGNAL(released()), this,
 			SLOT(activateAction()));
-	connect(deactivatePushButton, SIGNAL(released()), this,
-			SLOT(desactivateAction()));
+	connect(deactivatePushButton, SIGNAL(released()), this, SLOT(
+			desactivateAction()));
 	connect(removePushButton, SIGNAL(released()), this, SLOT(removeAction()));
-	connect(searchAdvancedToolButton, SIGNAL(toggled(bool)), this,
-			SLOT(searchAdvancedAction(bool)));
-	connect(searchLineEdit, SIGNAL(textChanged(const QString &)), this,
-			SLOT(searchTextChangedAction(const QString &)));
+	connect(searchAdvancedPushButton, SIGNAL(released()), this, SLOT(
+			searchAdvancedAction()));
+	connect(searchLineEdit, SIGNAL(returnPressed()), this, SLOT(
+			searchTextChangedAction()));
 	connect(closePushButton, SIGNAL(released()), this, SLOT(closeAction()));
 
-	connect(notebookTableView, SIGNAL(doubleClicked(const QModelIndex &)),
-			this, SLOT(doubleClickedItemViewAction(const QModelIndex &)));
+	connect(notebookTableView, SIGNAL(activated(const QModelIndex &)), this,
+			SLOT(selectedItemViewAction(const QModelIndex &)));
 
 	connect(latestPushButton, SIGNAL(released()), this, SLOT(lastestAction()));
 	connect(nextPushButton, SIGNAL(released()), this, SLOT(nextAction()));
@@ -264,19 +278,30 @@ void Notebook::updateWidgets(void) {
 		deactivatePushButton->hide();
 		removePushButton->hide();
 	}
+	notebookTableView->setTabKeyNavigation(true);
 	statusLabel->hide();
 }
 
 void Notebook::updateModels(void) {
-	notebookModel->select();
+	notebookModel->paginator();
 	qDebug() << "Query:" << notebookModel->query().lastQuery();
 
+	int begin = notebookModel->begin();
+	int limit = notebookModel->limit();
+	int sizeAll = notebookModel->count();
 	int size = notebookModel->query().size();
-	statusNotebookTableViewLabel->setText(size > 1 ? QString(qApp->tr(
-			"%1 notebooks")).arg(size) : QString(qApp->tr("%1 notebook")).arg(
-			size));
+
+	statusNotebookTableViewLabel->setText(sizeAll > 1 ? QString(qApp->tr(
+			"%1 notebooks")).arg(sizeAll)
+			: QString(qApp->tr("%1 notebook")).arg(sizeAll));
 	statusPaginationLabel->setText(QString(qApp->tr(
-			"<b>%1</b> - <b>%2</b> de <b>%3</b>")).arg(1).arg(25).arg(size));
+			"<b>%1</b> - <b>%2</b> de <b>%3</b>")).arg(begin).arg(limit).arg(
+			sizeAll));
+
+	latestPushButton->setEnabled(begin > 0);
+	nextPushButton->setEnabled(begin > 0);
+	previousPushButton->setEnabled(sizeAll > (size + begin));
+	oldestPushButton->setEnabled(sizeAll > (size + begin));
 }
 
 void Notebook::timerStatus(void) {
@@ -322,6 +347,25 @@ void Notebook::updateSearchForm(void) {
 
 void Notebook::updateSearchFormClose(void) {
 	searchLineEdit->clear();
-	searchAdvancedToolButton->setChecked(false);
 	updateModels();
+}
+
+void Notebook::updateStatus(const QString &msg, int code) {
+	switch (code) {
+	case 0:
+		okStatus(msg);
+		break;
+	case 1:
+		infoStatus(msg);
+		break;
+	case 2:
+		alertStatus(msg);
+		break;
+	case 3:
+		errorStatus(msg);
+		break;
+	default:
+		okStatus(msg);
+		break;
+	}
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>623</width>
-    <height>448</height>
+    <width>615</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,6 +43,34 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="previousPushButton">
+       <property name="text">
+        <string>&amp;Previous</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/go-previous.png</normaloff>:/default/static/default/icons/22x22/go-previous.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Right, Ctrl+PgDown</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="nextPushButton">
+       <property name="text">
+        <string>&amp;Next</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/go-next.png</normaloff>:/default/static/default/icons/22x22/go-next.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Left, Ctrl+PgUp</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -205,6 +233,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
   <tabstop>savePushButton</tabstop>
   <tabstop>saveAndContinueSavingPushButton</tabstop>
   <tabstop>removePushButton</tabstop>
+  <tabstop>nextPushButton</tabstop>
   <tabstop>cancelPushButton</tabstop>
  </tabstops>
  <resources>

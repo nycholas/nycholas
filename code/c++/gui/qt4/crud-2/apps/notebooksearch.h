@@ -38,6 +38,7 @@
 #include <QSqlError>
 
 #include "widgets/ui_notebooksearch.h"
+#include "models/notebookmodel.h"
 
 class NotebookSearch: public QDialog, private Ui::NotebookSearch {
 	Q_OBJECT
@@ -55,16 +56,17 @@ private:
 	void clear(void);
 	void focusDefault(void);
 
-	QSqlRelationalTableModel *notebookModel;
+	NotebookModel *notebookModel;
 
 signals:
 	void formSearched(void);
 	void formSearchClose(void);
 
 public:
-	NotebookSearch(QSqlRelationalTableModel *model, QDialog *parent = 0);
-	NotebookSearch(QDialog *parent = 0);
+	NotebookSearch(NotebookModel *model, QDialog *parent = 0);
 	~NotebookSearch();
+
+	void closeEvent(QCloseEvent *event);
 };
 
 #endif /* NOTEBOOKSEARCH_H_ */

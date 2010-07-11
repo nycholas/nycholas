@@ -29,14 +29,7 @@
  */
 #include "notebook.h"
 
-NotebookSearch::NotebookSearch(QDialog *parent) :
-	QDialog(parent) {
-	setupUi(this);
-	createActions();
-	updateWidgets();
-}
-
-NotebookSearch::NotebookSearch(QSqlRelationalTableModel *model, QDialog *parent) :
+NotebookSearch::NotebookSearch(NotebookModel *model, QDialog *parent) :
 	QDialog(parent) {
 	setupUi(this);
 	notebookModel = model;
@@ -45,6 +38,11 @@ NotebookSearch::NotebookSearch(QSqlRelationalTableModel *model, QDialog *parent)
 }
 
 NotebookSearch::~NotebookSearch(void) {
+}
+
+void NotebookSearch::closeEvent(QCloseEvent *event) {
+	emit formSearchClose();
+	event->accept();
 }
 
 void NotebookSearch::searchAction(void) {
@@ -64,19 +62,22 @@ void NotebookSearch::searchAction(void) {
 	query.append(QString(" AND is_active='%1'").arg(isActive));
 	query.append(QString(" AND (date_joined >= '%1 00:00:00' AND "
 		"date_joined <= '%2 23:59:59')").arg(dateJoinedInit, dateJoinedEnd));
-	notebookModel->setFilter(query);
+	notebookModel->setF(query);
+	notebookModel->setBegin(0);
 	emit formSearched();
 }
 
 void NotebookSearch::cancelAction(void) {
-	notebookModel->setFilter("");
-	emit formSearchClose();
-	close();
+	notebookModel->setF("");
+	notebookModel->setBegin(0);
+	emit
+	formSearchClose();
+	hide();
 }
 
 void NotebookSearch::closeAction(void) {
 	emit formSearchClose();
-	close();
+	hide();
 }
 
 void NotebookSearch::createActions(void) {

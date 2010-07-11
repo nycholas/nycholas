@@ -29,20 +29,10 @@
  */
 #include "notebook.h"
 
-NotebookForm::NotebookForm(QDialog *parent) :
+NotebookForm::NotebookForm(NotebookModel *model, QDialog *parent) :
 	QDialog(parent) {
 	setupUi(this);
-	notebookModel = new NotebookModel(this);
-	statusTimer = new QTimer(this);
-	createActions();
-	updateWidgets();
-}
-
-NotebookForm::NotebookForm(int id, QDialog *parent) :
-	QDialog(parent) {
-	setupUi(this);
-	notebookModel = new NotebookModel(this);
-	notebookModel->setId(id);
+	notebookModel = model;
 	statusTimer = new QTimer(this);
 	createActions();
 	updateWidgets();
@@ -56,26 +46,60 @@ void NotebookForm::timerStatusAction(void) {
 	statusLabel->setText("");
 }
 
+void NotebookForm::nextAction(void) {
+	qDebug() << "next";
+	QSqlQuery query = notebookModel->query();
+	if (!query.next())
+		return;
+	int idCol = query.record().indexOf("id");
+	if (query.next()) {
+		notebookModel->setId(query.value(idCol).toInt());
+		qDebug() << "next>>" << notebookModel->getId();
+	}
+	select();
+
+	int begin = notebookModel->begin();
+	int sizeAll = notebookModel->count();
+	int size = notebookModel->query().size();
+
+	nextPushButton->setEnabled(begin > 0);
+	previousPushButton->setEnabled(sizeAll > (size + begin));
+}
+
+void NotebookForm::previousAction(void) {
+	qDebug() << "pre";
+	QSqlQuery query = notebookModel->query();
+	if (!query.previous())
+		return;
+	int idCol = query.record().indexOf("id");
+	if (query.next()) {
+		notebookModel->setId(query.value(idCol).toInt());
+		qDebug() << "pre>>" << notebookModel->getId();
+	}
+	select();
+
+	int begin = notebookModel->begin();
+	int sizeAll = notebookModel->count();
+	int size = notebookModel->query().size();
+
+	nextPushButton->setEnabled(begin > 0);
+	previousPushButton->setEnabled(sizeAll > (size + begin));
+}
+
 void NotebookForm::saveAction(void) {
 	if (!save()) {
 		errorStatus(qApp->tr("Failure trying to register the record."));
 	} else {
 		if (notebookModel->getId() > 0) {
-			QMessageBox::information(
-					0,
-					qApp->tr("Notebook changed"),
-					QString(qApp->tr(
-							"The notebook \"%1\" was changed successfully.")).arg(
-							notebookModel->getName()), QMessageBox::Ok);
 			emit formChanged();
+			emit sendStatus(QString(qApp->tr(
+					"The notebook \"%1\" was changed successfully.")).arg(
+					notebookModel->getName()), 0);
 		} else {
-			QMessageBox::information(
-					0,
-					qApp->tr("Notebook added"),
-					QString(qApp->tr(
-							"The notebook \"%1\" was added successfully.")).arg(
-							notebookModel->getName()), QMessageBox::Ok);
 			emit formAdded();
+			emit sendStatus(QString(qApp->tr(
+					"The notebook \"%1\" was added successfully.")).arg(
+					notebookModel->getName()), 0);
 		}
 		updateModels();
 		updateForms();
@@ -88,15 +112,15 @@ void NotebookForm::saveAndContinueSavingAction(void) {
 		errorStatus(qApp->tr("Failure trying to register the record."));
 	} else {
 		if (notebookModel->getId() > 0) {
+			emit formChanged();
 			okStatus(QString(qApp->tr(
 					"The notebook \"%1\" was changed successfully.")).arg(
 					notebookModel->getName()));
-			emit formChanged();
 		} else {
+			emit formAdded();
 			okStatus(QString(qApp->tr(
 					"The notebook \"%1\" was added successfully.")).arg(
 					notebookModel->getName()));
-			emit formAdded();
 		}
 		updateModels();
 		updateForms();
@@ -112,7 +136,7 @@ void NotebookForm::removeAction(void) {
 				"deleted:\n\nNotebook: %1\n").arg(notebookModel->getName())));
 	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No
 			| QMessageBox::Cancel);
-	msgBox.setDefaultButton(QMessageBox::No);
+	msgBox.setDefaultButton(QMessageBox::Yes);
 	int ret = msgBox.exec();
 	if (ret == QMessageBox::Cancel) {
 		updateModels();
@@ -129,6 +153,11 @@ void NotebookForm::removeAction(void) {
 				QMessageBox::Ok);
 		emit
 		formDeleted();
+		emit
+				sendStatus(
+						QString(qApp->tr("Successfully deleted %1 notebook.")).arg(
+								"1"), 0);
+
 		updateModels();
 		updateForms();
 		close();
@@ -142,9 +171,13 @@ void NotebookForm::cancelAction(void) {
 void NotebookForm::createActions(void) {
 	connect(statusTimer, SIGNAL(timeout()), this, SLOT(timerStatusAction()));
 
+	connect(nextPushButton, SIGNAL(released()), this, SLOT(nextAction()));
+	connect(previousPushButton, SIGNAL(released()), this,
+			SLOT(previousAction()));
+
 	connect(savePushButton, SIGNAL(released()), this, SLOT(saveAction()));
-	connect(saveAndContinueSavingPushButton, SIGNAL(released()), this,
-			SLOT(saveAndContinueSavingAction()));
+	connect(saveAndContinueSavingPushButton, SIGNAL(released()), this, SLOT(
+			saveAndContinueSavingAction()));
 	connect(removePushButton, SIGNAL(released()), this, SLOT(removeAction()));
 	connect(cancelPushButton, SIGNAL(released()), this, SLOT(cancelAction()));
 }
@@ -155,7 +188,14 @@ void NotebookForm::updateWidgets(void) {
 }
 
 void NotebookForm::updateModels(void) {
-	notebookModel = new NotebookModel(this);
+	notebookModel = new NotebookModel(0, this);
+
+	int begin = notebookModel->begin();
+	int sizeAll = notebookModel->count();
+	int size = notebookModel->query().size();
+
+	nextPushButton->setEnabled(begin > 0);
+	previousPushButton->setEnabled(sizeAll > (size + begin));
 }
 
 void NotebookForm::updateForms(void) {
@@ -177,6 +217,8 @@ void NotebookForm::updateForms(void) {
 				"Save and &continue saving"));
 		removePushButton->hide();
 	}
+	nextPushButton->hide();
+	previousPushButton->hide();
 	savePushButton->setDefault(true);
 }
 

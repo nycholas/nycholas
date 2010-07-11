@@ -137,9 +137,9 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
          </spacer>
         </item>
         <item>
-         <widget class="QToolButton" name="searchAdvancedToolButton">
+         <widget class="QPushButton" name="searchAdvancedPushButton">
           <property name="text">
-           <string>Search Advanced</string>
+           <string>&amp;Search</string>
           </property>
           <property name="icon">
            <iconset resource="resources.qrc">
@@ -149,7 +149,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>Ctrl+K</string>
           </property>
           <property name="checkable">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -313,13 +313,17 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <tabstops>
+  <tabstop>notebookTableView</tabstop>
   <tabstop>newPushButton</tabstop>
   <tabstop>activatePushButton</tabstop>
   <tabstop>deactivatePushButton</tabstop>
   <tabstop>removePushButton</tabstop>
+  <tabstop>searchAdvancedPushButton</tabstop>
   <tabstop>searchLineEdit</tabstop>
-  <tabstop>searchAdvancedToolButton</tabstop>
-  <tabstop>notebookTableView</tabstop>
+  <tabstop>latestPushButton</tabstop>
+  <tabstop>nextPushButton</tabstop>
+  <tabstop>previousPushButton</tabstop>
+  <tabstop>oldestPushButton</tabstop>
   <tabstop>closePushButton</tabstop>
  </tabstops>
  <resources>

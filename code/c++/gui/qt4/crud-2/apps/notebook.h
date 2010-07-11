@@ -40,6 +40,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QMessageBox>
+#include <QCloseEvent>
 
 #include "widgets/ui_notebook.h"
 #include "models/notebookmodel.h"
@@ -55,10 +56,10 @@ private slots:
 	void activateAction(void);
 	void desactivateAction(void);
 	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
+	void searchAdvancedAction(void);
+	void searchTextChangedAction(void);
 	void closeAction(void);
-	void doubleClickedItemViewAction(const QModelIndex &index);
+	void selectedItemViewAction(const QModelIndex &index);
 	void lastestAction(void);
 	void nextAction(void);
 	void previousAction(void);
@@ -68,6 +69,7 @@ private:
 	void createModels(void);
 	void createViews(void);
 	void createActions(void);
+	void createSearchAdvanceWidget(void);
 	void updateWidgets(void);
 
 	void timerStatus(void);
@@ -77,7 +79,7 @@ private:
 	void errorStatus(const QString &msg);
 
 	QTimer *statusTimer;
-	QSqlRelationalTableModel *notebookModel;
+	NotebookModel *notebookModel;
 	QSqlRelationalDelegate *notebookDelegate;
 	NotebookSearch *notebookSearch;
 
@@ -85,6 +87,7 @@ public slots:
 	void updateModels(void);
 	void updateSearchForm(void);
 	void updateSearchFormClose(void);
+	void updateStatus(const QString &msg, int code);
 
 public:
 	Notebook(QWidget *parent = 0);
