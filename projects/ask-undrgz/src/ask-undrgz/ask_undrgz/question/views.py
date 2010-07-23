@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import logging
 import datetime
+
+from google.appengine.api import xmpp
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.shortcuts import render_to_response
@@ -49,3 +52,22 @@ def answer(request, question_key):
         'question_top10': question_top10,
         'question_form': question_form,
     })
+    
+def incoming_chat(request):
+    """/_ah/xmpp/message/chat/
+    
+    This handles incoming XMPP (chat) messages.
+    
+    Just reply saying we ignored the chat.
+    """
+    logging.debug("In question.views::incoming_chat()")
+    if request.method != 'POST':
+        return HttpResponse('XMPP requires POST', status=405)
+    sender = request.POST.get('from')
+    if not sender:
+        logging.warn('Incoming chat without "from" key ignored')
+    else:
+        sts = xmpp.send_message([sender],
+                                'Sorry, Rietveld does not support chat input')
+        logging.debug('XMPP status %r', sts)
+    return HttpResponse('')

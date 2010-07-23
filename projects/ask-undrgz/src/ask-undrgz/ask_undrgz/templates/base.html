@@ -18,7 +18,12 @@
 	<script type="text/javascript">
 	function submit_form() {
 		$('#id_question_form').submit(function() {
-			return true;
+			$.post('/_ah/xmpp/message/chat/', {
+				from: 'nycholas@gmail.com',
+				to: 'underguiz@ilostmyself.org',
+				body: $('#id_ask').val(),
+				stanza: 'normal'
+			});
 		});
 		return true;
 	}
@@ -32,7 +37,7 @@
 		var question_key_curr = $('#id_key').val();
 		if (question_key_curr) {
 			$.getJSON('/'+question_key_curr+'/answer/', function(data) {
-				if (data.answer) {
+				if (data.answer != 'None') {
 					loading.ajaxStop(function() {
 						$(this).hide();
 					});
@@ -42,8 +47,9 @@
 		}
 	}
 	
+	var loading = false;
 	$(document).ready(function() {
-		var loading = $(
+		loading = $(
 			'<img id="loading" alt="Loading..." title="Loading..." src="/static/img/ajax-loader.gif" style="margin-top: 40px;" />'
 		).appendTo('#result').hide()
 		loading.ajaxStart(function() {

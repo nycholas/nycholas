@@ -20,7 +20,7 @@
 	<div class="ask">
 		<div class="logo"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="" /></div>
 		<div class="form">
-			<form action="/" method="POST" id="id_question_form" name="question_form" onsubmit="javascript: return submit_form();">
+			<form action="/" method="POST" id="id_question_form" name="question_form">
 			<input type="hidden" name="key" id="id_key" value="{% if question_curr_key %}{{ question_curr_key }}{% endif %}" />
 			<label for="id_ask">{% trans "Ask a question to underguiz (WTF?, Where's my phone?, How many pounds am I going to lose today?):" %}</label><br />
 			{% if question_form.subject.errors %}

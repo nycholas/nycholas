@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # (r'^ask_undrgz/', include('ask_undrgz.foo.urls')),
     (r'^$', 'ask_undrgz.question.views.index'),
     (r'^(?P<question_key>\w+)/answer/$', 'ask_undrgz.question.views.answer'),
+    (r'^_ah/xmpp/message/chat/', 'ask_undrgz.question.views.incoming_chat'),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
