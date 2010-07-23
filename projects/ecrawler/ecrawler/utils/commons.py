@@ -24,12 +24,12 @@ import urllib
 import smtplib
 import logging
 from email.Header import decode_header
-from email import MIMEText
+from email.MIMEText import MIMEText
 from unicodedata import normalize
 
 def str_normalizer(st, coding):
     """Description here.
-    
+
     >>> str_normalizer("", "utf-8")
     ""
     """
@@ -43,7 +43,7 @@ def str_normalizer(st, coding):
 
 def mail_str_normalizer(st):
     """Description here.
-    
+
     >>> mail_str_normalizer("")
     [""]
     """
@@ -62,7 +62,7 @@ def mail_str_normalizer(st):
 
 def mail_filename_normalizer(st):
     """Description here.
-    
+
     >>> mail_filename_normalizer("")
     ""
     """
@@ -121,7 +121,7 @@ def files_to_str(dirpath):
             for filename in filenames:
                 filepath = os.path.join(dirpath, filename)
                 lst_st.append(open(filepath).read())
-    return "".join(lst_st)
+    return str("".join(lst_st))
 
 def file_to_bin(filepath):
     logging.debug("In commons.file_to_bin()")
@@ -129,25 +129,20 @@ def file_to_bin(filepath):
         return ""
     return open(filepath, "rb").read()
 
-def send_email(hostname, port, username, password, 
-               from_addr, to_addrs, subject, msg):
+def send_email(hostname, port, username, password,
+               from_addr, to_addrs, subject, message):
     logging.debug("In commons.send_email()")
-    msg = MIMEText(msg)
+    msg = MIMEText(message)
     msg["Subject"] = subject
     msg["From"] = from_addr
     msg["To"] = to_addrs
-    try:
-        server = smtplib.SMTP(hostname, port)
-        server.ehlo()
-        if username and password:
-            server.starttls()
-            server.login(username, password)
-        server.sendmail(from_addr, to_addrs.split(","), msg.as_string())
-    except Exception, e:
-        try:
-            raise Exception, e
-        finally:
-            server.quit()
+    server = smtplib.SMTP(hostname, port)
+    server.ehlo()
+    if username and password:
+        server.starttls()
+        server.login(username, password)
+    server.sendmail(from_addr, to_addrs.split(","), msg.as_string())
+    server.quit()
 
 
 if __name__ == "__main__":

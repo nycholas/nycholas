@@ -47,7 +47,7 @@
 #include "groupsearch.h"
 
 class Group: public QWidget, private Ui::Group {
-Q_OBJECT
+	Q_OBJECT
 
 private slots:
 	void timerStatusAction(void);
@@ -55,9 +55,10 @@ private slots:
 	void activateAction(void);
 	void desactivateAction(void);
 	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
-	void doubleClickedItemViewAction(const QModelIndex &index);
+	void searchAdvancedAction(void);
+	void searchTextChangedAction(void);
+	void closeAction(void);
+	void selectedItemViewAction(const QModelIndex &index);
 	void lastestAction(void);
 	void nextAction(void);
 	void previousAction(void);
@@ -67,6 +68,7 @@ private:
 	void createModels(void);
 	void createViews(void);
 	void createActions(void);
+	void createWidgets(void);
 	void updateWidgets(void);
 
 	void timerStatus(void);
@@ -76,7 +78,7 @@ private:
 	void errorStatus(const QString &msg);
 
 	QTimer *statusTimer;
-	QSqlRelationalTableModel *groupModel;
+	GroupModel *groupModel;
 	QSqlRelationalDelegate *groupDelegate;
 	GroupSearch *groupSearch;
 
@@ -84,15 +86,15 @@ public slots:
 	void updateModels(void);
 	void updateSearchForm(void);
 	void updateSearchFormClose(void);
+	void updateStatus(const QString &msg, int code);
 
 public:
 	Group(QWidget *parent = 0);
 	~Group();
 
 	enum {
-		group_id = 0,
-		group_name = 1
+		group_id = 0, group_name = 1
 	};
 };
 
-#endif /* GROUP_H_ */
+#endif /* GROUP_H */

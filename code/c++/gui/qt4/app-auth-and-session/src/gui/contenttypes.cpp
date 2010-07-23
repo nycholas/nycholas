@@ -13,7 +13,7 @@
  *    and/or other materials provided with the distribution.
  *  * Neither the name of the Nycholas de Oliveira e Oliveira nor the names of
  *    its contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
+ *    this software without specific prior written contentTypes.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#include "contenttypes.h"
+#include "contentTypes.h"
 
 ContentTypes::ContentTypes(QWidget *parent) :
 	QWidget(parent) {
@@ -37,6 +37,7 @@ ContentTypes::ContentTypes(QWidget *parent) :
 	createViews();
 	createActions();
 	updateModels();
+	createWidgets();
 	updateWidgets();
 }
 
@@ -49,11 +50,14 @@ void ContentTypes::timerStatusAction(void) {
 }
 
 void ContentTypes::newAction(void) {
-	ContentTypesForm *form = new ContentTypesForm();
+	contentTypesModel->setId(0);
+	ContentTypesForm *form = new ContentTypesForm(contentTypesModel);
 	connect(form, SIGNAL(formAdded()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formChanged()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formDeleted()), this, SLOT(updateModels()));
-	form->exec();
+	connect(form, SIGNAL(sendStatus(const QString &, int)), this,
+			SLOT(updateStatus(const QString &, int)));
+	form->show();
 }
 
 void ContentTypes::activateAction(void) {
@@ -74,112 +78,112 @@ void ContentTypes::removeAction(void) {
 	}
 
 	QSqlRecord record = contentTypesModel->record(index.row());
-	int id = record.value(contenttype_id).toInt();
-	QString name = record.value(contenttype_name).toString();
+	int id = record.value(contentTypes_id).toInt();
+	QString name = record.value(contentTypes_name).toString();
 
 	QMessageBox msgBox;
 	msgBox.setText("Are you sure?");
 	msgBox.setInformativeText(QString(qApp->tr(
-			"Are you sure you want to delete the selected content types objects?\n"
+			"Are you sure you want to delete the selected contentTypes objects?\n"
 				"All of the following objects and their related items will be "
-				"deleted:\n\nContent Types: %1\n").arg(name)));
+				"deleted:\n\nContentTypes: %1\n").arg(name)));
 	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No
 			| QMessageBox::Cancel);
-	msgBox.setDefaultButton(QMessageBox::No);
+	msgBox.setDefaultButton(QMessageBox::Yes);
 	int ret = msgBox.exec();
 	if (ret == QMessageBox::Cancel) {
 		return;
 	} else if (ret == QMessageBox::No)
 		return;
 
-	ContentTypesModel *m = new ContentTypesModel();
+	ContentTypesModel *m = new ContentTypesModel(0, this);
 	ContentTypesModel::selectById(id, m);
 	if (!m->remove()) {
 		errorStatus(qApp->tr("Fails to remove the record."));
 		return;
 	}
-	okStatus(qApp->tr("Successfully deleted content types."));
+	okStatus(qApp->tr("Successfully deleted contentTypes."));
 	updateModels();
 }
 
+void ContentTypes::createWidgets(void) {
+	contentTypesSearch = new ContentTypesSearch(contentTypesModel);
+	connect(contentTypesSearch, SIGNAL(formSearched()), this, SLOT(updateSearchForm()));
+	connect(contentTypesSearch, SIGNAL(formSearchClose()), this, SLOT(
+			updateSearchFormClose()));
+}
+
 void ContentTypes::searchAdvancedAction(bool checked) {
-	if (checked) {
-		contentTypesSearch = new ContentTypesSearch(contentTypesModel);
-		contentTypesSearch->setAttribute(Qt::WA_DeleteOnClose);
-		connect(contentTypesSearch, SIGNAL(formSearched()), this, SLOT(
-				updateSearchForm()));
-		connect(contentTypesSearch, SIGNAL(formSearchClose()), this, SLOT(
-				updateSearchFormClose()));
-		//connect(contentTypesSearch, SIGNAL(hide()), this, SLOT(formSearchClose()));
-		contentTypesSearch->exec();
+	if (!contentTypesSearch->isVisible()) {
+		contentTypesSearch->show();
+		contentTypesSearch->raise();
+		contentTypesSearch->activateWindow();
 	} else {
-		contentTypesSearch->close();
+		contentTypesSearch->hide();
 	}
 }
 
 void ContentTypes::searchTextChangedAction(const QString &text) {
 	if (text.isEmpty() || text.isNull()) {
-		contentTypesModel->setFilter("");
+		contentTypesModel->setF("");
 	} else {
-		contentTypesModel->setFilter(QString("name LIKE '%1\%'").arg(text));
+		contentTypesModel->setF(QString("name LIKE '%1\%'").arg(text));
 	}
+	contentTypesModel->setBegin(0);
 	updateModels();
 }
 
-void ContentTypes::doubleClickedItemViewAction(const QModelIndex &index) {
+void ContentTypes::selectedItemViewAction(const QModelIndex &index) {
 	if (!index.isValid()) {
 		infoStatus(qApp->tr("Please select an item to edit."));
 		return;
 	}
 
 	QSqlRecord record = contentTypesModel->record(index.row());
-	int id = record.value(contenttype_id).toInt();
+	int id = record.value(contentTypes_id).toInt();
 
-	ContentTypesForm *form = new ContentTypesForm(id);
+	ContentTypesForm *form = new ContentTypesForm(contentTypesModel);
 	connect(form, SIGNAL(formAdded()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formChanged()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formDeleted()), this, SLOT(updateModels()));
-	form->exec();
+	connect(form, SIGNAL(sendStatus(const QString &, int)), this,
+			SLOT(updateStatus(const QString &, int)));
+	form->show();
 }
 
 void ContentTypes::lastestAction(void) {
-	contentTypesModel->query().first();
+	contentTypesModel->setBegin(0);
 	updateModels();
 }
 
 void ContentTypes::nextAction(void) {
-	contentTypesModel->query().next();
+	contentTypesModel->setBegin(contentTypesModel->begin() - contentTypesModel->limit());
 	updateModels();
 }
 
 void ContentTypes::previousAction(void) {
-	contentTypesModel->query().previous();
+	contentTypesModel->setBegin(contentTypesModel->begin() + contentTypesModel->limit());
 	updateModels();
 }
 
 void ContentTypes::oldestAction(void) {
-	contentTypesModel->query().last();
+	int count = contentTypesModel->count();
+	int limit = contentTypesModel->limit();
+	contentTypesModel->setBegin((limit * count / limit) - limit);
 	updateModels();
 }
 
 void ContentTypes::createModels(void) {
-	contentTypesModel = new QSqlRelationalTableModel(this);
-	contentTypesModel->setTable("app_content_type");
-	contentTypesModel->setHeaderData(contenttype_id, Qt::Horizontal, qApp->tr(
-			"Id"));
-	contentTypesModel->setHeaderData(contenttype_name, Qt::Horizontal,
-			qApp->tr("Name"));
-	contentTypesModel->setHeaderData(contenttype_appLabel, Qt::Horizontal,
-			qApp->tr("App Label"));
-	contentTypesModel->setHeaderData(contenttype_model, Qt::Horizontal,
-			qApp->tr("Model"));
-	contentTypesModel->setSort(contenttype_id, Qt::DescendingOrder);
+	contentTypesModel = new ContentTypesModel(0, this);
+	contentTypesModel->setTable("auth_contentTypes");
+	contentTypesModel->setHeaderData(contentTypes_id, Qt::Horizontal, qApp->tr("Id"));
+	contentTypesModel->setHeaderData(contentTypes_name, Qt::Horizontal, qApp->tr("Name"));
+	contentTypesModel->setSort(contentTypes_id, Qt::DescendingOrder);
 }
 
 void ContentTypes::createViews(void) {
 	contentTypesTableView->setModel(contentTypesModel);
-	contentTypesTableView->setItemDelegate(new QSqlRelationalDelegate(
-			contentTypesTableView));
+	contentTypesTableView->setItemDelegate(new QSqlRelationalDelegate(contentTypesTableView));
 	contentTypesTableView->setSelectionMode(QAbstractItemView::SingleSelection);
 	contentTypesTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 	contentTypesTableView->resizeColumnsToContents();
@@ -187,6 +191,8 @@ void ContentTypes::createViews(void) {
 
 	QHeaderView *header = contentTypesTableView->horizontalHeader();
 	header->setStretchLastSection(true);
+connect(header, SIGNAL(sortIndicatorChanged(int, Qt::SortOrder)), this,
+		SLOT(updateModels()));
 }
 
 void ContentTypes::createActions(void) {
@@ -198,10 +204,10 @@ void ContentTypes::createActions(void) {
 	connect(deactivatePushButton, SIGNAL(released()), this, SLOT(
 			desactivateAction()));
 	connect(removePushButton, SIGNAL(released()), this, SLOT(removeAction()));
-	connect(searchAdvancedToolButton, SIGNAL(toggled(bool)), this,
-			SLOT(searchAdvancedAction(bool)));
-	connect(searchLineEdit, SIGNAL(textChanged(const QString &)), this,
-			SLOT(searchTextChangedAction(const QString &)));
+	connect(searchAdvancedPushButton, SIGNAL(released()), this, SLOT(
+			searchAdvancedAction()));
+	connect(searchLineEdit, SIGNAL(returnPressed()), this, SLOT(
+			searchTextChangedAction()));
 
 	connect(contentTypesTableView, SIGNAL(doubleClicked(const QModelIndex &)),
 			this, SLOT(doubleClickedItemViewAction(const QModelIndex &)));
@@ -225,20 +231,30 @@ void ContentTypes::updateWidgets(void) {
 	}
 	activatePushButton->hide();
 	deactivatePushButton->hide();
+	contentTypesTableView->setTabKeyNavigation(true);
 	statusLabel->hide();
 }
 
 void ContentTypes::updateModels(void) {
-	contentTypesModel->select();
+	contentTypesModel->paginator();
 	qDebug() << "Query:" << contentTypesModel->query().lastQuery();
 
-	int size = contentTypesModel->query().size() < 0 ? 0
-			: contentTypesModel->query().size();
-	statusTableViewLabel->setText(size > 1 ? QString(qApp->tr(
-			"%1 content types")).arg(size) : QString(qApp->tr(
-			"%1 content types")).arg(size));
+	int begin = contentTypesModel->begin();
+	int limit = contentTypesModel->limit();
+	int sizeAll = contentTypesModel->count();
+	int size = contentTypesModel->query().size();
+
+	statusNotebookTableViewLabel->setText(sizeAll > 1 ? QString(qApp->tr(
+			"%1 contentTypess")).arg(sizeAll) : QString(qApp->tr("%1 contentTypes")).arg(
+			sizeAll));
 	statusPaginationLabel->setText(QString(qApp->tr(
-			"<b>%1</b> - <b>%2</b> de <b>%3</b>")).arg(1).arg(25).arg(size));
+			"<b>%1</b> - <b>%2</b> de <b>%3</b>")).arg(begin).arg(limit).arg(
+			sizeAll));
+
+	latestPushButton->setEnabled(begin > 0);
+	nextPushButton->setEnabled(begin > 0);
+	previousPushButton->setEnabled(sizeAll > (size + begin));
+	oldestPushButton->setEnabled(sizeAll > (size + begin));
 }
 
 void ContentTypes::timerStatus(void) {
@@ -284,6 +300,25 @@ void ContentTypes::updateSearchForm(void) {
 
 void ContentTypes::updateSearchFormClose(void) {
 	searchLineEdit->clear();
-	searchAdvancedToolButton->setChecked(false);
 	updateModels();
+}
+
+void ContentTypes::updateStatus(const QString &msg, int code) {
+	switch (code) {
+	case 0:
+		okStatus(msg);
+		break;
+	case 1:
+		infoStatus(msg);
+		break;
+	case 2:
+		alertStatus(msg);
+		break;
+	case 3:
+		errorStatus(msg);
+		break;
+	default:
+		okStatus(msg);
+		break;
+	}
 }

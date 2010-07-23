@@ -1,0 +1,80 @@
+{% load i18n %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	
+	<meta name="title" content="ask-undrgz" />
+    <meta name="author" content="Nycholas de Oliveira e Oliveira - nycholas@gmail.com" />
+    <meta name="description" content="ask-undrgz system of questions via underguiz" />
+    <meta name="keywords" content="ask asking question query reply response answer rejoinder replication" />
+    <meta name="distribution" content="global" />
+    <meta name="copyright" content="Nycholas de Oliveira e Oliveira - nycholas@gmail.com" />
+	
+	<link href="/static/undrgz.ico" rel="shortcut icon" type="image/x-icon" />
+	<link href="/static/css/main.css" rel="stylesheet" type="text/css" charset="utf-8" />
+	
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+	<script type="text/javascript">
+	function submit_form() {
+		$('#id_question_form').submit(function() {
+			return true;
+		});
+		return true;
+	}
+	
+	function set_question_and_submit_form(question) {
+		$('#id_ask').data(question);
+		return submit_form();
+	}
+	
+	function update_answer() {		
+		var question_key_curr = $('#id_key').val();
+		if (question_key_curr) {
+			$.getJSON('/'+question_key_curr+'/answer/', function(data) {
+				if (data.answer) {
+					loading.ajaxStop(function() {
+						$(this).hide();
+					});
+					$('#result').html('<b>underguiz:</b> '+data.answer);
+				}
+		    });
+		}
+	}
+	
+	$(document).ready(function() {
+		var loading = $(
+			'<img id="loading" alt="Loading..." title="Loading..." src="/static/img/ajax-loader.gif" style="margin-top: 40px;" />'
+		).appendTo('#result').hide()
+		loading.ajaxStart(function() {
+			$(this).show();
+		});
+		
+		update_answer();
+		var interval = window.setInterval(function() {
+			update_answer();
+		}, 1000);
+	});
+	</script>
+	
+	<title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+	<div id="main">
+		<div id="header">
+			{% block top10 %}
+			<div class="top10">
+				<h2>{% trans 'Recent stupid questions' %}</h2>
+				<ul class="actionlist">
+					<li><a href="/?ask={% trans 'WTF?' %}" onclick='javascript: return set_question_and_submit_form("WTF?");'>{% trans 'WTF?' %}</a></li>
+					<li><a href="/?ask={% trans "Where's my phone?" %}" onclick='javascript: return set_question_and_submit_form("Where's my phone?");'>{% trans "Where's my phone?" %}</a></li>
+					<li><a href="/?ask={% trans "How many pounds I'll lose weight today?" %}" onclick='javascript: return set_question_and_submit_form("How many pounds I'll lose weight today?");'>{% trans "How many pounds I'll lose weight today?" %}</a></li>
+				</ul>
+			</div>
+			{% endblock %}
+		</div>
+		<div id="contents">{% block contents %}{% endblock %}</div>
+		<div id="footer">{% trans 'Written by' %} <a href="mailto: nycholas@gmail.com">Nycholas de Oliveira e Olivera</a>. {% trans 'Uses data from' %} <a href="mailto: guilherme@ilostmyself.org">underguiz</a>.<div>
+	</div>
+</body>
+</html>

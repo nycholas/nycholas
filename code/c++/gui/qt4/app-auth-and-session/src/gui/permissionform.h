@@ -45,10 +45,12 @@
 #include "permissionmodel.h"
 
 class PermissionForm: public QDialog, private Ui::PermissionForm {
-Q_OBJECT
+	Q_OBJECT
 
 private slots:
 	void timerStatusAction(void);
+	void nextAction(void);
+	void previousAction(void);
 	void saveAction(void);
 	void saveAndContinueSavingAction(void);
 	void removeAction(void);
@@ -77,14 +79,14 @@ private:
 	QTimer *statusTimer;
 	PermissionModel *permissionModel;
 
-signals:
+	signals:
 	void formAdded(void);
 	void formChanged(void);
 	void formDeleted(void);
+	void sendStatus(const QString &msg, int code);
 
 public:
-	PermissionForm(QDialog *parent = 0);
-	PermissionForm(int id, QDialog *parent = 0);
+	PermissionForm(PermissionModel *model, QDialog *parent = 0);
 	~PermissionForm();
 };
 

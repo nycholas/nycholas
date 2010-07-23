@@ -45,10 +45,12 @@
 #include "usermodel.h"
 
 class UserForm: public QDialog, private Ui::UserForm {
-Q_OBJECT
+	Q_OBJECT
 
 private slots:
 	void timerStatusAction(void);
+	void nextAction(void);
+	void previousAction(void);
 	void saveAction(void);
 	void saveAndContinueSavingAction(void);
 	void removeAction(void);
@@ -76,15 +78,15 @@ private:
 	QTimer *statusTimer;
 	UserModel *userModel;
 
-signals:
+	signals:
 	void formAdded(void);
 	void formChanged(void);
 	void formDeleted(void);
+	void sendStatus(const QString &msg, int code);
 
 public:
-	UserForm(QDialog *parent = 0);
-	UserForm(int id, QDialog *parent = 0);
+	UserForm(UserModel *model, QDialog *parent = 0);
 	~UserForm();
 };
 
-#endif /* USERFORM_H_ */
+#endif /* USERFORM_H */

@@ -45,10 +45,12 @@
 #include "groupmodel.h"
 
 class GroupForm: public QDialog, private Ui::GroupForm {
-Q_OBJECT
+	Q_OBJECT
 
 private slots:
 	void timerStatusAction(void);
+	void nextAction(void);
+	void previousAction(void);
 	void saveAction(void);
 	void saveAndContinueSavingAction(void);
 	void removeAction(void);
@@ -76,15 +78,15 @@ private:
 	QTimer *statusTimer;
 	GroupModel *groupModel;
 
-signals:
+	signals:
 	void formAdded(void);
 	void formChanged(void);
 	void formDeleted(void);
+	void sendStatus(const QString &msg, int code);
 
 public:
-	GroupForm(QDialog *parent = 0);
-	GroupForm(int id, QDialog *parent = 0);
+	GroupForm(GroupModel *model, QDialog *parent = 0);
 	~GroupForm();
 };
 
-#endif /* GROUPFORM_H_ */
+#endif /* GROUPFORM_H */

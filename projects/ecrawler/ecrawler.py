@@ -72,10 +72,16 @@ def main(args):
                            "simultaneously.")
     parser.add_option("-r", "--remove",
                       action="store_true", dest="is_remove", default=False,
-                      help="Remove files of directory swap [default: True]")
+                      help="Remove files of directory swap")
     parser.add_option("-t", "--test",
                       action="store_true", dest="is_test", default=False,
                       help="Test application with forward")
+    parser.add_option("-l", "--logging",
+                      action="store_true", dest="is_logging", default=False,
+                      help="Logging console mode")
+    parser.add_option("-v", "--verbose",
+                      action="store_true", dest="is_debug", default=False,
+                      help="Verbose (debug) mode")
     (options, args) = parser.parse_args()
     logging.debug(":: options: %s" % options)
     logging.debug(":: args: %s" % args)

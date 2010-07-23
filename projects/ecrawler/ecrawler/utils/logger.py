@@ -27,6 +27,13 @@ import constant as constant
 def sys_logging():
     logging.debug("In sys_logging()")
     if constant.LOGGING:
+        filelog = os.path.join(constant.LOGGING_DIR,
+                               "%s.log" % constant.NAME_UNIX)
+        if not os.path.exists(filelog):
+            fl = open(filelog, "w+")
+            fl.write("")
+            fl.close()
+            
         fileconf = constant.LOGGING_FILE_CONF
         if os.path.exists(fileconf):
             try:
@@ -35,8 +42,6 @@ def sys_logging():
                 print "!! Logger not initialize: %s" % fileconf
                 print "!! Logger error: %s" % e
         else:
-            filelog = os.path.join(constant.LOGGING_DIR,
-                                   "%s.log" % constant.NAME_UNIX)
             level = constant.LOGGING_LEVEL
             logging.basicConfig(
                 filename=filelog,

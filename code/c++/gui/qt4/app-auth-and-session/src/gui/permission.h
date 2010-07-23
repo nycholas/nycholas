@@ -47,7 +47,7 @@
 #include "permissionsearch.h"
 
 class Permission: public QWidget, private Ui::Permission {
-Q_OBJECT
+	Q_OBJECT
 
 private slots:
 	void timerStatusAction(void);
@@ -55,9 +55,10 @@ private slots:
 	void activateAction(void);
 	void desactivateAction(void);
 	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
-	void doubleClickedItemViewAction(const QModelIndex &index);
+	void searchAdvancedAction(void);
+	void searchTextChangedAction(void);
+	void closeAction(void);
+	void selectedItemViewAction(const QModelIndex &index);
 	void lastestAction(void);
 	void nextAction(void);
 	void previousAction(void);
@@ -67,6 +68,7 @@ private:
 	void createModels(void);
 	void createViews(void);
 	void createActions(void);
+	void createWidgets(void);
 	void updateWidgets(void);
 
 	void timerStatus(void);
@@ -76,7 +78,7 @@ private:
 	void errorStatus(const QString &msg);
 
 	QTimer *statusTimer;
-	QSqlRelationalTableModel *permissionModel;
+	PermissionModel *permissionModel;
 	QSqlRelationalDelegate *permissionDelegate;
 	PermissionSearch *permissionSearch;
 
@@ -84,17 +86,15 @@ public slots:
 	void updateModels(void);
 	void updateSearchForm(void);
 	void updateSearchFormClose(void);
+	void updateStatus(const QString &msg, int code);
 
 public:
 	Permission(QWidget *parent = 0);
 	~Permission();
 
 	enum {
-		permission_contentTypes = 0,
-		permission_id = 1,
-		permission_name = 2,
-		permission_codename = 3
+		permission_id = 0, permission_name = 1
 	};
 };
 
-#endif /* PERMISSION_H_ */
+#endif /* PERMISSION_H */

@@ -1,0 +1,163 @@
+@charset "UTF-8";
+
+html {
+  font-family: Arial Unicode MS, Arial, sans-serif;
+  font-size: small;
+  text-decoration: none;
+  color: black;
+  margin: 0px auto;
+  border: 0px;
+  padding: 0px;
+  background: #fff;
+  direction: ltr;
+}
+
+a {
+  text-decoration: underline;
+  color: #639aed;
+}
+
+a:hover {
+  text-decoration: none;
+  background-color: #fcffc6;
+}
+
+img {
+  border: none;
+}
+
+p img {
+  padding: 1pt;
+}
+
+.x-Text,
+input[type=text] {
+	width: 500px;
+	margin-right: 5px;
+	height: 20px;
+}
+
+.x-Button {
+  margin: 0;
+  padding: 3px 5px;
+  text-decoration: none;
+  font-size: small;
+  cursor: pointer;
+  cursor: hand;
+  background: url("../img/hborder.png") repeat-x 0px -27px;
+  border: 1px outset #ccc;
+}
+.x-Button:active {
+  border: 1px inset #ccc;
+}
+.x-Button:hover {
+  border-color: #9cf #69e #69e #7af;
+}
+.x-Button[disabled] {
+  cursor: default;
+  color: #888;
+}
+.x-Button[disabled]:hover {
+  border: 1px outset #ccc;
+}
+
+#main {
+  width: 98%;
+  height: auto;
+  margin: 0 auto;
+  margin-top: 10pt;
+  margin-bottom: 20pt;
+  position: relative;
+  text-align: center;
+}
+
+#header {}
+
+.top10 {
+	position: fixed;
+	top: 0;
+	right: 0;
+	text-align: right;
+	width: 20%;
+	background-color: white;
+	border-left: 2px solid #ccc;
+	border-bottom: 2px solid #ccc;
+	font-size: small;
+}
+
+.top10 p, .top10 ul, .top10 h3, .top10 h4, .top10 dl, .top10 pre {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.top10 blockquote {
+    margin-left: 12px;
+}
+
+.top10 ul, .top10 ol {
+    margin-left: 1.5em;
+}
+
+.top10 h3 {
+    margin-top: .6em;
+}
+
+.top10 h2, .top10 caption, .inline-group h2 {
+    margin: 0;
+    padding: 2px 5px 3px 5px;
+    font-size: 11px;
+    text-align: left;
+    font-weight: bold;
+    background: #7CA0C7 url(../img/default-bg.gif) top left repeat-x;
+    color: white;
+}
+
+.top10 h2 {
+	background: #eee url(../img/nav-bg.gif) bottom left repeat-x;
+    color: #666;
+}
+
+.top10 ul.actionlist {
+    margin-left: 0;
+    text-align: left;
+}
+
+ul.actionlist li {
+    list-style-type: none;
+}
+
+
+.top10 table {
+    border-collapse: collapse;
+}
+
+#contents {}
+
+.ask {}
+
+.logo {
+	width: 352px;
+	height: 352px;
+	display: block;
+	margin: 5px auto;
+}
+
+.form {}
+
+#result {
+	width: 100%;
+	height: 100px;
+	margin: 10px auto;
+	padding: 5px;
+	display: block;
+	text-align: center;
+	background-color: #fff;
+}
+
+#footer {
+	position: fixed;
+	bottom: 0;
+	text-align: center;
+	width: 100%;
+	background-color: white;
+}

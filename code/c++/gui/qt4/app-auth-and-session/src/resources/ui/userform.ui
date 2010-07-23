@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>842</width>
-    <height>803</height>
+    <height>806</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>User :: Form</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+   <iconset resource="resources.qrc">
     <normaloff>:/default/static/default/icons/22x22/face-devilish.png</normaloff>:/default/static/default/icons/22x22/face-devilish.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
@@ -43,6 +43,34 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="previousPushButton">
+       <property name="text">
+        <string>&amp;Previous</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/go-previous.png</normaloff>:/default/static/default/icons/22x22/go-previous.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Right, Ctrl+PgDown</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="nextPushButton">
+       <property name="text">
+        <string>&amp;Next</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/go-next.png</normaloff>:/default/static/default/icons/22x22/go-next.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Left, Ctrl+PgUp</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -330,7 +358,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>&amp;Remove</string>
           </property>
           <property name="icon">
-           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+           <iconset resource="resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/edit-delete.png</normaloff>:/default/static/default/icons/22x22/edit-delete.png</iconset>
           </property>
           <property name="shortcut">
@@ -357,7 +385,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>&amp;Save</string>
           </property>
           <property name="icon">
-           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+           <iconset resource="resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</iconset>
           </property>
           <property name="shortcut">
@@ -371,7 +399,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>Save and &amp;continue saving</string>
           </property>
           <property name="icon">
-           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+           <iconset resource="resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/dialog-ok.png</normaloff>:/default/static/default/icons/22x22/dialog-ok.png</iconset>
           </property>
           <property name="shortcut">
@@ -385,7 +413,7 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
            <string>&amp;Cancel</string>
           </property>
           <property name="icon">
-           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+           <iconset resource="resources.qrc">
             <normaloff>:/default/static/default/icons/22x22/dialog-cancel.png</normaloff>:/default/static/default/icons/22x22/dialog-cancel.png</iconset>
           </property>
           <property name="shortcut">
@@ -420,7 +448,8 @@ font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
   <tabstop>cancelPushButton</tabstop>
  </tabstops>
  <resources>
-  <include location="../../../crud-2/resources/ui/resources.qrc"/>
+  <include location="resources.qrc"/>
+  <include location="../../../../crud-2/resources/ui/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -314,7 +314,7 @@ class Crawler(threading.Thread):
                 logging.debug("%d-Remove directories and files: %s..." % \
                               (self.id, email_id))
                 self.rmdir(email_id)
-                #self.add_email_error(email_id) # ;-), Test!
+                self.add_email_error(email_id) # ;-), Test!
             
         logging.info("%d-Running rollback..." % self.id)
         self.rollback()
@@ -366,9 +366,9 @@ Nycholas de Oliveira e Oliveira.
                                              str(self._email_id_errors)))
         try:
             send_email(self.smtp_hostname, self.smtp_port, 
-                   self.smtp_username, self.smtp_password, 
-                   self.smtp_from_addr, self.smtp_to_addrs, 
-                   subject, msg)
+                       self.smtp_username, self.smtp_password, 
+                       self.smtp_from_addr, self.smtp_to_addrs, 
+                       subject, msg)
         except Exception, e:
             logging.error("!! Error: %s" % str(e))
             logging.error("Traceback:", exc_info=1)

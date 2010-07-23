@@ -37,6 +37,7 @@ User::User(QWidget *parent) :
 	createViews();
 	createActions();
 	updateModels();
+	createWidgets();
 	updateWidgets();
 }
 
@@ -49,13 +50,14 @@ void User::timerStatusAction(void) {
 }
 
 void User::newAction(void) {
-	UserForm *form = new UserForm();
+	userModel->setId(0);
+	UserForm *form = new UserForm(userModel);
 	connect(form, SIGNAL(formAdded()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formChanged()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formDeleted()), this, SLOT(updateModels()));
+	connect(form, SIGNAL(sendStatus(const QString &, int)), this,
+			SLOT(updateStatus(const QString &, int)));
 	form->show();
-	form->raise();
-	form->activateWindow();
 }
 
 void User::activateAction(void) {
@@ -87,14 +89,14 @@ void User::removeAction(void) {
 				"deleted:\n\nUser: %1\n").arg(name)));
 	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No
 			| QMessageBox::Cancel);
-	msgBox.setDefaultButton(QMessageBox::No);
+	msgBox.setDefaultButton(QMessageBox::Yes);
 	int ret = msgBox.exec();
 	if (ret == QMessageBox::Cancel) {
 		return;
 	} else if (ret == QMessageBox::No)
 		return;
 
-	UserModel *m = new UserModel();
+	UserModel *m = new UserModel(0, this);
 	UserModel::selectById(id, m);
 	if (!m->remove()) {
 		errorStatus(qApp->tr("Fails to remove the record."));
@@ -104,33 +106,34 @@ void User::removeAction(void) {
 	updateModels();
 }
 
+void User::createWidgets(void) {
+	userSearch = new UserSearch(userModel);
+	connect(userSearch, SIGNAL(formSearched()), this, SLOT(updateSearchForm()));
+	connect(userSearch, SIGNAL(formSearchClose()), this, SLOT(
+			updateSearchFormClose()));
+}
+
 void User::searchAdvancedAction(bool checked) {
-	if (checked) {
-		userSearch = new UserSearch(userModel);
-		userSearch->setAttribute(Qt::WA_DeleteOnClose);
-		connect(userSearch, SIGNAL(formSearched()), this, SLOT(
-				updateSearchForm()));
-		connect(userSearch, SIGNAL(formSearchClose()), this, SLOT(
-				updateSearchFormClose()));
-		//connect(userSearch, SIGNAL(hide()), this, SLOT(formSearchClose()));
+	if (!userSearch->isVisible()) {
 		userSearch->show();
 		userSearch->raise();
 		userSearch->activateWindow();
 	} else {
-		userSearch->close();
+		userSearch->hide();
 	}
 }
 
 void User::searchTextChangedAction(const QString &text) {
 	if (text.isEmpty() || text.isNull()) {
-		userModel->setFilter("");
+		userModel->setF("");
 	} else {
-		userModel->setFilter(QString("name LIKE '%1\%'").arg(text));
+		userModel->setF(QString("name LIKE '%1\%'").arg(text));
 	}
+	userModel->setBegin(0);
 	updateModels();
 }
 
-void User::doubleClickedItemViewAction(const QModelIndex &index) {
+void User::selectedItemViewAction(const QModelIndex &index) {
 	if (!index.isValid()) {
 		infoStatus(qApp->tr("Please select an item to edit."));
 		return;
@@ -139,37 +142,39 @@ void User::doubleClickedItemViewAction(const QModelIndex &index) {
 	QSqlRecord record = userModel->record(index.row());
 	int id = record.value(user_id).toInt();
 
-	UserForm *form = new UserForm(id);
+	UserForm *form = new UserForm(userModel);
 	connect(form, SIGNAL(formAdded()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formChanged()), this, SLOT(updateModels()));
 	connect(form, SIGNAL(formDeleted()), this, SLOT(updateModels()));
+	connect(form, SIGNAL(sendStatus(const QString &, int)), this,
+			SLOT(updateStatus(const QString &, int)));
 	form->show();
-	form->raise();
-	form->activateWindow();
 }
 
 void User::lastestAction(void) {
-	userModel->query().first();
+	userModel->setBegin(0);
 	updateModels();
 }
 
 void User::nextAction(void) {
-	userModel->query().next();
+	userModel->setBegin(userModel->begin() - userModel->limit());
 	updateModels();
 }
 
 void User::previousAction(void) {
-	userModel->query().previous();
+	userModel->setBegin(userModel->begin() + userModel->limit());
 	updateModels();
 }
 
 void User::oldestAction(void) {
-	userModel->query().last();
+	int count = userModel->count();
+	int limit = userModel->limit();
+	userModel->setBegin((limit * count / limit) - limit);
 	updateModels();
 }
 
 void User::createModels(void) {
-	userModel = new QSqlRelationalTableModel(this);
+	userModel = new UserModel(0, this);
 	userModel->setTable("auth_user");
 	userModel->setHeaderData(user_id, Qt::Horizontal, qApp->tr("Id"));
 	userModel->setHeaderData(user_name, Qt::Horizontal, qApp->tr("Name"));
@@ -186,6 +191,8 @@ void User::createViews(void) {
 
 	QHeaderView *header = userTableView->horizontalHeader();
 	header->setStretchLastSection(true);
+connect(header, SIGNAL(sortIndicatorChanged(int, Qt::SortOrder)), this,
+		SLOT(updateModels()));
 }
 
 void User::createActions(void) {
@@ -197,13 +204,13 @@ void User::createActions(void) {
 	connect(deactivatePushButton, SIGNAL(released()), this, SLOT(
 			desactivateAction()));
 	connect(removePushButton, SIGNAL(released()), this, SLOT(removeAction()));
-	connect(searchAdvancedToolButton, SIGNAL(toggled(bool)), this,
-			SLOT(searchAdvancedAction(bool)));
-	connect(searchLineEdit, SIGNAL(textChanged(const QString &)), this,
-			SLOT(searchTextChangedAction(const QString &)));
+	connect(searchAdvancedPushButton, SIGNAL(released()), this, SLOT(
+			searchAdvancedAction()));
+	connect(searchLineEdit, SIGNAL(returnPressed()), this, SLOT(
+			searchTextChangedAction()));
 
-	connect(userTableView, SIGNAL(doubleClicked(const QModelIndex &)), this,
-			SLOT(doubleClickedItemViewAction(const QModelIndex &)));
+	connect(userTableView, SIGNAL(doubleClicked(const QModelIndex &)),
+			this, SLOT(doubleClickedItemViewAction(const QModelIndex &)));
 
 	connect(latestPushButton, SIGNAL(released()), this, SLOT(lastestAction()));
 	connect(nextPushButton, SIGNAL(released()), this, SLOT(nextAction()));
@@ -224,18 +231,30 @@ void User::updateWidgets(void) {
 	}
 	activatePushButton->hide();
 	deactivatePushButton->hide();
+	userTableView->setTabKeyNavigation(true);
 	statusLabel->hide();
 }
 
 void User::updateModels(void) {
-	userModel->select();
+	userModel->paginator();
 	qDebug() << "Query:" << userModel->query().lastQuery();
 
-	int size = userModel->query().size() < 0 ? 0 : userModel->query().size();
-	statusTableViewLabel->setText(size > 1 ? QString(qApp->tr("%1 user")).arg(
-			size) : QString(qApp->tr("%1 user")).arg(size));
+	int begin = userModel->begin();
+	int limit = userModel->limit();
+	int sizeAll = userModel->count();
+	int size = userModel->query().size();
+
+	statusNotebookTableViewLabel->setText(sizeAll > 1 ? QString(qApp->tr(
+			"%1 users")).arg(sizeAll) : QString(qApp->tr("%1 user")).arg(
+			sizeAll));
 	statusPaginationLabel->setText(QString(qApp->tr(
-			"<b>%1</b> - <b>%2</b> de <b>%3</b>")).arg(1).arg(25).arg(size));
+			"<b>%1</b> - <b>%2</b> de <b>%3</b>")).arg(begin).arg(limit).arg(
+			sizeAll));
+
+	latestPushButton->setEnabled(begin > 0);
+	nextPushButton->setEnabled(begin > 0);
+	previousPushButton->setEnabled(sizeAll > (size + begin));
+	oldestPushButton->setEnabled(sizeAll > (size + begin));
 }
 
 void User::timerStatus(void) {
@@ -281,6 +300,25 @@ void User::updateSearchForm(void) {
 
 void User::updateSearchFormClose(void) {
 	searchLineEdit->clear();
-	searchAdvancedToolButton->setChecked(false);
 	updateModels();
+}
+
+void User::updateStatus(const QString &msg, int code) {
+	switch (code) {
+	case 0:
+		okStatus(msg);
+		break;
+	case 1:
+		infoStatus(msg);
+		break;
+	case 2:
+		alertStatus(msg);
+		break;
+	case 3:
+		errorStatus(msg);
+		break;
+	default:
+		okStatus(msg);
+		break;
+	}
 }

@@ -53,7 +53,7 @@ LOGGING_LEVELS = {
 LOGGING_DIR = os.path.join(RESOURCES_DIR, "log")
 if not os.path.exists(LOGGING_DIR):
     LOGGING_DIR = os.path.join(BASE_DIR, "share", "log")
-LOGGING_LEVEL = LOGGING_LEVELS.get("debug", logging.NOTSET)
+LOGGING_LEVEL = LOGGING_LEVELS.get("info", logging.NOTSET)
 LOGGING_FILE_CONF = os.path.join(RESOURCES_DIR, "logging.conf")
 
 PROFILE_FILE_CONF = os.path.join(RESOURCES_DIR, "profile.conf")

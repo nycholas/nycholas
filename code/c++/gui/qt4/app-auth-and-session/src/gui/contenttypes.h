@@ -13,7 +13,7 @@
  *    and/or other materials provided with the distribution.
  *  * Neither the name of the Nycholas de Oliveira e Oliveira nor the names of
  *    its contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
+ *    this software without specific prior written group.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -41,13 +41,13 @@
 #include <QTimer>
 #include <QMessageBox>
 
-#include "widgets/ui_contenttypes.h"
-#include "contenttypesmodel.h"
-#include "contenttypesform.h"
-#include "contenttypessearch.h"
+#include "widgets/ui_group.h"
+#include "groupmodel.h"
+#include "groupform.h"
+#include "groupsearch.h"
 
-class ContentTypes: public QWidget, private Ui::ContentTypes {
-Q_OBJECT
+class Group: public QWidget, private Ui::Group {
+	Q_OBJECT
 
 private slots:
 	void timerStatusAction(void);
@@ -55,9 +55,10 @@ private slots:
 	void activateAction(void);
 	void desactivateAction(void);
 	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
-	void doubleClickedItemViewAction(const QModelIndex &index);
+	void searchAdvancedAction(void);
+	void searchTextChangedAction(void);
+	void closeAction(void);
+	void selectedItemViewAction(const QModelIndex &index);
 	void lastestAction(void);
 	void nextAction(void);
 	void previousAction(void);
@@ -67,6 +68,7 @@ private:
 	void createModels(void);
 	void createViews(void);
 	void createActions(void);
+	void createWidgets(void);
 	void updateWidgets(void);
 
 	void timerStatus(void);
@@ -76,25 +78,23 @@ private:
 	void errorStatus(const QString &msg);
 
 	QTimer *statusTimer;
-	QSqlRelationalTableModel *contentTypesModel;
-	QSqlRelationalDelegate *contentTypesDelegate;
-	ContentTypesSearch *contentTypesSearch;
+	GroupModel *groupModel;
+	QSqlRelationalDelegate *groupDelegate;
+	GroupSearch *groupSearch;
 
 public slots:
 	void updateModels(void);
 	void updateSearchForm(void);
 	void updateSearchFormClose(void);
+	void updateStatus(const QString &msg, int code);
 
 public:
-	ContentTypes(QWidget *parent = 0);
-	~ContentTypes();
+	Group(QWidget *parent = 0);
+	~Group();
 
 	enum {
-		contenttype_id = 0,
-		contenttype_name = 1,
-		contenttype_appLabel = 2,
-		contenttype_model = 3
+		group_id = 0, group_name = 1
 	};
 };
 
-#endif /* CONTENTTYPES_H_ */
+#endif /* CONTENTTYPES_H */

@@ -29,20 +29,10 @@
  */
 #include "user.h"
 
-UserForm::UserForm(QDialog *parent) :
+UserForm::UserForm(UserMoe *model, QDialog *parent) :
 	QDialog(parent) {
 	setupUi(this);
-	userModel = new UserModel();
-	statusTimer = new QTimer(this);
-	createActions();
-	updateWidgets();
-}
-
-UserForm::UserForm(int id, QDialog *parent) :
-	QDialog(parent) {
-	setupUi(this);
-	userModel = new UserModel();
-	userModel->setId(id);
+	userModel = model;
 	statusTimer = new QTimer(this);
 	createActions();
 	updateWidgets();
@@ -56,25 +46,59 @@ void UserForm::timerStatusAction(void) {
 	statusLabel->setText("");
 }
 
+void UserForm::nextAction(void) {
+	qDebug() << "next";
+	QSqlQuery query = userModel->query();
+	if (!query.next())
+		return;
+	int idCol = query.record().indexOf("id");
+	if (query.next()) {
+		userModel->setId(query.value(idCol).toInt());
+		qDebug() << "next>>" << userModel->getId();
+	}
+	select();
+
+	int begin = userModel->begin();
+	int sizeAll = userModel->count();
+	int size = userModel->query().size();
+
+	nextPushButton->setEnabled(begin > 0);
+	previousPushButton->setEnabled(sizeAll > (size + begin));
+}
+
+void UserForm::previousAction(void) {
+	qDebug() << "pre";
+	QSqlQuery query = userModel->query();
+	if (!query.previous())
+		return;
+	int idCol = query.record().indexOf("id");
+	if (query.next()) {
+		userModel->setId(query.value(idCol).toInt());
+		qDebug() << "pre>>" << userModel->getId();
+	}
+	select();
+
+	int begin = userModel->begin();
+	int sizeAll = userModel->count();
+	int size = userModel->query().size();
+
+	nextPushButton->setEnabled(begin > 0);
+	previousPushButton->setEnabled(sizeAll > (size + begin));
+}
+
 void UserForm::saveAction(void) {
 	if (!save()) {
 		errorStatus(qApp->tr("Failure trying to register the record."));
 	} else {
 		if (userModel->getId() > 0) {
-			QMessageBox::information(
-					0,
-					qApp->tr("User changed"),
-					QString(qApp->tr(
-							"The user \"%1\" was changed successfully.")).arg(
-							userModel->getName()), QMessageBox::Ok);
+			QMessageBox::information(0, qApp->tr("User changed"), QString(
+					qApp->tr("The user \"%1\" was changed successfully.")).arg(
+					userModel->getName()), QMessageBox::Ok);
 			emit formChanged();
 		} else {
-			QMessageBox::information(
-					0,
-					qApp->tr("User added"),
-					QString(qApp->tr(
-							"The user \"%1\" was added successfully.")).arg(
-							userModel->getName()), QMessageBox::Ok);
+			QMessageBox::information(0, qApp->tr("User added"), QString(
+					qApp->tr("The user \"%1\" was added successfully.")).arg(
+					userModel->getName()), QMessageBox::Ok);
 			emit formAdded();
 		}
 		updateModels();
@@ -93,8 +117,8 @@ void UserForm::saveAndContinueSavingAction(void) {
 					userModel->getName()));
 			emit formChanged();
 		} else {
-			okStatus(QString(qApp->tr(
-					"The user \"%1\" was added successfully.")).arg(
+			okStatus(QString(
+					qApp->tr("The user \"%1\" was added successfully.")).arg(
 					userModel->getName()));
 			emit formAdded();
 		}
@@ -106,12 +130,10 @@ void UserForm::saveAndContinueSavingAction(void) {
 void UserForm::removeAction(void) {
 	QMessageBox msgBox;
 	msgBox.setText(qApp->tr("Are you sure?"));
-	msgBox.setInformativeText(
-			QString(qApp->tr(
-					"Are you sure you want to delete the selected user objects?\n"
-						"All of the following objects and their related items will be "
-						"deleted:\n\nUser: %1\n").arg(
-					userModel->getName())));
+	msgBox.setInformativeText(QString(qApp->tr(
+			"Are you sure you want to delete the selected user objects?\n"
+				"All of the following objects and their related items will be "
+				"deleted:\n\nUser: %1\n").arg(userModel->getName())));
 	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No
 			| QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::No);
@@ -126,9 +148,8 @@ void UserForm::removeAction(void) {
 	if (!remove()) {
 		errorStatus(qApp->tr("Fails to remove the record."));
 	} else {
-		QMessageBox::information(0, qApp->tr("User deleted"), QString(
-				qApp->tr("Successfully deleted %1 user.")).arg("1"),
-				QMessageBox::Ok);
+		QMessageBox::information(0, qApp->tr("User deleted"), QString(qApp->tr(
+				"Successfully deleted %1 user.")).arg("1"), QMessageBox::Ok);
 		emit
 		formDeleted();
 		updateModels();
@@ -145,8 +166,8 @@ void UserForm::createActions(void) {
 	connect(statusTimer, SIGNAL(timeout()), this, SLOT(timerStatusAction()));
 
 	connect(savePushButton, SIGNAL(released()), this, SLOT(saveAction()));
-	connect(saveAndContinueSavingPushButton, SIGNAL(released()), this,
-			SLOT(saveAndContinueSavingAction()));
+	connect(saveAndContinueSavingPushButton, SIGNAL(released()), this, SLOT(
+			saveAndContinueSavingAction()));
 	connect(removePushButton, SIGNAL(released()), this, SLOT(removeAction()));
 	connect(cancelPushButton, SIGNAL(released()), this, SLOT(cancelAction()));
 }

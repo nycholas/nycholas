@@ -41,7 +41,7 @@ except ImportError, e:
     logging.warning("!! Not module abc: %s" % e)
 
     class ForwardBase(object):
-        
+
         def __init__(self):
             logging.debug("In ForwardBase::__init__()")
             logging.warning("ForwardBase::__init__() not implemented")
@@ -52,7 +52,7 @@ except ImportError, e:
 
 
 class Destiny(object):
-    
+
     def __init__(self, forwards, file_config=None):
         logging.debug("In Destiny::__init__()")
         file_config = file_config or constant.FORWARD_FILE_CONF
@@ -106,13 +106,13 @@ class Destiny(object):
                 clazzobj = type(clazz, (eval('run_module.%s' % clazz),), {})
                 if issubclass(clazzobj, ForwardBase):
                     self.add(destiny, clazzobj())
-                    
+
     def add_email_error(self, email_id):
         logging.debug("In Destiny::add_email_error()")
         logging.debug("++ email_id: %s" % (email_id,))
-        if not email_id in self._email_id_errors: 
+        if not email_id in self._email_id_errors:
             self._email_id_errors.append(email_id)
-            
+
     def email_errors(self):
         logging.debug("In Destiny::email_error()")
         return self._email_id_errors
@@ -139,8 +139,9 @@ class Destiny(object):
             return
         emails_id = []
         destinations = {}
-        for destiny in self._plugins.keys():            
+        for destiny in self._plugins.keys():
             destinations.setdefault(destiny, email_models[-1].get(destiny))
+            emails_id.append(email_models[-1].email_id())
         for email_model in email_models[:-1]:
             for destiny in self._plugins.keys():
                 d_tables = destinations.get(destiny).get("tables")
@@ -156,7 +157,8 @@ class Destiny(object):
                 try:
                     forward.execute(models)
                 except Exception, e:
-                    logging.error("!! Error: %s" % (str(e),))
+                    logging.error("!! Error-execute: %s" % (str(e),))
+                    logging.info("Add emails in queure error: %s" % str(emails_id))
                     for email_id in emails_id:
                         self.add_email_error(email_id)
                     continue

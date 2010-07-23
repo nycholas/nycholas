@@ -36,10 +36,10 @@ class OracleForward(ForwardBase):
     ORACLE_CLOB = "CLOB"
     ORACLE_BLOB = "BLOB"
     ORACLE_BUILTIN = "BUILTIN"
-    
+
     def __init__(self):
         logging.debug("In OracleForward::__init__()")
-                    
+
     def _search_column(self, items, column, func):
         logging.debug("In OracleForward::_search_column()")
         logging.debug(":: column: %s" % str(column))
@@ -53,7 +53,7 @@ class OracleForward(ForwardBase):
         logging.info(":: Number of tables: %d" % len(list_table))
         if not list_table:
             return
-        
+
         hostname = items.get("hostname") or "localhost"
         try:
             port = int(items.get("port"))
@@ -62,35 +62,37 @@ class OracleForward(ForwardBase):
         hostdb = "%s:%d/%s" % (hostname, port, items.get("name"))
 
         logging.info("Connecting in database: %s..." % hostdb)
-        self.conn = cx_Oracle.connect(items.get("username"), 
+        self.conn = cx_Oracle.connect(items.get("username"),
                                       items.get("password"), hostdb)
+
+        logging.info("Create cursor...")
+        self.cur = self.conn.cursor()
 
         for tables in list_table:
             for table, rows in tables.iteritems():
                 logging.info(":: Number of rows: %d" % len(rows))
-                
+
                 logging.info("Genareting query: %s..." % table)
                 query = self.generate_query(table, rows[-1])
                 logging.debug(":: query: %s" % query)
-                
+
                 self.execute_many(rows)
-        
+
                 logging.info("Running and inserting items in database...")
-                cur = self.conn.cursor()
-                cur.executemany(query, self.execute_many(rows))
+                self.cur.executemany(query, self.execute_many(rows))
                 logging.info("Insert a row of data")
         logging.info("Save (commit) the changes...")
         self.conn.commit()
 
         logging.info("Close connection database...")
         self.conn.close()
-        
+
     def execute_many(self, rows):
         logging.debug("In OracleForward::execute_many()")
         logging.debug(":: rows: %s" % str(rows))
         for row in rows[:]:
             for column, value in row.copy().iteritems():
-                logging.debug(":: column: %s, value: %s" % (str(column), 
+                logging.debug(":: column: %s, value: %s" % (str(column),
                                                             str(value)))
                 if column.find(":") != -1:
                     slicers = column.split(":")
@@ -105,6 +107,7 @@ class OracleForward(ForwardBase):
                             row[column] = open(value, "rb").read()
         many = [tuple(i.values()) for i in rows]
         logging.debug(":: Items for database: %s" % str(many))
+        print many
         return many
 
     def generate_query(self, table, items):

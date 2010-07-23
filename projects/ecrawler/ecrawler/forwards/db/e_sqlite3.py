@@ -41,30 +41,32 @@ class SQLite3Forward(ForwardBase):
     def execute(self, items):
         logging.debug("In SQLite3Forward::execute()")
         logging.debug("++ items: %s" % str(items))
-    
+
         list_table = items.get("tables")
         logging.info(":: Number of tables: %d" % len(list_table))
         if not list_table:
             return
-        
+
         logging.info("Connecting in database: %s..." % items.get("name"))
         self.conn = sqlite3.connect(items.get("name"))
-        
+
+        logging.info("Create cursor...")
+        cur = self.conn.cursor()
+
         for tables in list_table:
             for table, rows in tables.iteritems():
                 logging.info(":: Number of rows: %d" % len(rows))
-                
+
                 logging.info("Genareting query: %s..." % table)
                 query = self.generate_query(table, rows[-1])
                 logging.debug(":: query: %s" % query)
-        
+
                 logging.info("Running and inserting items in database...")
-                cur = self.conn.cursor()
                 cur.executemany(query, self.execute_many(rows))
                 logging.info("Insert a row of data")
         logging.info("Save (commit) the changes...")
         self.conn.commit()
-                
+
         logging.info("Close connection database...")
         self.conn.close()
 

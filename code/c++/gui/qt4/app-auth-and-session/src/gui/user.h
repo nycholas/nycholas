@@ -47,7 +47,7 @@
 #include "usersearch.h"
 
 class User: public QWidget, private Ui::User {
-Q_OBJECT
+	Q_OBJECT
 
 private slots:
 	void timerStatusAction(void);
@@ -55,9 +55,10 @@ private slots:
 	void activateAction(void);
 	void desactivateAction(void);
 	void removeAction(void);
-	void searchAdvancedAction(bool checked);
-	void searchTextChangedAction(const QString &text);
-	void doubleClickedItemViewAction(const QModelIndex &index);
+	void searchAdvancedAction(void);
+	void searchTextChangedAction(void);
+	void closeAction(void);
+	void selectedItemViewAction(const QModelIndex &index);
 	void lastestAction(void);
 	void nextAction(void);
 	void previousAction(void);
@@ -67,6 +68,7 @@ private:
 	void createModels(void);
 	void createViews(void);
 	void createActions(void);
+	void createWidgets(void);
 	void updateWidgets(void);
 
 	void timerStatus(void);
@@ -76,7 +78,7 @@ private:
 	void errorStatus(const QString &msg);
 
 	QTimer *statusTimer;
-	QSqlRelationalTableModel *userModel;
+	UserModel *userModel;
 	QSqlRelationalDelegate *userDelegate;
 	UserSearch *userSearch;
 
@@ -84,15 +86,15 @@ public slots:
 	void updateModels(void);
 	void updateSearchForm(void);
 	void updateSearchFormClose(void);
+	void updateStatus(const QString &msg, int code);
 
 public:
 	User(QWidget *parent = 0);
 	~User();
 
 	enum {
-		user_id = 0,
-		user_name = 1
+		user_id = 0, user_name = 1
 	};
 };
 
-#endif /* USER_H_ */
+#endif /* USER_H */
