@@ -16,8 +16,8 @@ def index(request):
         question_form = QuestionForm(request.POST)
         if question_form.is_valid():
             new_question = question_form.save()
-            #orchestra = Orchestra(new_question.ask)
-            #orchestra.start()
+            orchestra = Orchestra(new_question.ask)
+            orchestra.start()
             return HttpResponseRedirect(new_question.get_absolute_url())
     else:
         initial = {}
