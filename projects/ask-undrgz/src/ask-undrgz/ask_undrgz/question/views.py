@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _
@@ -11,6 +12,7 @@ from ask_undrgz.question.forms import QuestionForm
 from ask_undrgz.question.models import Question
 
 def index(request):
+    logging.debug("In question.views::index()")
     question_curr_key = request.GET.get('key')
     if request.method == 'POST':
         question_form = QuestionForm(request.POST)
@@ -33,6 +35,7 @@ def index(request):
     })
         
 def answer(request, question_key):
+    logging.debug("In question.views::answer()")
     question = Question.get(question_key)
     if request.is_ajax():
         return HttpResponse(simplejson.dumps(question.to_dict()), 
