@@ -21,8 +21,8 @@ def index(request):
         question_form = QuestionForm(request.POST)
         if question_form.is_valid():
             new_question = question_form.save()
-            orchestra = Orchestra(new_question.ask)
-            orchestra.start()
+            #orchestra = Orchestra(new_question.ask)
+            #orchestra.start()
             return HttpResponseRedirect(new_question.get_absolute_url())
     else:
         initial = {}
@@ -51,6 +51,7 @@ def answer(request, question_key):
         'question_curr_key': question_key,
         'question_top10': question_top10,
         'question_form': question_form,
+        'answer_by_question': question.answer,
     })
     
 def incoming_chat(request):
@@ -64,10 +65,10 @@ def incoming_chat(request):
     if request.method != 'POST':
         return HttpResponse('XMPP requires POST', status=405)
     sender = request.POST.get('from')
+    message = request.POST.get('body')
     if not sender:
         logging.warn('Incoming chat without "from" key ignored')
     else:
-        sts = xmpp.send_message([sender],
-                                'Sorry, Rietveld does not support chat input')
+        sts = xmpp.send_message([sender], message)
         logging.debug('XMPP status %r', sts)
     return HttpResponse('')

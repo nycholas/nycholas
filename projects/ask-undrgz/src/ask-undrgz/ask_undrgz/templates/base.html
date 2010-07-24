@@ -16,21 +16,35 @@
 	
 	<script type="text/javascript" src="/static/js/jquery.js"></script>
 	<script type="text/javascript">
-	function submit_form() {
-		$('#id_question_form').submit(function() {
-			$.post('/_ah/xmpp/message/chat/', {
-				from: 'nycholas@gmail.com',
-				to: 'underguiz@ilostmyself.org',
-				body: $('#id_ask').val(),
-				stanza: 'normal'
-			});
+	function send_ask() {
+		$.post('/', {
+			ask: $('#id_ask').val()
+		}, function(data) {
+			//window.alert('send_ask:'+data);
 		});
-		return true;
+	}
+	
+	function send_message() {
+		var st = $.post('/_ah/xmpp/message/chat/', {
+			from: 'nycholas@gmail.com',
+			to: 'nycholas@gmail.com',
+			body: $('#id_ask').val(),
+			stanza: 'normal'
+		}, function(data) {
+			//window.alert('send_message:'+data);
+			return data;
+		});
+		return st;
+	}
+	
+	function submit_form() {
+		send_message();
+		return false;
 	}
 	
 	function set_question_and_submit_form(question) {
 		$('#id_ask').data(question);
-		return submit_form();
+		return true;
 	}
 	
 	function update_answer() {		
@@ -54,6 +68,10 @@
 		).appendTo('#result').hide()
 		loading.ajaxStart(function() {
 			$(this).show();
+		});
+		
+		$('#id_question_form').submit(function() {
+			submit_form();
 		});
 		
 		update_answer();
