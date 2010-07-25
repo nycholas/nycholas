@@ -19,22 +19,39 @@
 	function send_ask() {
 		$.post('/', {
 			ask: $('#id_ask').val()
-		}, function(data) {
-			//window.alert('send_ask:'+data);
-		});
+		}, function(data, status, xhr) {
+			window.alert('send_ask: '+data+':'+status+':'+xhr);
+		}, 'json');
+	}
+	
+	function is_online() {
+		$.post('/is_online/', {from: 'nycholas@gmail.com'},
+			function(data, status, xhr) {
+			//window.alert('is_online:'+data+':'+status+':'+xhr);
+			if (data) {
+				$('#id_logo').html('<img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" />');
+				$('#id_ask').attr('disabled', '');
+				$('#id_send_question').attr('disabled', '');
+			} else {
+				$('#id_logo').html('<img src="/static/img/awesomeaface-nocolor.png" width="352" height="352" alt="underguiz - offline" />');
+				$('#id_ask').attr('disabled', 'disabled');
+				$('#id_send_question').attr('disabled', 'disabled');
+			}
+			loading.ajaxStop(function() {
+				$(this).hide();
+			});
+		}, 'json');
 	}
 	
 	function send_message() {
-		var st = $.post('/_ah/xmpp/message/chat/', {
+		$.post('/send_message/', {
 			from: 'nycholas@gmail.com',
-			to: 'nycholas@gmail.com',
+			to: 'underguiz@ilostmyself.org',
 			body: $('#id_ask').val(),
 			stanza: 'normal'
-		}, function(data) {
-			//window.alert('send_message:'+data);
-			return data;
-		});
-		return st;
+		}, function(data, status, xhr) {
+			window.alert('send_message:'+data+':'+status+':'+xhr);
+		}, 'json');
 	}
 	
 	function submit_form() {
@@ -50,14 +67,16 @@
 	function update_answer() {		
 		var question_key_curr = $('#id_key').val();
 		if (question_key_curr) {
-			$.getJSON('/'+question_key_curr+'/answer/', function(data) {
+			$.get('/'+question_key_curr+'/answer/', 
+			function(data, status, xhr) {
+				//window.alert('update_answer:'+':'+status+':'+xhr);
 				if (data.answer != 'None') {
 					loading.ajaxStop(function() {
 						$(this).hide();
 					});
 					$('#result').html('<b>underguiz:</b> '+data.answer);
 				}
-		    });
+		    }, 'json');
 		}
 	}
 	
@@ -74,8 +93,13 @@
 			submit_form();
 		});
 		
+		is_online();
+		var interval_is_online = window.setInterval(function() {
+			is_online();
+		}, 5000);
+		
 		update_answer();
-		var interval = window.setInterval(function() {
+		var interval_update_answer = window.setInterval(function() {
 			update_answer();
 		}, 1000);
 	});

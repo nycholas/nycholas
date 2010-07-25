@@ -10,7 +10,6 @@ from django.shortcuts import render_to_response
 from django.utils import simplejson
 from django.core import serializers
 
-from ask_undrgz.middleman.orchestra import Orchestra
 from ask_undrgz.question.forms import QuestionForm
 from ask_undrgz.question.models import Question
 
@@ -21,8 +20,6 @@ def index(request):
         question_form = QuestionForm(request.POST)
         if question_form.is_valid():
             new_question = question_form.save()
-            #orchestra = Orchestra(new_question.ask)
-            #orchestra.start()
             return HttpResponseRedirect(new_question.get_absolute_url())
     else:
         initial = {}
@@ -53,6 +50,39 @@ def answer(request, question_key):
         'question_form': question_form,
         'answer_by_question': question.answer,
     })
+
+def is_online(request):
+    logging.debug("In question.views::incoming_chat()")
+    user_address = request.REQUEST.get('from')
+    chat_message_sent = False
+    if not user_address:
+        if request.is_ajax():
+            return HttpResponse(simplejson.dumps(chat_message_sent), 
+                                mimetype='application/json')
+        return HttpResponse('from is required', status=405)
+    chat_message_sent = xmpp.get_presence(user_address)
+    if request.is_ajax():
+        return HttpResponse(simplejson.dumps(chat_message_sent), 
+                            mimetype='application/json')
+    return HttpResponse(chat_message_sent)
+    
+def send_message(request):
+    logging.debug("In question.views::send_message()")
+    user_address = request.REQUEST.get('from')
+    message = request.REQUEST.get('body')
+    chat_message_sent = False
+    if not user_address or not message:
+        if request.is_ajax():
+            return HttpResponse(simplejson.dumps(chat_message_sent), 
+                                mimetype='application/json')
+        return HttpResponse('from and message is required', status=405)
+    if xmpp.get_presence(user_address):
+        status_code = xmpp.send_message(user_address, message)
+        chat_message_sent = (status_code != xmpp.NO_ERROR)
+    if request.is_ajax():
+        return HttpResponse(simplejson.dumps(chat_message_sent), 
+                            mimetype='application/json')
+    return HttpResponse(chat_message_sent)
     
 def incoming_chat(request):
     """/_ah/xmpp/message/chat/
@@ -64,6 +94,7 @@ def incoming_chat(request):
     logging.debug("In question.views::incoming_chat()")
     if request.method != 'POST':
         return HttpResponse('XMPP requires POST', status=405)
+    st = False
     sender = request.POST.get('from')
     message = request.POST.get('body')
     if not sender:
@@ -71,4 +102,5 @@ def incoming_chat(request):
     else:
         sts = xmpp.send_message([sender], message)
         logging.debug('XMPP status %r', sts)
-    return HttpResponse('')
+    return HttpResponse(st)
+

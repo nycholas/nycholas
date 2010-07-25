@@ -18,7 +18,7 @@
 
 {% block contents %}
 	<div class="ask">
-		<div class="logo"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="" /></div>
+		<div id="id_logo" class="logo"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" /></div>
 		<div class="form">
 			<form action="/" method="POST" id="id_question_form" name="question_form">
 			<input type="hidden" name="key" id="id_key" value="{% if question_curr_key %}{{ question_curr_key }}{% endif %}" />
@@ -26,7 +26,7 @@
 			{% if question_form.subject.errors %}
 				<div style="color: red;">{{ question_form.ask.errors }}</div>
 			{% endif %}
-			{{ question_form.ask }} <input type="submit" class="x-Button" value="{% trans 'Send question' %}" />
+			{{ question_form.ask }} <input type="submit" id="id_send_question" name="send_question" class="x-Button" value="{% trans 'Send question' %}" />
 			</form>
 		</div>
 		<div id="result">{{ answer_by_question }}</div>
