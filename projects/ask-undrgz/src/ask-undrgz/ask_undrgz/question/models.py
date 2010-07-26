@@ -19,6 +19,8 @@ class Question(db.Model):
         return '/'
     
     def to_dict(self):
-        return dict([(p, unicode(getattr(self, p))) for p in self.properties()])
+        d = dict([(p, unicode(getattr(self, p))) for p in self.properties()])
+        d['get_absolute_url'] = self.get_absolute_url()
+        return d
 
 

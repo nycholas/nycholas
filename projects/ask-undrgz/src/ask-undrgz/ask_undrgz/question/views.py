@@ -50,6 +50,14 @@ def answer(request, question_key):
         'question_form': question_form,
         'answer_by_question': question.answer,
     })
+    
+def question_top10(request):
+    logging.debug("In question.views::question_top10()")
+    question_top10 = Question.all().order('-created').fetch(10)
+    if request.is_ajax():
+        return HttpResponse(simplejson.dumps([q.to_dict() for q in question_top10]), 
+                            mimetype='application/json')
+    return HttpResponse('')
 
 def is_online(request):
     logging.debug("In question.views::incoming_chat()")

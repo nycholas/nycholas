@@ -28,7 +28,7 @@
 		$.post('/is_online/', {from: 'nycholas@gmail.com'},
 			function(data, status, xhr) {
 			//window.alert('is_online:'+data+':'+status+':'+xhr);
-			if (data) {
+			if (!data) {
 				$('#id_logo').html('<img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" />');
 				$('#id_ask').attr('disabled', '');
 				$('#id_send_question').attr('disabled', '');
@@ -54,14 +54,15 @@
 		}, 'json');
 	}
 	
-	function submit_form() {
-		send_message();
-		return false;
-	}
-	
-	function set_question_and_submit_form(question) {
-		$('#id_ask').data(question);
-		return true;
+	function update_top10() {
+		$.get('/question_top10/', function(data, status, xhr) {
+			//window.alert('update_top10:'+data+':'+status+':'+xhr);
+			var html = '';
+			$.each(data, function(i, question) {
+				html += '<li><a href="'+ question.get_absolute_url +'" onclick=\'javascript: return set_question_and_submit_form("'+ question.ask +'");\'>'+ question.ask +'</a></li>';
+			});
+			$('#id_top10').html(html);
+		}, 'json');
 	}
 	
 	function update_answer() {		
@@ -80,6 +81,16 @@
 		}
 	}
 	
+	function submit_form() {
+		send_message();
+		return false;
+	}
+	
+	function set_question_and_submit_form(question) {
+		$('#id_ask').data(question);
+		return true;
+	}
+	
 	var loading = false;
 	$(document).ready(function() {
 		loading = $(
@@ -96,6 +107,7 @@
 		is_online();
 		var interval_is_online = window.setInterval(function() {
 			is_online();
+			update_top10();
 		}, 5000);
 		
 		update_answer();
@@ -111,7 +123,7 @@
 	<div id="main">
 		<div id="header">
 			{% block top10 %}
-			<div class="top10">
+			<div id="id_top10" class="top10">
 				<h2>{% trans 'Recent stupid questions' %}</h2>
 				<ul class="actionlist">
 					<li><a href="/?ask={% trans 'WTF?' %}" onclick='javascript: return set_question_and_submit_form("WTF?");'>{% trans 'WTF?' %}</a></li>
