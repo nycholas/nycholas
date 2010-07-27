@@ -20,15 +20,15 @@
 		$.post('/', {
 			ask: $('#id_ask').val()
 		}, function(data, status, xhr) {
-			window.alert('send_ask: '+data+':'+status+':'+xhr);
+			//window.alert('send_ask: '+data+':'+status+':'+xhr);
 		}, 'json');
 	}
 	
 	function is_online() {
-		$.post('/is_online/', {from: 'nycholas@gmail.com'},
-			function(data, status, xhr) {
+		$.post('/_is_online/', {from: 'underguiz@ilostmyself.org'}, 
+		function(data, status, xhr) {
 			//window.alert('is_online:'+data+':'+status+':'+xhr);
-			if (!data) {
+			if (data) {
 				$('#id_logo').html('<img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" />');
 				$('#id_ask').attr('disabled', '');
 				$('#id_send_question').attr('disabled', '');
@@ -37,25 +37,22 @@
 				$('#id_ask').attr('disabled', 'disabled');
 				$('#id_send_question').attr('disabled', 'disabled');
 			}
-			loading.ajaxStop(function() {
-				$(this).hide();
-			});
 		}, 'json');
 	}
 	
 	function send_message() {
-		$.post('/send_message/', {
-			from: 'nycholas@gmail.com',
-			to: 'underguiz@ilostmyself.org',
+		$.post('/_send_message/', {
+			from: 'underguiz@ilostmyself.org',
+			to: 'ask-undrgz@appspot.com',
 			body: $('#id_ask').val(),
 			stanza: 'normal'
 		}, function(data, status, xhr) {
-			window.alert('send_message:'+data+':'+status+':'+xhr);
+			//window.alert('send_message:'+data+':'+status+':'+xhr);
 		}, 'json');
 	}
 	
 	function update_top10() {
-		$.get('/question_top10/', function(data, status, xhr) {
+		$.post('/_update_top10/', function(data, status, xhr) {
 			//window.alert('update_top10:'+data+':'+status+':'+xhr);
 			var html = '';
 			$.each(data, function(i, question) {
@@ -68,22 +65,22 @@
 	function update_answer() {		
 		var question_key_curr = $('#id_key').val();
 		if (question_key_curr) {
-			$.get('/'+question_key_curr+'/answer/', 
+			$.get('/'+question_key_curr+'/', 
 			function(data, status, xhr) {
 				//window.alert('update_answer:'+':'+status+':'+xhr);
 				if (data.answer != 'None') {
-					loading.ajaxStop(function() {
-						$(this).hide();
-					});
-					$('#result').html('<b>underguiz:</b> '+data.answer);
+					loading.hide();
+					$('#result').html('<b>underguiz says:</b> '+data.answer);
+				} else {
+					loading.show();
 				}
 		    }, 'json');
 		}
 	}
 	
 	function submit_form() {
-		send_message();
-		return false;
+		//send_message();
+		return true;
 	}
 	
 	function set_question_and_submit_form(question) {
@@ -96,11 +93,9 @@
 		loading = $(
 			'<img id="loading" alt="Loading..." title="Loading..." src="/static/img/ajax-loader.gif" style="margin-top: 40px;" />'
 		).appendTo('#result').hide()
-		loading.ajaxStart(function() {
-			$(this).show();
-		});
 		
 		$('#id_question_form').submit(function() {
+			loading.show();
 			submit_form();
 		});
 		
@@ -116,6 +111,9 @@
 		}, 1000);
 	});
 	</script>
+	<noscript>
+		<meta http-equiv="refresh" content="1000">
+	</noscript>
 	
 	<title>{% block title %}{% endblock %}</title>
 </head>

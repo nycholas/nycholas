@@ -4,11 +4,11 @@
 {% block title %}{% trans 'ask-undrgz :: system of questions uses data from underguiz' %}{% endblock %}
 
 {% block top10 %}
-{% if question_top10 %}
+{% if top10 %}
 <div class="top10">
 	<h2>{% trans 'Recent stupid questions' %}</h2>
-	<ul class="actionlist">
-		{% for question in question_top10 %}
+	<ul id="id_top10" class="actionlist">
+		{% for question in top10 %}
 			<li><a href="{{ question.get_absolute_url }}" onclick='javascript: return set_question_and_submit_form("{{ question.ask }}");'>{{ question.ask }}</a></li>
 		{% endfor %}
 	</ul>
@@ -21,7 +21,7 @@
 		<div id="id_logo" class="logo"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" /></div>
 		<div class="form">
 			<form action="/" method="POST" id="id_question_form" name="question_form">
-			<input type="hidden" name="key" id="id_key" value="{% if question_curr_key %}{{ question_curr_key }}{% endif %}" />
+			<input type="hidden" name="key" id="id_key" value="{% if ask_slug %}{{ ask_slug }}{% endif %}" />
 			<label for="id_ask">{% trans "Ask a question to underguiz (WTF?, Where's my phone?, How many pounds am I going to lose today?):" %}</label><br />
 			{% if question_form.subject.errors %}
 				<div style="color: red;">{{ question_form.ask.errors }}</div>
@@ -29,7 +29,7 @@
 			{{ question_form.ask }} <input type="submit" id="id_send_question" name="send_question" class="x-Button" value="{% trans 'Send question' %}" />
 			</form>
 		</div>
-		<div id="result">{{ answer_by_question }}</div>
+		<div id="result">{% if answer %}<b>underguiz says:</b> {{ answer }}{% endif %}</div>
 	</div>
 {% endblock %}
 
