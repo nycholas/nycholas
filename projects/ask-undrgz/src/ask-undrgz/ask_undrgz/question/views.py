@@ -87,7 +87,8 @@ def answer(request, ask):
                       '%s: %s' % (new_question.key().id(), new_question.ask))
         return HttpResponseRedirect(new_question.get_absolute_url())
     if not question.answer:
-        pass
+        _send_message('underguiz@ilostmyself.org', 
+                      '%s: %s' % (question.key().id(), question.ask))
     if request.is_ajax():
         return HttpResponse(simplejson.dumps(question.to_dict()), 
                             mimetype='application/json')
