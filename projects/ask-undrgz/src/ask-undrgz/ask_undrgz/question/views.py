@@ -86,9 +86,13 @@ def answer(request, ask):
         _send_message('underguiz@ilostmyself.org', 
                       '%s: %s' % (new_question.key().id(), new_question.ask))
         return HttpResponseRedirect(new_question.get_absolute_url())
-    if not question.answer:
-        _send_message('underguiz@ilostmyself.org', 
-                      '%s: %s' % (question.key().id(), question.ask))
+    elif not question.answer:
+        d1 = datetime.datetime.now()
+        if (d1.minute % 5) == 0 and d1.second == 0:
+            question.asked = d1
+            question.save()
+            _send_message('underguiz@ilostmyself.org', 
+                          '%s: %s' % (question.key().id(), question.ask))
     if request.is_ajax():
         return HttpResponse(simplejson.dumps(question.to_dict()), 
                             mimetype='application/json')
@@ -159,14 +163,20 @@ def incoming_chat(request):
     if not sender:
         logging.warn('Incoming chat without \'from\' key ignored')
     else:
-        body = message.split(':')
-        id_question = int(body[0])
-        answer = ''.join(body[1:])
-        question = Question.get_by_id(id_question)
-        question.answer = answer
-        question.answered = datetime.datetime.now()
-        question.save()
-        sts = xmpp.send_message([toaddr], answer)
+        try:
+            body = message.split(':')
+            id_question = int(body[0])
+            answer = ''.join(body[1:])
+            question = Question.get_by_id(id_question)
+            if question.answer:
+                question.answer = '%s; %s' % (question.answer, answer)
+            else:
+                question.answer = answer 
+            question.answered = datetime.datetime.now()
+            question.save()
+            sts = xmpp.send_message([toaddr], answer)
+        except Exception, e:
+            sts = xmpp.send_message([sender], 'Error: %s' % str(e))
         logging.debug('XMPP status %r', sts)
     return HttpResponse(st)
 

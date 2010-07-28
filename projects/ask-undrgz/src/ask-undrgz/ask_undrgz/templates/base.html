@@ -28,7 +28,7 @@
 		$.post('/_is_online/', {from: 'underguiz@ilostmyself.org'}, 
 		function(data, status, xhr) {
 			//window.alert('is_online:'+data+':'+status+':'+xhr);
-			if (data) {
+			if (!data) {
 				$('#id_logo').html('<img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" />');
 				$('#id_ask').attr('disabled', '');
 				$('#id_send_question').attr('disabled', '');
