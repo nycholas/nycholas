@@ -42,13 +42,14 @@ from ask_undrgz.question.forms import QuestionForm
 from ask_undrgz.question.models import Question
 
 def _get_question_top10():
-    return Question.all().order('-asked').fetch(10)
+    return Question.all().filter('answered != ', None) \
+                .order('-answered').fetch(30)
 
 def _send_message(user_address, message):
     chat_message_sent = False
-    xmpp.send_invite(user_address)
+    #xmpp.send_invite(user_address)
     if xmpp.get_presence(user_address):
-        status_code = xmpp.send_message(user_address, message)
+        status_code = xmpp.send_message([user_address], message)
         chat_message_sent = (status_code != xmpp.NO_ERROR)
     return chat_message_sent
 
@@ -88,7 +89,8 @@ def answer(request, ask):
         return HttpResponseRedirect(new_question.get_absolute_url())
     elif not question.answer:
         d1 = datetime.datetime.now()
-        if (d1.minute % 5) == 0 and d1.second == 0:
+        d2 = question.asked
+        if (abs(d1.minute-d2.minute) % 5) == 0 and d1.second == 0:
             question.asked = d1
             question.save()
             _send_message('underguiz@ilostmyself.org', 
@@ -176,7 +178,8 @@ def incoming_chat(request):
             question.save()
             sts = xmpp.send_message([toaddr], answer)
         except Exception, e:
-            sts = xmpp.send_message([sender], 'Error: %s' % str(e))
+            #sts = xmpp.send_message([sender], 'Error: %s' % str(e))
+            logging.warn('Error: %s' % str(e))
         logging.debug('XMPP status %r', sts)
     return HttpResponse(st)
 

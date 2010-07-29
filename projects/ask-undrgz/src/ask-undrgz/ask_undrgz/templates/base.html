@@ -28,11 +28,13 @@
 		$.post('/_is_online/', {from: 'underguiz@ilostmyself.org'}, 
 		function(data, status, xhr) {
 			//window.alert('is_online:'+data+':'+status+':'+xhr);
-			if (!data) {
-				$('#id_logo').html('<img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" />');
+			if (data) {
+				$('#id_recent_stupid_questions').show();
+				$('#id_logo').html('<a href="/"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" /></a>');
 				$('#id_ask').attr('disabled', '');
 				$('#id_send_question').attr('disabled', '');
 			} else {
+				$('#id_recent_stupid_questions').hide();
 				$('#id_logo').html('<img src="/static/img/awesomeaface-nocolor.png" width="352" height="352" alt="underguiz - offline" />');
 				$('#id_ask').attr('disabled', 'disabled');
 				$('#id_send_question').attr('disabled', 'disabled');

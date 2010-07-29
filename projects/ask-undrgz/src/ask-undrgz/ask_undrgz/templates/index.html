@@ -5,7 +5,7 @@
 
 {% block top10 %}
 {% if top10 %}
-<div class="top10">
+<div id="id_recent_stupid_questions" class="top10">
 	<h2>{% trans 'Recent stupid questions' %}</h2>
 	<ul id="id_top10" class="actionlist">
 		{% for question in top10 %}
@@ -18,7 +18,7 @@
 
 {% block contents %}
 	<div class="ask">
-		<div id="id_logo" class="logo"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" /></div>
+		<div id="id_logo" class="logo"><a href="/"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" /></a></div>
 		<div class="form">
 			<form action="/" method="POST" id="id_question_form" name="question_form">
 			<input type="hidden" name="key" id="id_key" value="{% if ask_slug %}{{ ask_slug }}{% endif %}" />
