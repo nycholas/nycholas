@@ -15,6 +15,29 @@
 	<link href="/static/css/main.css" rel="stylesheet" type="text/css" charset="utf-8" />
 	
 	<script type="text/javascript" src="/static/js/jquery.js"></script>
+	<noscript>
+		<meta http-equiv="refresh" content="1000">
+	</noscript>
+	
+	<title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+	<div id="main">
+		<div id="header">
+			{% block top10 %}
+			<div id="id_top10" class="top10">
+				<h2>{% trans 'Recent stupid questions' %}</h2>
+				<ul class="actionlist">
+					<li><a href="/?ask={% trans 'WTF?' %}" onclick='javascript: return set_question_and_submit_form("WTF?");'>{% trans 'WTF?' %}</a></li>
+					<li><a href="/?ask={% trans "Where's my phone?" %}" onclick='javascript: return set_question_and_submit_form("Where's my phone?");'>{% trans "Where's my phone?" %}</a></li>
+					<li><a href="/?ask={% trans "How many pounds I'll lose weight today?" %}" onclick='javascript: return set_question_and_submit_form("How many pounds I'll lose weight today?");'>{% trans "How many pounds I'll lose weight today?" %}</a></li>
+				</ul>
+			</div>
+			{% endblock %}
+		</div>
+		<div id="contents">{% block contents %}{% endblock %}</div>
+		<div id="footer">{% trans 'Written by' %} <a href="mailto: nycholas@gmail.com">Nycholas de Oliveira e Olivera</a>. {% trans 'Uses data from' %} <a href="mailto: guilherme@ilostmyself.org">underguiz</a>.<div>
+	</div>
 	<script type="text/javascript">
 	function send_ask() {
 		$.post('/', {
@@ -113,29 +136,6 @@
 		}, 1000);
 	});
 	</script>
-	<noscript>
-		<meta http-equiv="refresh" content="1000">
-	</noscript>
-	
-	<title>{% block title %}{% endblock %}</title>
-</head>
-<body>
-	<div id="main">
-		<div id="header">
-			{% block top10 %}
-			<div id="id_top10" class="top10">
-				<h2>{% trans 'Recent stupid questions' %}</h2>
-				<ul class="actionlist">
-					<li><a href="/?ask={% trans 'WTF?' %}" onclick='javascript: return set_question_and_submit_form("WTF?");'>{% trans 'WTF?' %}</a></li>
-					<li><a href="/?ask={% trans "Where's my phone?" %}" onclick='javascript: return set_question_and_submit_form("Where's my phone?");'>{% trans "Where's my phone?" %}</a></li>
-					<li><a href="/?ask={% trans "How many pounds I'll lose weight today?" %}" onclick='javascript: return set_question_and_submit_form("How many pounds I'll lose weight today?");'>{% trans "How many pounds I'll lose weight today?" %}</a></li>
-				</ul>
-			</div>
-			{% endblock %}
-		</div>
-		<div id="contents">{% block contents %}{% endblock %}</div>
-		<div id="footer">{% trans 'Written by' %} <a href="mailto: nycholas@gmail.com">Nycholas de Oliveira e Olivera</a>. {% trans 'Uses data from' %} <a href="mailto: guilherme@ilostmyself.org">underguiz</a>.<div>
-	</div>
 	<script type="text/javascript">
 	  var _gaq = _gaq || [];
 	  _gaq.push(['_setAccount', 'UA-17622996-2']);

@@ -42,8 +42,7 @@ from ask_undrgz.question.forms import QuestionForm
 from ask_undrgz.question.models import Question
 
 def _get_question_top10():
-    return Question.all().filter('answered != ', None) \
-                .order('-answered').fetch(30)
+    return Question.all().filter('answered != ', None).order('-answered').fetch(30)
 
 def _send_message(user_address, message):
     chat_message_sent = False
