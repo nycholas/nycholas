@@ -145,10 +145,11 @@ ul.actionlist li {
 	height: 352px;
 	display: block;
 	margin: 0px auto;
-	margin-bottom: 5px;
 }
 
-.form {}
+.form {
+	margin-top: 5px;
+}
 
 #result {
 	width: 100%;
