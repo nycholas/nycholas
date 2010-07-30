@@ -41,7 +41,7 @@ from django.core import serializers
 from ask_undrgz.question.forms import QuestionForm
 from ask_undrgz.question.models import Question
 
-def _get_question_top10():
+def _recent_stupid_questions():
     return Question.all().filter('answered != ', None).order('-answered').fetch(30)
 
 def _send_message(user_address, message):
@@ -73,7 +73,7 @@ def index(request):
         question_form = QuestionForm()
     return render_to_response('index.html', {
         'question_form': question_form,
-        'top10': _get_question_top10(),
+        'recent_stupid_questions': _recent_stupid_questions(),
     })
         
 def answer(request, ask):
@@ -103,14 +103,14 @@ def answer(request, ask):
     question_form = QuestionForm(initial=initial)
     return render_to_response('index.html', {
         'question_form': question_form,
-        'top10': _get_question_top10(),
+        'recent_stupid_questions': _recent_stupid_questions(),
         'ask_slug': question.ask_slug,
         'answer': question.answer,
     })
     
-def top10(request):
-    logging.debug('In question.views::top10()')
-    question_top10 = _get_question_top10()
+def recent_stupid_questions(request):
+    logging.debug('In question.views::recent_stupid_questions()')
+    question_top10 = _recent_stupid_questions()
     if request.is_ajax():
         return HttpResponse(simplejson.dumps([q.to_dict() for q in question_top10]), 
                             mimetype='application/json')
@@ -119,16 +119,22 @@ def top10(request):
 def is_online(request):
     logging.debug('In question.views::is_online()')
     user_address = request.REQUEST.get('from')
+    dt = datetime.datetime.now()
+    easter_egg = True if dt.hour == 6 and dt.minute == 6 and d1.second >= 6 else False
     chat_message_sent = False
     if not user_address:
         if request.is_ajax():
-            return HttpResponse(simplejson.dumps(chat_message_sent), 
-                                mimetype='application/json')
+            return HttpResponse(simplejson.dumps({
+                'is_online': chat_message_sent,
+                'easter_egg': easter_egg
+            }), mimetype='application/json')
         return HttpResponse('from is required', status=405)
     chat_message_sent = xmpp.get_presence(user_address)
     if request.is_ajax():
-        return HttpResponse(simplejson.dumps(chat_message_sent), 
-                            mimetype='application/json')
+        return HttpResponse(simplejson.dumps({
+                'is_online': chat_message_sent,
+                'easter_egg': easter_egg
+            }), mimetype='application/json')
     return HttpResponse(chat_message_sent)
     
 def send_message(request):
@@ -170,7 +176,8 @@ def incoming_chat(request):
             answer = ''.join(body[1:])
             question = Question.get_by_id(id_question)
             if question.answer:
-                question.answer = '%s; %s' % (question.answer, answer)
+                space = '<br />' + '&nbsp;'*16
+                question.answer = '%s; %s%s' % (question.answer, space, answer)
             else:
                 question.answer = answer 
             question.answered = datetime.datetime.now()
@@ -182,3 +189,10 @@ def incoming_chat(request):
         logging.debug('XMPP status %r', sts)
     return HttpResponse(st)
 
+def show_me_underguiz(request):
+    logging.debug('In question.views::show_me_underguiz()')
+    question_form = QuestionForm()
+    return render_to_response('easter_egg.html', {
+        'question_form': question_form,
+        'recent_stupid_questions': _recent_stupid_questions(),
+    })

@@ -22,21 +22,23 @@
 	<title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-	<div id="main">
-		<div id="header">
-			{% block top10 %}
-			<div id="id_top10" class="top10">
-				<h2>{% trans 'Recent stupid questions' %}</h2>
-				<ul class="actionlist">
-					<li><a href="/?ask={% trans 'WTF?' %}" onclick='javascript: return set_question_and_submit_form("WTF?");'>{% trans 'WTF?' %}</a></li>
-					<li><a href="/?ask={% trans "Where's my phone?" %}" onclick='javascript: return set_question_and_submit_form("Where's my phone?");'>{% trans "Where's my phone?" %}</a></li>
-					<li><a href="/?ask={% trans "How many pounds I'll lose weight today?" %}" onclick='javascript: return set_question_and_submit_form("How many pounds I'll lose weight today?");'>{% trans "How many pounds I'll lose weight today?" %}</a></li>
-				</ul>
+	<div id="all">
+		<div id="main">
+			<div id="header">
+				{% block recent_stupid_questions %}
+				<div id="id_recent_stupid_questions" class="recent_stupid_questions">
+					<h2>{% trans 'Recent stupid questions' %}</h2>
+					<ul class="actionlist">
+						<li><a href="/?ask={% trans 'WTF?' %}" onclick='javascript: return set_question_and_submit_form("WTF?");'>{% trans 'WTF?' %}</a></li>
+						<li><a href="/?ask={% trans "Where's my phone?" %}" onclick='javascript: return set_question_and_submit_form("Where's my phone?");'>{% trans "Where's my phone?" %}</a></li>
+						<li><a href="/?ask={% trans "How many pounds I'll lose weight today?" %}" onclick='javascript: return set_question_and_submit_form("How many pounds I'll lose weight today?");'>{% trans "How many pounds I'll lose weight today?" %}</a></li>
+					</ul>
+				</div>
+				{% endblock %}
 			</div>
-			{% endblock %}
+			<div id="contents">{% block contents %}{% endblock %}</div>
+			<div id="footer">{% trans 'Written by' %} <a href="mailto: nycholas@gmail.com">Nycholas de Oliveira e Olivera</a>. {% trans 'Uses data from' %} <a href="mailto: guilherme@ilostmyself.org">underguiz</a>.<div>
 		</div>
-		<div id="contents">{% block contents %}{% endblock %}</div>
-		<div id="footer">{% trans 'Written by' %} <a href="mailto: nycholas@gmail.com">Nycholas de Oliveira e Olivera</a>. {% trans 'Uses data from' %} <a href="mailto: guilherme@ilostmyself.org">underguiz</a>.<div>
 	</div>
 	<script type="text/javascript">
 	function send_ask() {
@@ -51,14 +53,23 @@
 		$.post('/_is_online/', {from: 'underguiz@ilostmyself.org'}, 
 		function(data, status, xhr) {
 			//window.alert('is_online:'+data+':'+status+':'+xhr);
-			if (data) {
-				$('#id_recent_stupid_questions').show();
-				$('#id_logo').html('<a href="/"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" /></a>');
+			var easter_egg = $('#id_easter_egg').val();
+			if (data.is_online) {
+				$('#id_div_recent_stupid_questions').show();
+				if (data.easter_egg || easter_egg == 1) {
+					$('#id_logo').html('<a href="/"><img src="/static/img/underguiz.png" width="352" height="352" alt="underguiz - online" /></a>');
+				} else {
+					$('#id_logo').html('<a href="/"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" /></a>');
+				}
 				$('#id_ask').attr('disabled', '');
 				$('#id_send_question').attr('disabled', '');
 			} else {
-				$('#id_recent_stupid_questions').hide();
-				$('#id_logo').html('<img src="/static/img/awesomeaface-nocolor.png" width="352" height="352" alt="underguiz - offline" />');
+				$('#id_div_recent_stupid_questions').hide();
+				if (data.easter_egg || easter_egg == 1) {
+					$('#id_logo').html('<img src="/static/img/underguiz-nocolor.png" width="352" height="352" alt="underguiz - offline" />');
+				} else {
+					$('#id_logo').html('<img src="/static/img/awesomeaface-nocolor.png" width="352" height="352" alt="underguiz - offline" />');
+				}
 				$('#id_ask').attr('disabled', 'disabled');
 				$('#id_send_question').attr('disabled', 'disabled');
 			}
@@ -76,14 +87,14 @@
 		}, 'json');
 	}
 	
-	function update_top10() {
-		$.post('/_update_top10/', function(data, status, xhr) {
-			//window.alert('update_top10:'+data+':'+status+':'+xhr);
+	function update_recent_stupid_questions() {
+		$.post('/_recent_stupid_questions/', function(data, status, xhr) {
+			//window.alert('update_recent_stupid_questions:'+data+':'+status+':'+xhr);
 			var html = '';
 			$.each(data, function(i, question) {
 				html += '<li><a href="'+ question.get_absolute_url +'" onclick=\'javascript: return set_question_and_submit_form("'+ question.ask +'");\'>'+ question.ask +'</a></li>';
 			});
-			$('#id_top10').html(html);
+			$('#id_recent_stupid_questions').html(html);
 		}, 'json');
 	}
 	
@@ -127,7 +138,7 @@
 		is_online();
 		var interval_is_online = window.setInterval(function() {
 			is_online();
-			update_top10();
+			update_recent_stupid_questions();
 		}, 5000);
 		
 		update_answer();

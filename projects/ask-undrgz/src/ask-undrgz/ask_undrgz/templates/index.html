@@ -3,12 +3,12 @@
 
 {% block title %}{% trans 'ask-undrgz :: system of questions uses data from underguiz' %}{% endblock %}
 
-{% block top10 %}
-{% if top10 %}
-<div id="id_recent_stupid_questions" class="top10">
+{% block recent_stupid_questions %}
+{% if recent_stupid_questions %}
+<div id="id_div_recent_stupid_questions" class="recent_stupid_questions">
 	<h2>{% trans 'Recent stupid questions' %}</h2>
-	<ul id="id_top10" class="actionlist">
-		{% for question in top10 %}
+	<ul id="id_recent_stupid_questions" class="actionlist">
+		{% for question in recent_stupid_questions %}
 			<li><a href="{{ question.get_absolute_url }}" onclick='javascript: return set_question_and_submit_form("{{ question.ask }}");'>{{ question.ask }}</a></li>
 		{% endfor %}
 	</ul>
@@ -22,6 +22,7 @@
 		<div class="form">
 			<form action="/" method="POST" id="id_question_form" name="question_form">
 			<input type="hidden" name="key" id="id_key" value="{% if ask_slug %}{{ ask_slug }}{% endif %}" />
+			<input type="hidden" name="easter_egg" id="id_easter_egg" value="{% block easter_egg %}0{% endblock %}" />
 			<label for="id_ask">{% trans "Ask a question to underguiz (WTF?, Where's my phone?, How many pounds am I going to lose today?):" %}</label><br />
 			{% if question_form.subject.errors %}
 				<div style="color: red;">{{ question_form.ask.errors }}</div>

@@ -37,10 +37,11 @@ urlpatterns = patterns('',
     # Example:
     # (r'^ask_undrgz/', include('ask_undrgz.foo.urls')),
     (r'^$', 'ask_undrgz.question.views.index'),
-    (r'^_update_top10/$', 'ask_undrgz.question.views.top10'),
+    (r'^_recent_stupid_questions/$', 'ask_undrgz.question.views.recent_stupid_questions'),
     (r'^_is_online/$', 'ask_undrgz.question.views.is_online'),
     (r'^_send_message/$', 'ask_undrgz.question.views.send_message'),
     (r'^_ah/xmpp/message/chat/', 'ask_undrgz.question.views.incoming_chat'),
+    (r'^_show_me_underguiz/$', 'ask_undrgz.question.views.show_me_underguiz'),
     (r'^(?P<ask>[\w_-]+)/$', 'ask_undrgz.question.views.answer'),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
