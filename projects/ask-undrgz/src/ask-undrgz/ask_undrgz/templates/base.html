@@ -2,9 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	
-	<meta name="title" content="ask-undrgz" />
+	<meta name="title" content="{% block title %}ask-undrgz{% endblock %}" />
     <meta name="author" content="Nycholas de Oliveira e Oliveira - nycholas@gmail.com" />
     <meta name="description" content="ask-undrgz system of questions via underguiz" />
     <meta name="keywords" content="ask asking question query reply response answer rejoinder replication" />
@@ -16,10 +16,10 @@
 	
 	<script type="text/javascript" src="/static/js/jquery.js"></script>
 	<noscript>
-		<meta http-equiv="refresh" content="1000">
+        <meta http-equiv="refresh" content="1000">
 	</noscript>
 	
-	<title>{% block title %}{% endblock %}</title>
+	<title>{% block title %}ask-undrgz{% endblock %}</title>
 </head>
 <body>
 	<div id="all">
@@ -66,9 +66,9 @@
 			} else {
 				//$('#id_div_recent_stupid_questions').hide();
 				if (data.easter_egg || easter_egg == 1) {
-					$('#id_logo').html('<img src="/static/img/underguiz-nocolor.png" width="352" height="352" alt="{% trans 'underguiz - offline' %}" />');
+					$('#id_logo').html('<a href="/"><img src="/static/img/underguiz-nocolor.png" width="352" height="352" alt="{% trans 'underguiz - offline' %}" /></a>');
 				} else {
-					$('#id_logo').html('<img src="/static/img/awesomeaface-nocolor.png" width="352" height="352" alt="{% trans 'underguiz - offline' %}" />');
+					$('#id_logo').html('<a href="/"><img src="/static/img/awesomeaface-nocolor.png" width="352" height="352" alt="{% trans 'underguiz - offline' %}" /></a>');
 				}
 				$('#id_ask').attr('disabled', 'disabled');
 				$('#id_send_question').attr('disabled', 'disabled');

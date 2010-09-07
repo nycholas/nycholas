@@ -123,8 +123,12 @@ def recent_stupid_questions(request):
 def is_online(request):
     logging.debug('In question.views::is_online()')
     user_address = request.REQUEST.get('from')
-    dt = datetime.datetime.now()
-    easter_egg = True if dt.hour == 6 and dt.minute == 6 and d1.second >= 6 else False
+    # Brazil - America/Sao_Paulo, ;-)
+    dt = datetime.datetime.utcnow()
+    dt_hour = dt.hour - 3 if dt.hour - 3 > 0 else (dt.hour - 3) + 24
+    easter_egg = False
+    if dt_hour == 6 and dt.minute == 6 and dt.second >= 6:
+        easter_egg = True
     chat_message_sent = False
     if not user_address:
         if request.is_ajax():
