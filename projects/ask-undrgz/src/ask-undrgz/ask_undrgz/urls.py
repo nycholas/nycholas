@@ -28,7 +28,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -38,8 +37,6 @@ urlpatterns = patterns('',
     # Example:
     # (r'^ask_undrgz/', include('ask_undrgz.foo.urls')),
     (r'^$', 'ask_undrgz.question.views.index'),
-    (r'^robots\.txt$', direct_to_template,
-     {'template': 'robots.txt', 'mimetype': 'text/plain'}),
     (r'^_recent_stupid_questions/$', 'ask_undrgz.question.views.recent_stupid_questions'),
     (r'^_is_online/$', 'ask_undrgz.question.views.is_online'),
     (r'^_send_message/$', 'ask_undrgz.question.views.send_message'),

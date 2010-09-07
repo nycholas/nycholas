@@ -1,4 +1,6 @@
-@charset "UTF-8";
+@charset 'UTF-8';
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}li{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}body{font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small}table{font-size:inherit;font:100%}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%}body{text-align:center}
 
 html, body {
   font-family: Arial Unicode MS, Arial, sans-serif;
@@ -22,19 +24,11 @@ a:hover {
   background-color: #fcffc6;
 }
 
-img {
-  border: none;
-}
-
-p img {
-  padding: 1pt;
-}
-
 .x-Text,
 input[type=text] {
-	width: 500px;
-	margin-right: 5px;
-	height: 20px;
+  width: 500px;
+  margin-right: 5px;
+  height: 20px;
 }
 
 .x-Button {
@@ -80,60 +74,61 @@ input[type=text] {
 #header {}
 
 .recent_stupid_questions {
-	position: fixed;
-    top: 0;
-    right: 0;
-    text-align: right;
-    width: 20%;
-    background-color: white;
-    border-left: 2px solid #ccc;
-    border-bottom: 2px solid #ccc;
-    font-size: small;
+  position: fixed;
+  top: 0;
+  right: 0;
+  text-align: right;
+  width: 20%;
+  background-color: white;
+  border-left: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  font-size: small;
 }
 
 .recent_stupid_questions p, .recent_stupid_questions ul, .recent_stupid_questions h3, .recent_stupid_questions h4, .recent_stupid_questions dl, .recent_stupid_questions pre {
-    padding-left: 10px;
-    padding-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .recent_stupid_questions blockquote {
-    margin-left: 12px;
+  margin-left: 12px;
 }
 
 .recent_stupid_questions ul, .recent_stupid_questions ol {
-    margin-left: 1.5em;
+  margin-left: 1.5em;
 }
 
 .recent_stupid_questions h3 {
-    margin-top: .6em;
+  margin-top: .6em;
 }
 
 .recent_stupid_questions h2, .recent_stupid_questions caption, .inline-group h2 {
-    margin: 0;
-    padding: 2px 5px 3px 5px;
-    font-size: 11px;
-    text-align: left;
-    font-weight: bold;
-    background: #7CA0C7 url(../img/default-bg.gif) top left repeat-x;
-    color: white;
+  margin: 0;
+  padding: 2px 5px 3px 5px;
+  font-size: 11px;
+  text-align: left;
+  font-weight: bold;
+  background: #7CA0C7 url(../img/default-bg.gif) top left repeat-x;
+  color: white;
 }
 
 .recent_stupid_questions h2 {
-	background: #eee url(../img/nav-bg.gif) bottom left repeat-x;
-    color: #666;
+  background: #eee url(../img/nav-bg.gif) bottom left repeat-x;
+  color: #666;
 }
 
 .recent_stupid_questions ul.actionlist {
-    margin-left: 0;
-    text-align: left;
+  margin-left: 0;
+  text-align: left;
+  padding: 5px;
 }
 
 ul.actionlist li {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 .recent_stupid_questions table {
-    border-collapse: collapse;
+  border-collapse: collapse;
 }
 
 #contents {}
@@ -141,30 +136,35 @@ ul.actionlist li {
 .ask {}
 
 .logo {
-	width: 352px;
-	height: 352px;
-	display: block;
-	margin: 0px auto;
+  margin: 0px auto;
+}
+
+.logo a {
+  background-color: #fff;
+}
+
+.log a:hover {
+  background-color: #fff;
 }
 
 .form {
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 #result {
-	width: 100%;
-	height: 80px;
-	margin: 15px auto;
-	padding: 5px;
-	display: block;
-	text-align: center;
-	background-color: #fff;
+  width: 100%;
+  height: 80px;
+  margin: 15px auto;
+  padding: 5px;
+  display: block;
+  text-align: center;
+  background-color: #fff;
 }
 
 #footer {
-	position: fixed;
-	bottom: 0;
-	text-align: center;
-	width: 100%;
-	background-color: white;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  background-color: white;
 }
