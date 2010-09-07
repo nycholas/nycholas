@@ -55,20 +55,20 @@
 			//window.alert('is_online:'+data+':'+status+':'+xhr);
 			var easter_egg = $('#id_easter_egg').val();
 			if (data.is_online) {
-				$('#id_div_recent_stupid_questions').show();
+				//$('#id_div_recent_stupid_questions').show();
 				if (data.easter_egg || easter_egg == 1) {
-					$('#id_logo').html('<a href="/"><img src="/static/img/underguiz.png" width="352" height="352" alt="underguiz - online" /></a>');
+					$('#id_logo').html('<a href="/"><img src="/static/img/underguiz.png" width="352" height="352" alt="{% trans 'underguiz - online' %}" /></a>');
 				} else {
-					$('#id_logo').html('<a href="/"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" /></a>');
+					$('#id_logo').html('<a href="/"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="{% trans 'underguiz - online' %}" /></a>');
 				}
 				$('#id_ask').attr('disabled', '');
 				$('#id_send_question').attr('disabled', '');
 			} else {
-				$('#id_div_recent_stupid_questions').hide();
+				//$('#id_div_recent_stupid_questions').hide();
 				if (data.easter_egg || easter_egg == 1) {
-					$('#id_logo').html('<img src="/static/img/underguiz-nocolor.png" width="352" height="352" alt="underguiz - offline" />');
+					$('#id_logo').html('<img src="/static/img/underguiz-nocolor.png" width="352" height="352" alt="{% trans 'underguiz - offline' %}" />');
 				} else {
-					$('#id_logo').html('<img src="/static/img/awesomeaface-nocolor.png" width="352" height="352" alt="underguiz - offline" />');
+					$('#id_logo').html('<img src="/static/img/awesomeaface-nocolor.png" width="352" height="352" alt="{% trans 'underguiz - offline' %}" />');
 				}
 				$('#id_ask').attr('disabled', 'disabled');
 				$('#id_send_question').attr('disabled', 'disabled');
@@ -106,7 +106,7 @@
 				//window.alert('update_answer:'+':'+status+':'+xhr);
 				if (data.answer != 'None') {
 					loading.hide();
-					$('#result').html('<b>underguiz says:</b> '+data.answer);
+					$('#result').html('<b>{% trans 'underguiz says' %}:</b> '+data.answer);
 				} else {
 					loading.show();
 				}
@@ -127,7 +127,7 @@
 	var loading = false;
 	$(document).ready(function() {
 		loading = $(
-			'<img id="loading" alt="Loading..." title="Loading..." src="/static/img/ajax-loader.gif" style="margin-top: 40px;" />'
+			'<img id="loading" alt="{% trans 'Loading...' %}" title="{% trans 'Loading...' %}" src="/static/img/ajax-loader.gif" style="margin-top: 40px;" />'
 		).appendTo('#result').hide()
 		
 		$('#id_question_form').submit(function() {

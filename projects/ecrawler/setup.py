@@ -51,8 +51,8 @@ def data_files():
     data_path_src = os.curdir
     data_path_dst = os.curdir
     data_files.append((data_path_src, ["AUTHORS", "ChangeLog", "CONTRIBUTORS", 
-                                   "COPYING", "COPYING.LESSER", "FAQ", 
-                                   "INSTALL", "README", "THANKS", "TODO",]))
+                                       "COPYING", "COPYING.LESSER", "FAQ", 
+                                       "INSTALL", "README", "THANKS", "TODO",]))
     data_path_src = os.path.join("ecrawler", "resources")
     data_path_dst = os.path.join(os.path.expanduser("~"), ".ecrawler", "resources")
     data_files.append((data_path_dst,

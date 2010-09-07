@@ -28,6 +28,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 import re
+import unicodedata
 
 from google.appengine.ext import db
 
@@ -54,9 +55,19 @@ class SlugProperty(db.StringProperty):
         self.auto_calculate = auto_calculate
 
     @classmethod
-    def slugify(yo_mama, value):
+    def slugify_(yo_mama, value):
         cleanup = yo_mama.re_strip.sub('', value).strip().lower()
         return yo_mama.re_dashify.sub('-', cleanup)
+    
+    @classmethod
+    def slugify(yo_mama, value):
+        """
+        Normalizes string, converts to lowercase, removes non-alpha characters,
+        and converts spaces to hyphens.
+        """
+        value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
+        value = unicode(re.sub('[^\w\s-]', '', value).strip().lower())
+        return re.sub('[-\s]+', '-', value)
 
     def default_value(self):
         """Cannot calculate a default value because of a lack of details for
@@ -71,9 +82,9 @@ class SlugProperty(db.StringProperty):
     def validate(self, value):
         """Validate the slug meets formatting restrictions."""
         # Django does [^\w\s-] to '', strips, lowers, then [-\s] to '-'.
-        if value and (value.lower() != value or ' ' in value):
-            raise db.BadValueError("%r must be lowercase and have no spaces" %
-                                    value)
+        #if value and (value.lower() != value or ' ' in value):
+        #    raise db.BadValueError("%r must be lowercase and have no spaces" %
+        #                           value)
         return super(SlugProperty, self).validate(value)
     
     

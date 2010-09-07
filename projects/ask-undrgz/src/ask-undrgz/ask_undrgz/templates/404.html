@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+{% load i18n %}
+
+{% block recent_stupid_questions %}{% endblock %}
+
+{% block contents %}
+	<div class="ask">
+		<div id="id_logo" class="logo"><a href="/"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="{% trans 'underguiz - page error!' %}" /></a></div>
+		<div id="result" style="padding-top: 40px;"><b>{% trans 'underguiz says' %}:</b> {% trans 'Page not found!' %}</div>
+	</div>
+{% endblock %}
+
+{% block responses %}{% endblock %}

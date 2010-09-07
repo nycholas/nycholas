@@ -18,7 +18,7 @@
 
 {% block contents %}
 	<div class="ask">
-		<div id="id_logo" class="logo"><a href="/"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="underguiz - online" /></a></div>
+		<div id="id_logo" class="logo"><a href="/"><img src="/static/img/awesomeaface.png" width="352" height="352" alt="{% trans 'underguiz - online' %}" /></a></div>
 		<div class="form">
 			<form action="/" method="POST" id="id_question_form" name="question_form">
 			<input type="hidden" name="key" id="id_key" value="{% if ask_slug %}{{ ask_slug }}{% endif %}" />
@@ -30,7 +30,7 @@
 			{{ question_form.ask }} <input type="submit" id="id_send_question" name="send_question" class="x-Button" value="{% trans 'Send question' %}" />
 			</form>
 		</div>
-		<div id="result">{% if answer %}<b>underguiz says:</b> {{ answer }}{% endif %}</div>
+		<div id="result">{% if answer %}<b>{% trans 'underguiz says' %}:</b> {{ answer|escape }}{% endif %}</div>
 	</div>
 {% endblock %}
 

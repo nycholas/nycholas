@@ -37,10 +37,8 @@ from ask_undrgz.utils.models import SlugProperty
 class Question(db.Model):
     ask = db.StringProperty(required=True)
     ask_slug = SlugProperty(ask)
-    #asker = db.IMProperty(required=True)
     asked = db.DateTimeProperty(required=True, auto_now_add=True)
     answer = db.TextProperty()
-    #answerer = db.IMProperty()
     answered = db.DateTimeProperty()
 
     def __str__(self):
@@ -51,11 +49,16 @@ class Question(db.Model):
     
     def get_absolute_url(self):
         return reverse('ask_undrgz.question.views.answer', 
-                       kwargs={'ask': SlugProperty.slugify(self.ask)})
+                       kwargs={'ask_slug': self.slugify()})
         
+    def slugify(self):
+        slug = SlugProperty.slugify(self.ask) or str(self.key())
+        count = Question.all().filter('ask_slug = ', slug).count()
+        self.ask_slug = str(self.key()) if count > 1 else slug
+        return self.ask_slug
+    
     def is_exists(self):
-        q = Question.all().filter('ask_slug = ', 
-                                  SlugProperty.slugify(self.ask)).get()
+        q = Question.all().filter('ask = ', self.ask).get()
         return (q != None)
     
     def to_dict(self):

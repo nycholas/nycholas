@@ -13,9 +13,9 @@
 	<version>${pom.parent.version}</version>
 	<url>http://code.google.com/p/nycholas/</url>
 	<dependencies>
-		<dependency>
+        <dependency>
 			<groupId>javax.persistence</groupId>
-			<artifactId>ejb</artifactId>
+			<artifactId>persistence-api</artifactId> <!--<artifactId>ejb</artifactId>-->
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

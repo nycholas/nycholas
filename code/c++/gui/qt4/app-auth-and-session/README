@@ -1,6 +1,6 @@
 == COMPLILE
-$ mysql -u root -p << resources/db/mysql/create-database.sql
-$ qmake -project "QT += sql" "UI_DIR = apps/widgets" "OBJECTS_DIR = .qmake/obj" "MOC_DIR = .qmake/moc" "RCC_DIR = .qmake/rcc"
+$ mysql -u root -p << doc/database/mysql/create-database.sql
+$ qmake -r
 $ make
 $ ./app-auth-and-session
 

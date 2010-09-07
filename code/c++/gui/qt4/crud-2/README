@@ -1,5 +1,5 @@
 $ mysql -u root -p << resources/db/mysql/create-database.sql
-$ qmake -project "QT += sql" "UI_DIR = apps/widgets"
+$ qmake -project "QT += sql" "OBJECTS_DIR = .qmake/obj" "MOC_DIR = .qmake/moc" "UI_DIR = apps/widgets" "RCC_DIR = apps/widgets"
 $ qmake
 $ make
 $ ./crud-2

@@ -42,7 +42,8 @@ urlpatterns = patterns('',
     (r'^_send_message/$', 'ask_undrgz.question.views.send_message'),
     (r'^_ah/xmpp/message/chat/', 'ask_undrgz.question.views.incoming_chat'),
     (r'^_show_me_underguiz/$', 'ask_undrgz.question.views.show_me_underguiz'),
-    (r'^(?P<ask>[\w_-]+)/$', 'ask_undrgz.question.views.answer'),
+    (r'^(?P<ask_slug>[\w_-]+)/$', 'ask_undrgz.question.views.answer'),
+    (r'^(?P<ask>\w)/$', 'ask_undrgz.question.views.new_ask'),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

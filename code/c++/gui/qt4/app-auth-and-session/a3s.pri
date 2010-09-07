@@ -41,7 +41,7 @@ isEmpty(IDE_LIBRARY_BASENAME) {
 DEFINES += IDE_LIBRARY_BASENAME=\\\"$$IDE_LIBRARY_BASENAME\\\"
 
 equals(TEST, 1) {
-    QT +=testlib
+    QT += testlib
     DEFINES += WITH_TESTS
 }
 
@@ -69,7 +69,7 @@ macx {
         IDE_APP_TARGET   = a3s
     } else {
         IDE_APP_WRAPPER  = a3s
-        IDE_APP_TARGET   = a3s.bin
+        IDE_APP_TARGET   = a3s
     }
     IDE_LIBRARY_PATH = $$IDE_BUILD_TREE/$$IDE_LIBRARY_BASENAME/a3s
     #IDE_PLUGIN_PATH  = $$IDE_LIBRARY_PATH/plugins
@@ -109,7 +109,7 @@ linux-g++-* {
     QMAKE_LFLAGS += -Wl,--allow-shlib-undefined -Wl,--no-undefined
 }
 
-win32-msvc* { 
+win32-msvc* {
     #Don't warn about sprintf, fopen etc being 'unsafe'
     DEFINES += _CRT_SECURE_NO_WARNINGS
 }

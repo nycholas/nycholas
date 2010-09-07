@@ -51,7 +51,7 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
-			<artifactId>ejb</artifactId>
+			<artifactId>persistence-api</artifactId> <!--<artifactId>ejb</artifactId>-->
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

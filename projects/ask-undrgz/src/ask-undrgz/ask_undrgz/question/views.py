@@ -58,16 +58,13 @@ def index(request):
         question_form = QuestionForm(request.POST)
         if question_form.is_valid():
             new_question = question_form.save(commit=False)
-            if not new_question.is_exists():
-                new_question.save()
-                _send_message('underguiz@ilostmyself.org', 
-                              '%s: %s' % (new_question.key().id(), 
-                                          new_question.ask))
-            else:
-                q = Question.all().filter('ask = ', new_question.ask)
-                new_question = q.get()
-                new_question.asked = datetime.datetime.now()
-                new_question.save()
+            if new_question.is_exists():
+                new_question = Question.all().filter('ask =', new_question.ask).get()
+            new_question.asked = datetime.datetime.now()    
+            new_question.save()
+            _send_message('underguiz@ilostmyself.org', 
+                          '%s: %s' % (new_question.key().id(), 
+                                      new_question.ask))
             return HttpResponseRedirect(new_question.get_absolute_url())
     else:
         question_form = QuestionForm()
@@ -75,18 +72,25 @@ def index(request):
         'question_form': question_form,
         'recent_stupid_questions': _recent_stupid_questions(),
     })
+    
+def new_ask(request, ask):
+    logging.debug('In question.views::new_answer()')
+    new_question = Question.all().filter('ask = ', ask).get()
+    if not new_question.is_exists():
+        new_question = Question(ask=ask)
+    new_question = datetime.datetime.now()
+    new_question.save()
+    _send_message('underguiz@ilostmyself.org', 
+                  '%s: %s' % (new_question.key().id(), 
+                              new_question.ask))
+    return HttpResponseRedirect(new_question.get_absolute_url())
         
-def answer(request, ask):
+def answer(request, ask_slug):
     logging.debug('In question.views::answer()')
-    question = Question.all().filter('ask_slug = ', ask).get()
-    if not question:
-        #im_from = db.IM('xmpp', 'nycholas@gmail.com')
-        new_question = Question(ask=ask) #Question(ask=ask, asker=im_from)
-        new_question.save()
-        _send_message('underguiz@ilostmyself.org', 
-                      '%s: %s' % (new_question.key().id(), new_question.ask))
-        return HttpResponseRedirect(new_question.get_absolute_url())
-    elif not question.answer:
+    question = Question.all().filter('ask_slug = ', ask_slug).get()
+    if question is None:
+        question = Question.get(ask_slug)
+    if not question.answer:
         d1 = datetime.datetime.now()
         d2 = question.asked
         if (abs(d1.minute-d2.minute) % 5) == 0 and d1.second == 0:
@@ -104,7 +108,7 @@ def answer(request, ask):
     return render_to_response('index.html', {
         'question_form': question_form,
         'recent_stupid_questions': _recent_stupid_questions(),
-        'ask_slug': question.ask_slug,
+        'ask_slug': question.slugify(),
         'answer': question.answer,
     })
     
