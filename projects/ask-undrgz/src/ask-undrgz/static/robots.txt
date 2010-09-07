@@ -3,4 +3,3 @@ Disallow: /_recent_stupid_questions/
 Disallow: /_is_online/
 Disallow: /_send_message/
 Disallow: /_ah/xmpp/message/chat/
-Disallow: /_show_me_underguiz/
