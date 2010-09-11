@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PermissionForm</class>
+ <widget class="QDialog" name="PermissionForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>501</width>
+    <height>252</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Permission :: Form</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/default/static/default/icons/22x22/face-devilish.png</normaloff>:/default/static/default/icons/22x22/face-devilish.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(85, 85, 127);
+font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Add permission</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="previousPushButton">
+       <property name="text">
+        <string>&amp;Previous</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/go-previous.png</normaloff>:/default/static/default/icons/22x22/go-previous.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Right, Ctrl+PgDown</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="nextPushButton">
+       <property name="text">
+        <string>&amp;Next</string>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/go-next.png</normaloff>:/default/static/default/icons/22x22/go-next.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+Left, Ctrl+PgUp</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="statusLabel">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="permissionGroupBox">
+        <property name="title">
+         <string>&amp;Permission details</string>
+        </property>
+        <layout class="QFormLayout" name="formLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="contentTypesLabel">
+           <property name="text">
+            <string>&amp;Content Types:</string>
+           </property>
+           <property name="buddy">
+            <cstring>contentTypesComboBox</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QComboBox" name="contentTypesComboBox">
+           <item>
+            <property name="text">
+             <string>Choice</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="nameLabel">
+           <property name="text">
+            <string>&amp;Name:</string>
+           </property>
+           <property name="buddy">
+            <cstring>nameLineEdit</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="nameLineEdit"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="codenameLabel">
+           <property name="text">
+            <string>&amp;Codename:</string>
+           </property>
+           <property name="buddy">
+            <cstring>codenameLineEdit</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="codenameLineEdit"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="removePushButton">
+          <property name="text">
+           <string>&amp;Remove</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/edit-delete.png</normaloff>:/default/static/default/icons/22x22/edit-delete.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Del</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="savePushButton">
+          <property name="text">
+           <string>&amp;Save</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+S</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="saveAndContinueSavingPushButton">
+          <property name="text">
+           <string>Save and &amp;continue saving</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/dialog-ok.png</normaloff>:/default/static/default/icons/22x22/dialog-ok.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Shift+S</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="cancelPushButton">
+          <property name="text">
+           <string>&amp;Cancel</string>
+          </property>
+          <property name="icon">
+           <iconset resource="resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/dialog-cancel.png</normaloff>:/default/static/default/icons/22x22/dialog-cancel.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+W</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>savePushButton</tabstop>
+  <tabstop>saveAndContinueSavingPushButton</tabstop>
+  <tabstop>removePushButton</tabstop>
+  <tabstop>nextPushButton</tabstop>
+  <tabstop>cancelPushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
