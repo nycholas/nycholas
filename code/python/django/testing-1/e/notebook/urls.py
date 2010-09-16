@@ -27,14 +27,13 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-import logging
+from django.conf.urls.defaults import *
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.translation import ugettext as _
-from django.shortcuts import render_to_response
-from django.utils import simplejson
-from django.core import serializers
-
-def index(request):
-    logging.debug('In notebook.views::index()')
-    return render_to_response('index.html', {})
+urlpatterns = patterns('e.notebook.views',
+    (r'^$', 'notebook_index'),
+    (r'^list/$', 'notebook_list'),
+    (r'^add/$', 'notebook_add'),
+    (r'^edit/$', 'notebook_edit'),
+    (r'^status/$', 'notebook_status'),
+    (r'^delete/$', 'notebook_delete'),
+)

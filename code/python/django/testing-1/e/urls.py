@@ -27,14 +27,27 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-import logging
+from django.conf.urls.defaults import *
+from django.conf import settings
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.translation import ugettext as _
-from django.shortcuts import render_to_response
-from django.utils import simplejson
-from django.core import serializers
+# Uncomment the next two lines to enable the admin:
+# from django.contrib import admin
+# admin.autodiscover()
 
-def index(request):
-    logging.debug('In notebook.views::index()')
-    return render_to_response('index.html', {})
+urlpatterns = patterns('',
+    # Example:
+    # (r'^e/', include('e.foo.urls')),
+    (r'^', include('e.notebook.urls')),
+
+    # Uncomment the admin/doc line below to enable admin documentation:
+    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+    # Uncomment the next line to enable the admin:
+    # (r'^admin/', include(admin.site.urls)),
+)
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+         {'document_root': settings.MEDIA_ROOT}),
+    )

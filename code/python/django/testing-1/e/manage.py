@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Django example 'e' project.
@@ -27,14 +28,13 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-import logging
+from django.core.management import execute_manager
+try:
+    import settings # Assumed to be in the same directory.
+except ImportError:
+    import sys
+    sys.stderr.write("Error: Can't find the file 'settings.py' in the directory containing %r. It appears you've customized things.\nYou'll have to run django-admin.py, passing it your settings module.\n(If the file settings.py does indeed exist, it's causing an ImportError somehow.)\n" % __file__)
+    sys.exit(1)
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.translation import ugettext as _
-from django.shortcuts import render_to_response
-from django.utils import simplejson
-from django.core import serializers
-
-def index(request):
-    logging.debug('In notebook.views::index()')
-    return render_to_response('index.html', {})
+if __name__ == "__main__":
+    execute_manager(settings)

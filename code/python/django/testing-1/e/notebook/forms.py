@@ -27,14 +27,11 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-import logging
+from django.forms import ModelForm
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.translation import ugettext as _
-from django.shortcuts import render_to_response
-from django.utils import simplejson
-from django.core import serializers
+from e.notebook.models import Notebook
 
-def index(request):
-    logging.debug('In notebook.views::index()')
-    return render_to_response('index.html', {})
+
+class NotebookForm(ModelForm):
+    class Meta:
+        Notebook

@@ -28,6 +28,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 import logging
+import datetime
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.translation import ugettext as _
@@ -35,6 +36,29 @@ from django.shortcuts import render_to_response
 from django.utils import simplejson
 from django.core import serializers
 
-def index(request):
+from e.nootebook.models import NoteBook
+from e.nootebook.forms import NoteBookForm
+
+def notebook_index(request):
+    logging.debug('In notebook.views::index()')
+    return render_to_response('index.html', {})
+
+def notebook_list(request):
+    logging.debug('In notebook.views::index()')
+    return render_to_response('index.html', {})
+
+def notebook_add(request):
+    logging.debug('In notebook.views::index()')
+    return render_to_response('index.html', {})
+
+def notebook_edit(request):
+    logging.debug('In notebook.views::index()')
+    return render_to_response('index.html', {})
+
+def notebook_status(request):
+    logging.debug('In notebook.views::index()')
+    return render_to_response('index.html', {})
+
+def notebook_delete(request):
     logging.debug('In notebook.views::index()')
     return render_to_response('index.html', {})
