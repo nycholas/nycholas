@@ -34,4 +34,5 @@ from e.notebook.models import Notebook
 
 class NotebookForm(ModelForm):
     class Meta:
-        Notebook
+        model = Notebook
+        fields = ['name', 'description', 'status']

@@ -1,0 +1,7 @@
+- model: notebook.notebook
+  pk: 1
+  fields:
+    name: Nycholas de Oliveira e Oliveira
+    description: The evil song you sing inside your brain.
+    date_joined: 2010-09-16 17:17:11
+    status: True

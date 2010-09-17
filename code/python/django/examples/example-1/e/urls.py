@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     # Example:
     # (r'^e/', include('e.foo.urls')),
     (r'^', include('e.notebook.urls')),
+    (r'^notebook/', include('e.notebook.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),

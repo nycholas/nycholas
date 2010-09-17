@@ -21,9 +21,10 @@
 </head>
 <body>
 
-<div style="padding: 20px;">
-  {% trans 'Django example \'e\' project' %}
-</div>
+<h1 style="padding: 20px; padding-bottom: 30px;">
+  {% trans 'Django example \'e\' project' %}{% block title-page %}{% endblock %}
+</h1>
+{% block contents %}{% endblock %}
 
 </body>
 </html>

@@ -30,10 +30,9 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('e.notebook.views',
-    (r'^$', 'notebook_index'),
-    (r'^list/$', 'notebook_list'),
+    (r'^$', 'notebook_list'),
     (r'^add/$', 'notebook_add'),
-    (r'^edit/$', 'notebook_edit'),
-    (r'^status/$', 'notebook_status'),
-    (r'^delete/$', 'notebook_delete'),
+    (r'^(?P<notebook_id>\d+)/edit/$', 'notebook_edit'),
+    (r'^(?P<notebook_id>\d+)/status/$', 'notebook_status'),
+    (r'^(?P<notebook_id>\d+)/delete/$', 'notebook_delete'),
 )

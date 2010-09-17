@@ -31,34 +31,74 @@ import logging
 import datetime
 
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 from django.utils import simplejson
 from django.core import serializers
 
-from e.nootebook.models import NoteBook
-from e.nootebook.forms import NoteBookForm
-
-def notebook_index(request):
-    logging.debug('In notebook.views::index()')
-    return render_to_response('index.html', {})
+from e.notebook.models import Notebook
+from e.notebook.forms import NotebookForm
 
 def notebook_list(request):
-    logging.debug('In notebook.views::index()')
-    return render_to_response('index.html', {})
+    logging.debug('In notebook.views::notebook_list()')
+    notebooks = Notebook.objects.all()
+    return render_to_response('notebook_list.html', {
+        'notebooks': notebooks,
+    })
 
+@csrf_protect
 def notebook_add(request):
-    logging.debug('In notebook.views::index()')
-    return render_to_response('index.html', {})
+    logging.debug('In notebook.views::notebook_add()')
+    if request.method == 'POST':
+        notebook_form = NotebookForm(request.POST)
+        if notebook_form.is_valid():
+            new_notebook = notebook_form.save(commit=False)
+            new_notebook.date_joined = datetime.datetime.now()
+            new_notebook.save()
+            if request.POST.get('save_and_add_another'):
+                return HttpResponseRedirect('/notebook/add/')
+            elif request.POST.get('save_and_continue_editing'):
+                return HttpResponseRedirect(new_notebook.get_absolute_url())
+            else:
+                return HttpResponseRedirect('/')
+    else:
+        notebook_form = NotebookForm()
+    return render_to_response('notebook_add.html', {
+        'notebook_form': notebook_form,
+    }, context_instance=RequestContext(request))
 
-def notebook_edit(request):
-    logging.debug('In notebook.views::index()')
-    return render_to_response('index.html', {})
+@csrf_protect
+def notebook_edit(request, notebook_id):
+    logging.debug('In notebook.views::notebook_edit()')
+    notebook =  Notebook.objects.get(pk=notebook_id)
+    if request.method == 'POST':
+        notebook_form = NotebookForm(request.POST, instance=notebook)
+        if notebook_form.is_valid():
+            new_notebook = notebook_form.save()
+            if request.POST.get('save_and_add_another'):
+                return HttpResponseRedirect('/notebook/add/')
+            elif request.POST.get('save_and_continue_editing'):
+                return HttpResponseRedirect(new_notebook.get_absolute_url())
+            else:
+                return HttpResponseRedirect('/')
+    else:
+        notebook_form = NotebookForm(instance=notebook)
+    return render_to_response('notebook_add.html', {
+        'notebook_form': notebook_form,
+        'notebook': notebook,
+    }, context_instance=RequestContext(request))
 
-def notebook_status(request):
-    logging.debug('In notebook.views::index()')
-    return render_to_response('index.html', {})
+def notebook_status(request, notebook_id):
+    logging.debug('In notebook.views::notebook_status()')
+    notebook = Notebook.objects.get(pk=notebook_id)
+    notebook.status = not notebook.status
+    notebook.save()
+    return HttpResponseRedirect('/')
 
-def notebook_delete(request):
-    logging.debug('In notebook.views::index()')
-    return render_to_response('index.html', {})
+def notebook_delete(request, notebook_id):
+    logging.debug('In notebook.views::notebook_delete()')
+    notebook = Notebook.objects.get(pk=notebook_id)
+    notebook.delete()
+    return HttpResponseRedirect('/')

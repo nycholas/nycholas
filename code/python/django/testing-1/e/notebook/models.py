@@ -28,6 +28,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 from django.db import models
+from django.core.urlresolvers import reverse
 
 
 class Notebook(models.Model):
@@ -35,3 +36,13 @@ class Notebook(models.Model):
     description = models.TextField()
     date_joined = models.DateTimeField()
     status = models.BooleanField()
+
+    def __str__(self):
+        return '%s' % self.name
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    def get_absolute_url(self):
+        return reverse('e.notebook.views.notebook_edit',
+                       kwargs={'notebook_id': self.id})
