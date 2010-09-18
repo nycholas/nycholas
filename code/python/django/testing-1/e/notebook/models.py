@@ -44,5 +44,5 @@ class Notebook(models.Model):
         return u'%s' % self.name
 
     def get_absolute_url(self):
-        return reverse('e.notebook.views.notebook_edit',
+        return reverse('notebook.views.notebook_edit',
                        kwargs={'notebook_id': self.id})

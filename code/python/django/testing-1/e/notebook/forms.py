@@ -29,7 +29,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 from django.forms import ModelForm
 
-from e.notebook.models import Notebook
+from .models import Notebook
 
 
 class NotebookForm(ModelForm):

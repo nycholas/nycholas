@@ -38,8 +38,8 @@ from django.template import RequestContext
 from django.utils import simplejson
 from django.core import serializers
 
-from e.notebook.models import Notebook
-from e.notebook.forms import NotebookForm
+from .models import Notebook
+from .forms import NotebookForm
 
 def notebook_list(request):
     logging.debug('In notebook.views::notebook_list()')
@@ -74,6 +74,7 @@ def notebook_edit(request, notebook_id):
     logging.debug('In notebook.views::notebook_edit()')
     notebook =  Notebook.objects.get(pk=notebook_id)
     if request.method == 'POST':
+        print request.POST
         notebook_form = NotebookForm(request.POST, instance=notebook)
         if notebook_form.is_valid():
             new_notebook = notebook_form.save()

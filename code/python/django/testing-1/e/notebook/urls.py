@@ -29,7 +29,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('e.notebook.views',
+urlpatterns = patterns('notebook.views',
     (r'^$', 'notebook_list'),
     (r'^add/$', 'notebook_add'),
     (r'^(?P<notebook_id>\d+)/edit/$', 'notebook_edit'),

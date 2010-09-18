@@ -29,6 +29,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 from django.contrib import admin
 
-from e.notebook.models import Notebook
+from .models import Notebook
 
 admin.site.register(Notebook)

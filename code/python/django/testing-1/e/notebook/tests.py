@@ -27,9 +27,65 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+import datetime
+
 from django.test import TestCase
+from django.test.client import Client
+from django.core.urlresolvers import reverse
+
+from .models import Notebook
+
 
 class SimpleTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.client_csrf = Client(enforce_csrf_checks=True)
+
+    def test_notebook_list(self):
+        response = self.client.get(reverse('notebook.views.notebook_list'))
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_notebook_add(self):
+        response = self.client_csrf.get(reverse('notebook.views.notebook_add'))
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_notebook_insert(self):
+        data = {
+            'name': u'Django',
+            'description': 'The Web framework for perfectionists with deadlines.',
+            'date_joined': datetime.datetime.now(),
+            'status': True,
+        }
+        response = self.client_csrf.get(reverse('notebook.views.notebook_add'), data)
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_notebook_edit(self):
+        response = self.client_csrf.get(reverse('notebook.views.notebook_edit',
+                                        kwargs={'notebook_id': 1}))
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_notebook_change(self):
+        data = {
+            'name': u'Django',
+            'description': 'Django is a high-level Python Web framework that ' \
+                'encourages rapid development and clean, pragmatic design.',
+            'date_joined': datetime.datetime.now(),
+            'status': True,
+        }
+        response = self.client_csrf.get(reverse('notebook.views.notebook_edit',
+                                        kwargs={'notebook_id': 1}), data)
+        self.failUnlessEqual(response.status_code, 200)
+
+    def test_notebook_status(self):
+        response = self.client.get(reverse('notebook.views.notebook_status',
+                                   kwargs={'notebook_id': 1}))
+        self.failUnlessEqual(response.status_code, 302)
+
+    def test_notebook_delete(self):
+        response = self.client.get(reverse('notebook.views.notebook_delete',
+                                   kwargs={'notebook_id': 1}))
+        self.failUnlessEqual(response.status_code, 302)
+
     def test_basic_addition(self):
         """
         Tests that 1 + 1 always equals 2.
@@ -37,9 +93,40 @@ class SimpleTest(TestCase):
         self.failUnlessEqual(1 + 1, 2)
 
 __test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
+Simple test django.
 
->>> 1 + 1 == 2
-True
+>>> import datetime
+>>>
+>>> from django.test import TestCase
+>>> from django.test.client import Client
+>>> from django.core.urlresolvers import reverse
+>>>
+>>> from .models import Notebook
+>>>
+>>> client = Client()
+>>> client_csrf = Client(enforce_csrf_checks=True)
+>>>
+>>> notebook = Notebook(name='Django', description='Master of Insanity',
+...                     date_joined=datetime.datetime.now(), status=True)
+>>> notebook.save()
+>>>
+>>> response = client.get(reverse('notebook.views.notebook_list'))
+>>> response.status_code
+200
+>>> response = client_csrf.get(reverse('notebook.views.notebook_add'))
+>>> response.status_code
+200
+>>> response = client_csrf.get(reverse('notebook.views.notebook_edit',
+...                                    kwargs={'notebook_id': notebook.id}))
+>>> response.status_code
+200
+>>> response = client.get(reverse('notebook.views.notebook_status',
+...                               kwargs={'notebook_id': notebook.id}))
+>>> response.status_code
+302
+>>> response = client.get(reverse('notebook.views.notebook_delete',
+...                               kwargs={'notebook_id': notebook.id}))
+>>> response.status_code
+302
 """}
 
