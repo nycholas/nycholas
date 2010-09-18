@@ -32,6 +32,40 @@ from django.core.urlresolvers import reverse
 
 
 class Notebook(models.Model):
+    """Notebook tests
+
+    >>> import datetime
+    >>>
+    >>> notebook = Notebook(name='Django', description='Master of Insanity',
+    ...                     date_joined=datetime.datetime.now(), status=True)
+    >>> notebook.save()
+    >>>
+    >>> notebook_id = notebook.id
+    >>>
+    >>> notebook.name
+    'Django'
+    >>>
+    >>> notebook.name = 'Python'
+    >>> notebook.save()
+    >>> notebook.name
+    'Python'
+    >>> notebook.status
+    True
+    >>>
+    >>> notebook = Notebook.objects.get(pk=notebook_id)
+    >>> notebook.status = not notebook.status
+    >>> notebook.save()
+    >>> notebook.status
+    False
+    >>>
+    >>> notebook = Notebook.objects.get(pk=notebook_id)
+    >>> notebook.delete()
+    >>>
+    >>> notebook = Notebook.objects.get(pk=notebook_id)
+    Traceback (most recent call last):
+        ...
+    DoesNotExist: Notebook matching query does not exist.
+    """
     name = models.CharField(max_length=60)
     description = models.TextField()
     date_joined = models.DateTimeField()

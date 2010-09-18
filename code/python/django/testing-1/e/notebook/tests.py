@@ -40,6 +40,9 @@ class SimpleTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.client_csrf = Client(enforce_csrf_checks=True)
+        self.notebook = Notebook(name='Python', description='Master of Insanity',
+                                 date_joined=datetime.datetime.now(), status=True)
+        self.notebook.save()
 
     def test_notebook_list(self):
         response = self.client.get(reverse('notebook.views.notebook_list'))
@@ -61,36 +64,33 @@ class SimpleTest(TestCase):
 
     def test_notebook_edit(self):
         response = self.client_csrf.get(reverse('notebook.views.notebook_edit',
-                                        kwargs={'notebook_id': 1}))
+                                                kwargs={'notebook_id': self.notebook.id}))
         self.failUnlessEqual(response.status_code, 200)
 
     def test_notebook_change(self):
+        notebook = Notebook.objects.get(name='Python')
+        notebook.description = 'Errors should never pass silently.'
         data = {
-            'name': u'Django',
-            'description': 'Django is a high-level Python Web framework that ' \
-                'encourages rapid development and clean, pragmatic design.',
+            'name': notebook.name,
+            'description': notebook.description,
             'date_joined': datetime.datetime.now(),
-            'status': True,
+            'status': notebook.status,
         }
         response = self.client_csrf.get(reverse('notebook.views.notebook_edit',
-                                        kwargs={'notebook_id': 1}), data)
+                                                kwargs={'notebook_id': notebook.id}),
+                                        data)
         self.failUnlessEqual(response.status_code, 200)
 
     def test_notebook_status(self):
         response = self.client.get(reverse('notebook.views.notebook_status',
-                                   kwargs={'notebook_id': 1}))
+                                           kwargs={'notebook_id': self.notebook.id}))
         self.failUnlessEqual(response.status_code, 302)
 
     def test_notebook_delete(self):
         response = self.client.get(reverse('notebook.views.notebook_delete',
-                                   kwargs={'notebook_id': 1}))
+                                           kwargs={'notebook_id': self.notebook.id}))
         self.failUnlessEqual(response.status_code, 302)
 
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
 
 __test__ = {"doctest": """
 Simple test django.
