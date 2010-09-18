@@ -4,13 +4,15 @@
 {% block title-page %} - {% if notebook %}{% trans "Change notebook" %}{% else %}{% trans "Add notebook" %}{% endif %}{% endblock %}
 
 {% block contents %}
-<div style="padding: 10px; text-align: right;"><a href="/notebook/">{% trans 'back' %}</a></div>
-<form id="form_notebook_id" name="form_notebook" method="POST">
+<div style="padding: 10px; text-align: right;"><a href="/notebook/" class="backlink">{% trans 'Back' %}</a></div>
+<form id="form_notebook_id" name="form_notebook" action="" method="POST">
 {% csrf_token %}
-{{ notebook_form.as_p }}
+<ul id="form">
+  {{ notebook_form.as_ul }}
+</ul>
 <br />
-<div>
-  {% if notebook %}<a href="/notebook/{{ notebook.id }}/delete/">{% trans 'Remove' %}</a>{% endif %}
+<div class="submit-row">
+  {% if notebook %}<p class="deletelink-box"><a href="/notebook/{{ notebook.id }}/delete/" class="deletelink">{% trans 'Remove' %}</a></p>{% endif %}
   <input type="submit" name="save_and_add_another" value="{% trans 'Save and add another' %}" />
   <input type="submit" name="save_and_continue_editing" value="{% trans 'Save and continue editing' %}" />
   <input type="submit" name="save" value="{% trans 'Save' %}" />

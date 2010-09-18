@@ -5,13 +5,12 @@
 {% block title-page %} - {% trans "Notebook's list" %}{% endblock %}
 
 {% block contents %}
-<div style="padding: 10px; text-align: right;"><a href="/notebook/add/">{% trans 'add' %}</a></div>
+<div style="padding: 10px; text-align: right;"><a href="/notebook/add/" class="addlink">{% trans 'Add' %}</a></div>
 <table width="98%" align="center" border="0" cellpadding="5" cellpadding="5">
   <tr>
     <th>{% trans 'Name' %}</th>
     <th>{% trans 'Description' %}</th>
     <th>{% trans 'Date Joined' %}</th>
-    <th>{% trans 'Status' %}</th>
     <th>{% trans 'Actions' %}</th>
   </th>
   {% for notebook in notebooks %}
@@ -19,11 +18,10 @@
       <td><a href="{{ notebook.get_absolute_url }}">{{ notebook.name }}</a></td>
       <td><a href="{{ notebook.get_absolute_url }}">{{ notebook.description }}</a></td>
       <td><a href="{{ notebook.get_absolute_url }}">{{ notebook.date_joined }}</a></td>
-      <td><a href="{{ notebook.get_absolute_url }}">{{ notebook.status }}</a></td>
       <td>
-        <a href="/notebook/{{ notebook.id }}/edit/">{% trans 'edit' %}</a> |
-        <a href="/notebook/{{ notebook.id }}/status/">{% trans 'status' %}</a> |
-        <a href="/notebook/{{ notebook.id }}/delete/">{% trans 'delete' %}</a>
+        <a href="/notebook/{{ notebook.id }}/edit/" class="changelink">{% trans 'edit' %}</a> |
+        <a href="/notebook/{{ notebook.id }}/status/" class="{% if notebook.status %}statuslink_1{% else %}statuslink_0{% endif %}">{% trans 'status' %}</a> |
+        <a href="/notebook/{{ notebook.id }}/delete/" class="deletelink">{% trans 'delete' %}</a>
       </td>
     </tr>
   {% endfor %}
