@@ -58,7 +58,7 @@ import django.dispatch.dispatcher
 
 def log_exception(*args, **kwds):
     logging.exception('Exception in request:')
-   
+
 # Migrating django.dispatch.dispatcher from Django 0.96 to 1.0.2
 # Log errors.
 django.dispatch.Signal.connect(
@@ -73,12 +73,11 @@ def main():
     # Create a Django application for WSGI.
     #application_webapp = webapp.WSGIApplication([], debug=False)
     application = django.core.handlers.wsgi.WSGIHandler()
-    
-
 
     # Run the WSGI CGI handler with that application.
     #run_wsgi_app(application_webapp)
     run_wsgi_app(application)
+
 
 if __name__ == '__main__':
     main()
