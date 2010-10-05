@@ -65,4 +65,15 @@ class Question(db.Model):
         d = dict([(p, unicode(getattr(self, p))) for p in self.properties()])
         d['get_absolute_url'] = self.get_absolute_url()
         return d
+
+
+class OAuthToken(db.Model):
+    token_key = db.StringProperty(required=True)
+    token_secret = db.StringProperty(required=True)
+    created = db.DateTimeProperty(required=True, auto_now_add=True)
     
+    def __str__(self):
+        return 'secret!'
+
+    def __unicode__(self):
+        return u'secret!'

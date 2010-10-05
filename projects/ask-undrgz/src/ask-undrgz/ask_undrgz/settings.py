@@ -52,6 +52,13 @@ DATABASES = {
     }
 }
 
+# Twitter
+TWITTER_USERNAME = 'ask_undrgz'
+TWITTER_PASSWORD = 'xxx'
+TWITTER_CONSUMER_KEY = 'xxx'
+TWITTER_CONSUMER_SECRET = 'xxx'
+TWITTER_CALLBACK = 'http://ask-undrgz.appspot.com/_oauth/twitter/callback/'
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
