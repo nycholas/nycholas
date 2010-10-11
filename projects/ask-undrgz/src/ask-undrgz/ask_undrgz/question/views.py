@@ -42,8 +42,7 @@ from django.shortcuts import render_to_response
 from django.utils import simplejson
 from django.core import serializers
 
-import tweepy
-
+from ask_undrgz.utils import oauth
 from ask_undrgz import settings as ask_undrgz_settings
 from ask_undrgz.question.forms import QuestionForm
 from ask_undrgz.question.models import Question, OAuthToken
@@ -80,6 +79,23 @@ def index(request):
             return HttpResponseRedirect(new_question.get_absolute_url())
     else:
         question_form = QuestionForm()
+        
+        
+     
+    
+    token_consumer_key = ask_undrgz_settings.TWITTER_CONSUMER_KEY
+    token_consumer_secret = ask_undrgz_settings.TWITTER_CONSUMER_SECRET
+    token_callback = ask_undrgz_settings.TWITTER_CALLBACK
+    
+    client = oauth.TwitterClient(token_consumer_key, 
+                                 token_consumer_secret, token_callback)
+    logging.info('url auth: %s' % client.get_authorization_url())
+    
+    timeline_url = "http://twitter.com/statuses/user_timeline.xml"
+    result = client.make_request(url=timeline_url, token=token_consumer_key,
+                                 secret=token_consumer_secret)
+    logging.info('result: %s' % result.content)
+    
     return render_to_response('index.html', {
         'question_form': question_form,
         'recent_stupid_questions': _recent_stupid_questions(),
@@ -203,7 +219,7 @@ def incoming_chat(request):
             question.save()
             sts = xmpp.send_message([toaddr], answer)
             logging.debug('XMPP status %s', str(sts))
-            if question.answer:
+            if question.answer and False:
                 username = ask_undrgz_settings.TWITTER_USERNAME
                 token_key = ask_undrgz_settings.TWITTER_CONSUMER_KEY
                 token_secret = ask_undrgz_settings.TWITTER_CONSUMER_SECRET
@@ -281,22 +297,22 @@ def oauth_twitter(request):
     token_key = ask_undrgz_settings.TWITTER_CONSUMER_KEY
     token_secret = ask_undrgz_settings.TWITTER_CONSUMER_SECRET
     token_callback = ask_undrgz_settings.TWITTER_CALLBACK
-    auth = tweepy.OAuthHandler(token_key, token_secret, token_callback)
+    auth = oauth.TwitterClient(token_key, token_secret, token_callback)
     try:
         logging.info('Build a new oauth handler and display ' \
                      'authorization url to user')
         auth_url = auth.get_authorization_url()
         logging.debug('auth_url: %s' % str(auth_url))
-    except tweepy.TweepError, e:
+    except Exception, e:
         logging.error('Failed to get a request token: %s' % str(e))
         return HttpResponse('Failed to get a request token: %s' % str(e))
     logging.info('We must store the request token for later use ' \
                  'in the callback page')
-    request_token = OAuthToken(
-            token_key = auth.request_token.key,
-            token_secret = auth.request_token.secret
-    )
-    request_token.put()
+    #request_token = OAuthToken(
+    #        token_key = auth.request_token.key,
+    #        token_secret = auth.request_token.secret
+    #)
+    #request_token.put()
     return HttpResponseRedirect(auth_url)
 
 def oauth_twitter_callback(request):
@@ -307,24 +323,25 @@ def oauth_twitter_callback(request):
         logging.warning('Ivalid request!')
         return HttpResponse('Missing required parameters!')
     logging.info('Lookup the request token')
-    request_token = OAuthToken.gql('WHERE token_key=:key', 
-                                   key=oauth_token).get()
-    if request_token is None:
-        logging.warning('We do not seem to have this request token, ' \
-                        'show an error')
-        return HttpResponse('Invalid token!')
+    #request_token = OAuthToken.gql('WHERE token_key=:key', 
+    #                               key=oauth_token).get()
+    #if request_token is None:
+    #    logging.warning('We do not seem to have this request token, ' \
+    #                    'show an error')
+    #    return HttpResponse('Invalid token!')
     logging.info('Rebuild the auth handler')
     token_key = ask_undrgz_settings.TWITTER_CONSUMER_KEY
     token_secret = ask_undrgz_settings.TWITTER_CONSUMER_SECRET
-    auth = tweepy.OAuthHandler(token_key, token_secret)
-    auth.set_request_token(request_token.token_key, request_token.token_secret)
+    token_callback = ask_undrgz_settings.TWITTER_CALLBACK
+    auth = oauth.TwitterClient(token_key, token_secret, token_callback)
+    user_info = auth.get_user_info(oauth_token, auth_verifier=oauth_verifier)
     logging.info('Fetch the access token')
     try:
         auth.get_access_token(oauth_verifier)
-    except tweepy.TweepError, e:
+    except Exception, e:
         logging.error('Failed to get access token: %s', str(e))
         return HttpResponse('Failed to get access token: %s', str(e))
-    return HttpResponse(auth.access_token)
+    return HttpResponse(user_info)
 
 def show_me_underguiz(request):
     logging.debug('In question.views::show_me_underguiz()')

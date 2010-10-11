@@ -54,10 +54,11 @@ DATABASES = {
 
 # Twitter
 TWITTER_USERNAME = 'ask_undrgz'
-TWITTER_PASSWORD = 'xxx'
-TWITTER_CONSUMER_KEY = 'xxx'
-TWITTER_CONSUMER_SECRET = 'xxx'
-TWITTER_CALLBACK = 'http://ask-undrgz.appspot.com/_oauth/twitter/callback/'
+TWITTER_PASSWORD = 'askfromhell'
+TWITTER_CONSUMER_KEY = '8aGEvteYzbmZCOXWOhXg'
+TWITTER_CONSUMER_SECRET = 'qb2UOJ5g4tS0wLNF4ZxdWKYNFFnYZTyp7NOKA3XyU'
+#TWITTER_CALLBACK = 'http://ask-undrgz.appspot.com/_oauth/twitter/callback/'
+TWITTER_CALLBACK = 'http://localhost:8080/_oauth/twitter/callback/'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

@@ -42,11 +42,12 @@ from google.appengine.dist import use_library
 # Remove the standard version of Django.
 for k in [k for k in sys.modules if k.startswith('django')]:
     del sys.modules[k]
+    
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Force sys.path to have our own directory first, in case we want to import
 # from it.
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
-sys.path.insert(1, 'tweepy.zip') # API for Twitter
+sys.path.insert(0, BASE_DIR)
 
 # Must set this env var *before* importing any part of Django
 os.environ['DJANGO_SETTINGS_MODULE'] = 'ask_undrgz.settings'

@@ -57,7 +57,8 @@ class OracleForward(ForwardBase):
         hostname = items.get("hostname") or "localhost"
         try:
             port = int(items.get("port"))
-        except ValueError: port = 1521
+        except ValueError: 
+            port = 1521
         username = items.get("username") or "oracle"
         hostdb = "%s:%d/%s" % (hostname, port, items.get("name"))
 
@@ -107,7 +108,6 @@ class OracleForward(ForwardBase):
                             row[column] = open(value, "rb").read()
         many = [tuple(i.values()) for i in rows]
         logging.debug(":: Items for database: %s" % str(many))
-        print many
         return many
 
     def generate_query(self, table, items):
