@@ -36,7 +36,6 @@ import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.engine.MessageReceiver;
-import org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver;
 import org.apache.axis2.rpc.receivers.RPCMessageReceiver;
 import org.apache.axis2.transport.http.SimpleHTTPServer;
 import org.cenobites.service.axis2.AnyService;
@@ -45,8 +44,8 @@ public class NoWeb {
 	public static void main(String[] args) throws Exception {
 		Map<String, MessageReceiver> mrMap = new HashMap<String, MessageReceiver>();
 		mrMap.put("http://www.w3.org/2004/08/wsdl/in-only",
-				RPCInOnlyMessageReceiver.class.newInstance());
-		mrMap.put("http://www.w3.org/2004/08/wsdl/in-out",
+				RPCMessageReceiver.class.newInstance());
+		mrMap.put("http://www.w3.org/2004/08/wsdl/out-only",
 				RPCMessageReceiver.class.newInstance());
 
 		ConfigurationContext context = ConfigurationContextFactory
