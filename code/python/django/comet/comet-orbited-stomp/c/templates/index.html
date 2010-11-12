@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block contents %}
+  <div id="clock_div">
+    <p id="clock">{{ clock.time|date:"d/m/Y H:i:s" }}</p>
+  </div>
+{% endblock %}
