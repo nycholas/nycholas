@@ -43,7 +43,8 @@ conn.connect()
 conn.subscribe(destination='/clock', ack='auto')
 
 def index(request):
-    clock = Clock.objects.order_by('-time')[0]
+    clock = Clock.objects.order_by('-time')
+    clock = clock[0] if len(clock) > 0 else None
     return render_to_response('index.html', {
         'clock': clock,
     })
