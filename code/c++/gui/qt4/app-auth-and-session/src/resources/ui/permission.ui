@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Permission</class>
+ <widget class="QWidget" name="Permission">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>734</width>
+    <height>491</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Permission</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+    <normaloff>:/default/static/default/icons/22x22/face-devilish.png</normaloff>:/default/static/default/icons/22x22/face-devilish.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(85, 85, 127);
+font: 75 14pt &quot;DejaVu Sans Mono&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Select permission to change</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="newPushButton">
+       <property name="text">
+        <string>&amp;Add permission</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+         <normaloff>:/default/static/default/icons/22x22/document-new.png</normaloff>:/default/static/default/icons/22x22/document-new.png</iconset>
+       </property>
+       <property name="shortcut">
+        <string>Ctrl+N</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="statusLabel">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QPushButton" name="activatePushButton">
+          <property name="text">
+           <string>&amp;Activate</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</normaloff>:/default/static/default/icons/22x22/dialog-ok-apply.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+E</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="deactivatePushButton">
+          <property name="text">
+           <string>&amp;Deactivate</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/dialog-ok.png</normaloff>:/default/static/default/icons/22x22/dialog-ok.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Shift+E</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="removePushButton">
+          <property name="text">
+           <string>&amp;Remove</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/edit-delete.png</normaloff>:/default/static/default/icons/22x22/edit-delete.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Del</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QToolButton" name="searchAdvancedToolButton">
+          <property name="text">
+           <string>Search Advanced</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/page-zoom.png</normaloff>:/default/static/default/icons/22x22/page-zoom.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+K</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="searchLineEdit">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(170, 170, 255); 
+font: oblique 8pt &quot;DejaVu Sans Mono&quot;;</string>
+          </property>
+          <property name="dragEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <widget class="QTableView" name="permissionTableView">
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="statusTableViewLabel">
+          <property name="styleSheet">
+           <string notr="true">color: rgb(85, 85, 255);</string>
+          </property>
+          <property name="text">
+           <string>0 permission</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="latestPushButton">
+          <property name="text">
+           <string>&amp;Latest</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/go-previous-view.png</normaloff>:/default/static/default/icons/22x22/go-previous-view.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Shift+Left, Ctrl+Shift+PgUp</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="nextPushButton">
+          <property name="text">
+           <string>&amp;Next</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/go-previous.png</normaloff>:/default/static/default/icons/22x22/go-previous.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Left, Ctrl+PgUp</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="statusPaginationLabel">
+          <property name="text">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans Mono'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1&lt;/span&gt; - &lt;span style=&quot; font-weight:600;&quot;&gt;25&lt;/span&gt; de &lt;span style=&quot; font-weight:600;&quot;&gt;100&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="previousPushButton">
+          <property name="text">
+           <string>&amp;Previous</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/go-next.png</normaloff>:/default/static/default/icons/22x22/go-next.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Right, Ctrl+PgDown</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="oldestPushButton">
+          <property name="text">
+           <string>&amp;Oldest</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../crud-2/resources/ui/resources.qrc">
+            <normaloff>:/default/static/default/icons/22x22/go-next-view.png</normaloff>:/default/static/default/icons/22x22/go-next-view.png</iconset>
+          </property>
+          <property name="shortcut">
+           <string>Ctrl+Shift+Right, Ctrl+Shift+PgDown</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>newPushButton</tabstop>
+  <tabstop>activatePushButton</tabstop>
+  <tabstop>deactivatePushButton</tabstop>
+  <tabstop>removePushButton</tabstop>
+  <tabstop>searchLineEdit</tabstop>
+  <tabstop>searchAdvancedToolButton</tabstop>
+  <tabstop>permissionTableView</tabstop>
+  <tabstop>nextPushButton</tabstop>
+  <tabstop>previousPushButton</tabstop>
+  <tabstop>latestPushButton</tabstop>
+  <tabstop>oldestPushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../../../crud-2/resources/ui/resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
