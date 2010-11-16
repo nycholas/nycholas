@@ -252,10 +252,20 @@ a.deletelink:hover {
 
 #contents {
     padding: 20px;
+    padding-top: 0px;
 }
 
 #message_div {
     margin-top: 10px;
     padding-top: 5px;
     border-top: 1px solid #ccc;
+}
+
+#status {
+    position: fixed;
+    bottom: 0;
+    text-align: left;
+    width: 100%;
+    background-color: white;
+    color: #ff0000;
 }

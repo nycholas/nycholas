@@ -45,7 +45,7 @@ urlpatterns = patterns('',
     (r'^_oauth/twitter/callback/', 'ask_undrgz.question.views.oauth_twitter_callback'),
     (r'^_show_me_underguiz/$', 'ask_undrgz.question.views.show_me_underguiz'),
     (r'^(?P<ask_slug>[\w_-]+)/$', 'ask_undrgz.question.views.answer'),
-    (r'^(?P<ask>\w)/$', 'ask_undrgz.question.views.new_ask'),
+    (r'^(?P<ask>\w+)/$', 'ask_undrgz.question.views.new_ask'),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

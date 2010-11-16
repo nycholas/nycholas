@@ -3,6 +3,11 @@
 
 {% block contents %}
   <div id="message_div">
-    <p id="message"><b>Says:</b> {{ message.text }}</p>
+    {% if message.text %}
+        <!--<p id="message"><b>Says:</b> {{ message.text }}</p>-->
+        <p id="message"><b>Says:</b> Say something to us!</p>
+    {% else %}
+        <p id="message"><b>Says:</b> Say something to us!</p>
+    {% endif %}
   </div>
 {% endblock %}

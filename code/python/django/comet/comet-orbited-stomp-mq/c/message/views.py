@@ -37,10 +37,10 @@ import stomp
 
 from models import Message
 
-#conn = stomp.Connection([('localhost', 61616)])
-#conn.start()
-#conn.connect()
-#conn.subscribe(destination='/queue/message', ack='auto')
+conn = stomp.Connection([('localhost', 61616)])
+conn.start()
+conn.connect()
+conn.subscribe(destination='/topic/message', ack='auto')
 
 def index(request):
     message = Message.objects.order_by('-id')
@@ -59,6 +59,6 @@ def message_add(request, text):
     message = Message(text=text)
     message.save()
     msg = 'Successfully saved message: %s' % message.text
-    #conn.send(msg, destination='/queue/message')
+    conn.send(msg, destination='/topic/message')
     return HttpResponse(msg)
     

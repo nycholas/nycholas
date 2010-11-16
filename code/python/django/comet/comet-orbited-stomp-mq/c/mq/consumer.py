@@ -46,7 +46,7 @@ conn.set_listener('', MyListener())
 conn.start()
 conn.connect()
 
-conn.subscribe(destination='/queue/message', ack='auto')
+conn.subscribe(destination='/topic/message', ack='auto')
 
 time.sleep(2)
 conn.disconnect()

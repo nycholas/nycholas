@@ -32,5 +32,5 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('c.message.views',
     (r'^$', 'index'),
     (r'^list/$', 'message_list'),
-    (r'^add/(?P<message>\w)/$', 'message_add'),
+    (r'^add/(?P<text>\w.+)/$', 'message_add'),
 )

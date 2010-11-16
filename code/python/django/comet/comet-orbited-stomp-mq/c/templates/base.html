@@ -37,6 +37,10 @@
     {% block contents %}{% endblock %}
 </div>
 
+<div id="status">
+    {% block status %}{% endblock %}
+<div>
+
 <script type="text/javascript">
 function get_message(message) {
     //window.alert(message['time']);
@@ -46,31 +50,28 @@ function get_message(message) {
 $(document).ready(function() {
     stomp = new STOMPClient();
     stomp.onopen = function() {
-        //window.alert('Opening stomp client');
+        $('#status').html('<b>Status:</b> Opening stomp client...');
     };
     stomp.onclose = function(c) {
-        window.alert('Lost Connection, Code: ' + c);
+        $('#status').html('<b>Status:</b> Lost Connection, Code: ' + c);
     };
     stomp.onerror = function(error) {
-        window.alert('Error: ' + error);
+        $('#status').html('<b>Status:</b> Error: ' + error);
     };
     stomp.onerrorframe = function(frame) {
-        window.alert('Error: ' + frame.body);
+        $('#status').html('<b>Status:</b> Error: ' + frame.body);
     };
     stomp.onconnectedframe = function() {
-        //window.alert('Connected. Subscribing');
+        $('#status').html('<b>Status:</b> Connected. Subscribing...');
         stomp.subscribe('/topic/message');
     };
     stomp.onmessageframe = function(frame) {
-        //window.alert('Message: ' + frame);
-        $('#message').append('<br />Says: ' + frame.body);
+        //$('#status').data(frame.body);
         //get_message(JSON.parse(frame.body));
+        $('#message').append('<br /><b>Says:</b> ' + frame.body);
+        //$.get('/add/' + frame.body + '/');
     };
     stomp.connect('localhost', 61616);
-
-    /*var interval_update_answer = window.setInterval(function() {
-        $.post("/add/", {});
-    }, 1000);*/
 });
 </script>
 
