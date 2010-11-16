@@ -27,40 +27,27 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-import json
-import datetime
+from django.conf.urls.defaults import *
+from django.conf import settings
 
-from django.shortcuts import render_to_response
-from django.http import HttpResponse
+# Uncomment the next two lines to enable the admin:
+# from django.contrib import admin
+# admin.autodiscover()
 
-import stomp
+urlpatterns = patterns('',
+    # Example:
+    # (r'^c/', include('c.foo.urls')),
+    (r'^', include('c.message.urls')),
 
-from models import Clock
+    # Uncomment the admin/doc line below to enable admin documentation:
+    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-conn = stomp.Connection([('localhost', 61613)])
-conn.start()
-conn.connect()
-conn.subscribe(destination='/clock', ack='auto')
+    # Uncomment the next line to enable the admin:
+    # (r'^admin/', include(admin.site.urls)),
+)
 
-def index(request):
-    clock = Clock.objects.order_by('-time')
-    clock = clock[0] if len(clock) > 0 else None
-    return render_to_response('index.html', {
-        'clock': clock,
-    })
-
-def clock_list(request):
-    clocks = Clock.objects.all()
-    return render_to_response('clock_list.html', {
-        'clocks': clocks,
-    })
-    
-def clock_add(request):
-    clock = Clock(time=datetime.datetime.today())
-    clock.save()
-    message = json.dumps({
-        'time': clock.time.strftime('%d/%m/%Y %H:%M:%S')
-    })
-    conn.send(message, destination='/clock')
-    return HttpResponse('ok')
-    
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT}),
+    )

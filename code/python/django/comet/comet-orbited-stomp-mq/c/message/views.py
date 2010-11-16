@@ -35,32 +35,30 @@ from django.http import HttpResponse
 
 import stomp
 
-from models import Clock
+from models import Message
 
-conn = stomp.Connection([('localhost', 61613)])
-conn.start()
-conn.connect()
-conn.subscribe(destination='/clock', ack='auto')
+#conn = stomp.Connection([('localhost', 61616)])
+#conn.start()
+#conn.connect()
+#conn.subscribe(destination='/queue/message', ack='auto')
 
 def index(request):
-    clock = Clock.objects.order_by('-time')
-    clock = clock[0] if len(clock) > 0 else None
+    message = Message.objects.order_by('-id')
+    message = message[0] if len(message) > 0 else None
     return render_to_response('index.html', {
-        'clock': clock,
+        'message': message,
     })
 
-def clock_list(request):
-    clocks = Clock.objects.all()
-    return render_to_response('clock_list.html', {
-        'clocks': clocks,
+def message_list(request):
+    messages = Message.objects.all()
+    return render_to_response('message_list.html', {
+        'messages': messages,
     })
     
-def clock_add(request):
-    clock = Clock(time=datetime.datetime.today())
-    clock.save()
-    message = json.dumps({
-        'time': clock.time.strftime('%d/%m/%Y %H:%M:%S')
-    })
-    conn.send(message, destination='/clock')
-    return HttpResponse('ok')
+def message_add(request, text):
+    message = Message(text=text)
+    message.save()
+    msg = 'Successfully saved message: %s' % message.text
+    #conn.send(msg, destination='/queue/message')
+    return HttpResponse(msg)
     

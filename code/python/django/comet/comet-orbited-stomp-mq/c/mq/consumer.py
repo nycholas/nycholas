@@ -27,40 +27,26 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-import json
-import datetime
-
-from django.shortcuts import render_to_response
-from django.http import HttpResponse
+import time
+import sys
 
 import stomp
 
-from models import Clock
 
-conn = stomp.Connection([('localhost', 61613)])
+class MyListener(object):
+    def on_error(self, headers, message):
+        print 'received an error %s' % message
+
+    def on_message(self, headers, message):
+        print 'received a message %s' % message
+
+
+conn = stomp.Connection([('localhost', 61616)])
+conn.set_listener('', MyListener())
 conn.start()
 conn.connect()
-conn.subscribe(destination='/clock', ack='auto')
 
-def index(request):
-    clock = Clock.objects.order_by('-time')
-    clock = clock[0] if len(clock) > 0 else None
-    return render_to_response('index.html', {
-        'clock': clock,
-    })
+conn.subscribe(destination='/queue/message', ack='auto')
 
-def clock_list(request):
-    clocks = Clock.objects.all()
-    return render_to_response('clock_list.html', {
-        'clocks': clocks,
-    })
-    
-def clock_add(request):
-    clock = Clock(time=datetime.datetime.today())
-    clock.save()
-    message = json.dumps({
-        'time': clock.time.strftime('%d/%m/%Y %H:%M:%S')
-    })
-    conn.send(message, destination='/clock')
-    return HttpResponse('ok')
-    
+time.sleep(2)
+conn.disconnect()

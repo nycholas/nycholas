@@ -27,40 +27,26 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-import json
-import datetime
+"""
+This file demonstrates two different styles of tests (one doctest and one
+unittest). These will both pass when you run "manage.py test".
 
-from django.shortcuts import render_to_response
-from django.http import HttpResponse
+Replace these with more appropriate tests for your application.
+"""
 
-import stomp
+from django.test import TestCase
 
-from models import Clock
+class SimpleTest(TestCase):
+    def test_basic_addition(self):
+        """
+        Tests that 1 + 1 always equals 2.
+        """
+        self.failUnlessEqual(1 + 1, 2)
 
-conn = stomp.Connection([('localhost', 61613)])
-conn.start()
-conn.connect()
-conn.subscribe(destination='/clock', ack='auto')
+__test__ = {"doctest": """
+Another way to test that 1 + 1 is equal to 2.
 
-def index(request):
-    clock = Clock.objects.order_by('-time')
-    clock = clock[0] if len(clock) > 0 else None
-    return render_to_response('index.html', {
-        'clock': clock,
-    })
+>>> 1 + 1 == 2
+True
+"""}
 
-def clock_list(request):
-    clocks = Clock.objects.all()
-    return render_to_response('clock_list.html', {
-        'clocks': clocks,
-    })
-    
-def clock_add(request):
-    clock = Clock(time=datetime.datetime.today())
-    clock.save()
-    message = json.dumps({
-        'time': clock.time.strftime('%d/%m/%Y %H:%M:%S')
-    })
-    conn.send(message, destination='/clock')
-    return HttpResponse('ok')
-    

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block contents %}
+  <div id="message_div">
+    {% for message in messages %}
+        <br /><b>Says:</b> {{ message.text }}
+    {% endfor %}
+  </div>
+{% endblock %}

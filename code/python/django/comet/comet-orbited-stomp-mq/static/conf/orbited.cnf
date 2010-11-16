@@ -1,0 +1,13 @@
+[global]
+reactor = epoll # Select will work on all platforms and is the only option on Windows, but has scalability issues. On Linux you should choose "epoll" and on OS X/FreeBSD you should choose "kqueue"
+proxy.enabled = 1
+session.ping_interval = 40
+session.ping_timeout = 30
+
+[listen]
+http://:9000
+stomp://:61613
+
+[access]
+* -> localhost:61616 # Apache ActiveMQ
+

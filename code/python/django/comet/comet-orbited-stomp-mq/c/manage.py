@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 #
 # Simple example by comet, orbited and stomp.
@@ -27,40 +28,13 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-import json
-import datetime
+from django.core.management import execute_manager
+try:
+    import settings # Assumed to be in the same directory.
+except ImportError:
+    import sys
+    sys.stderr.write("Error: Can't find the file 'settings.py' in the directory containing %r. It appears you've customized things.\nYou'll have to run django-admin.py, passing it your settings module.\n(If the file settings.py does indeed exist, it's causing an ImportError somehow.)\n" % __file__)
+    sys.exit(1)
 
-from django.shortcuts import render_to_response
-from django.http import HttpResponse
-
-import stomp
-
-from models import Clock
-
-conn = stomp.Connection([('localhost', 61613)])
-conn.start()
-conn.connect()
-conn.subscribe(destination='/clock', ack='auto')
-
-def index(request):
-    clock = Clock.objects.order_by('-time')
-    clock = clock[0] if len(clock) > 0 else None
-    return render_to_response('index.html', {
-        'clock': clock,
-    })
-
-def clock_list(request):
-    clocks = Clock.objects.all()
-    return render_to_response('clock_list.html', {
-        'clocks': clocks,
-    })
-    
-def clock_add(request):
-    clock = Clock(time=datetime.datetime.today())
-    clock.save()
-    message = json.dumps({
-        'time': clock.time.strftime('%d/%m/%Y %H:%M:%S')
-    })
-    conn.send(message, destination='/clock')
-    return HttpResponse('ok')
-    
+if __name__ == "__main__":
+    execute_manager(settings)
