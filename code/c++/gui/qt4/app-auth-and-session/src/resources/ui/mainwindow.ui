@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>670</width>
+    <height>496</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/default/static/default/icons/22x22/face-devilish.png</normaloff>:/default/static/default/icons/22x22/face-devilish.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="centralWidetGridLayou">
+    <property name="margin">
+     <number>3</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QFrame" name="headerFrame">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <layout class="QGridLayout" name="headerGridLayout">
+       <property name="margin">
+        <number>3</number>
+       </property>
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="iconWelcomeLabel">
+           <property name="minimumSize">
+            <size>
+             <width>22</width>
+             <height>22</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>22</width>
+             <height>22</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="resources.qrc">:/default/static/default/icons/22x22/meeting-organizer.png</pixmap>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="welcomeLabel">
+           <property name="text">
+            <string>Welcome, &lt;b&gt;$USER&lt;/b&gt;.</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="1">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>268</width>
+           <height>25</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="2">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="changePasswordPushButton">
+           <property name="text">
+            <string>&amp;Change password</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/default/static/default/icons/22x22/dialog-password.png</normaloff>:/default/static/default/icons/22x22/dialog-password.png</iconset>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="logoutPushButton">
+           <property name="text">
+            <string>&amp;Log out</string>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/default/static/default/icons/22x22/system-log-out.png</normaloff>:/default/static/default/icons/22x22/system-log-out.png</iconset>
+           </property>
+           <property name="shortcut">
+            <string>Ctrl+Shift+W</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+           <property name="default">
+            <bool>false</bool>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QMdiArea" name="mdiArea">
+      <property name="viewMode">
+       <enum>QMdiArea::TabbedView</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>670</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionPrint"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+    <addaction name="actionDelete"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>&amp;Window</string>
+    </property>
+    <addaction name="actionMinimize"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionHelpContents"/>
+    <addaction name="actionReleaseNotes"/>
+    <addaction name="actionReportBugs"/>
+    <addaction name="separator"/>
+    <addaction name="actionCheckForUpdates"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout"/>
+    <addaction name="actionLicense"/>
+   </widget>
+   <widget class="QMenu" name="menuAdmin">
+    <property name="title">
+     <string>&amp;Admin</string>
+    </property>
+    <addaction name="actionContentTypes"/>
+    <addaction name="separator"/>
+    <addaction name="actionPermissions"/>
+    <addaction name="actionGroups"/>
+    <addaction name="actionUsers"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuAdmin"/>
+   <addaction name="menuWindow"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/document-new.png</normaloff>:/default/static/default/icons/22x22/document-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/document-open.png</normaloff>:/default/static/default/icons/22x22/document-open.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/window-close.png</normaloff>:/default/static/default/icons/22x22/window-close.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/application-exit.png</normaloff>:/default/static/default/icons/22x22/application-exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/document-print.png</normaloff>:/default/static/default/icons/22x22/document-print.png</iconset>
+   </property>
+   <property name="text">
+    <string>Print...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/document-save.png</normaloff>:/default/static/default/icons/22x22/document-save.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/document-save-as.png</normaloff>:/default/static/default/icons/22x22/document-save-as.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save &amp;As...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionSaveAll">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/document-save-all.png</normaloff>:/default/static/default/icons/22x22/document-save-all.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save A&amp;ll</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/edit-undo.png</normaloff>:/default/static/default/icons/22x22/edit-undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/edit-redo.png</normaloff>:/default/static/default/icons/22x22/edit-redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/edit-cut.png</normaloff>:/default/static/default/icons/22x22/edit-cut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cu&amp;t</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/edit-copy.png</normaloff>:/default/static/default/icons/22x22/edit-copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/edit-paste.png</normaloff>:/default/static/default/icons/22x22/edit-paste.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/edit-delete.png</normaloff>:/default/static/default/icons/22x22/edit-delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Delete</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Del</string>
+   </property>
+  </action>
+  <action name="actionMinimize">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Minimize</string>
+   </property>
+  </action>
+  <action name="actionHelpContents">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/help-contents.png</normaloff>:/default/static/default/icons/22x22/help-contents.png</iconset>
+   </property>
+   <property name="text">
+    <string>Help Contents</string>
+   </property>
+  </action>
+  <action name="actionReleaseNotes">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/im-status-message-edit.png</normaloff>:/default/static/default/icons/22x22/im-status-message-edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Release &amp;Notes</string>
+   </property>
+  </action>
+  <action name="actionReportBugs">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/tools-report-bug.png</normaloff>:/default/static/default/icons/22x22/tools-report-bug.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Report Bugs</string>
+   </property>
+  </action>
+  <action name="actionCheckForUpdates">
+   <property name="text">
+    <string>Check f&amp;or Updates...</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/face-devilish.png</normaloff>:/default/static/default/icons/22x22/face-devilish.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="actionLicense">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/help-about.png</normaloff>:/default/static/default/icons/22x22/help-about.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;License</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/preferences-desktop.png</normaloff>:/default/static/default/icons/22x22/preferences-desktop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Prefere&amp;nces</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+P</string>
+   </property>
+  </action>
+  <action name="actionClearMenu">
+   <property name="text">
+    <string>&amp;Clear Menu</string>
+   </property>
+  </action>
+  <action name="actionContentTypes">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/documentation.png</normaloff>:/default/static/default/icons/22x22/documentation.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Content Types</string>
+   </property>
+  </action>
+  <action name="actionPermissions">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/irc-operator.png</normaloff>:/default/static/default/icons/22x22/irc-operator.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Permissions</string>
+   </property>
+  </action>
+  <action name="actionGroups">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/resource-group.png</normaloff>:/default/static/default/icons/22x22/resource-group.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Groups</string>
+   </property>
+  </action>
+  <action name="actionUsers">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/default/static/default/icons/22x22/list-add-user.png</normaloff>:/default/static/default/icons/22x22/list-add-user.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Users</string>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>logoutPushButton</tabstop>
+  <tabstop>changePasswordPushButton</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

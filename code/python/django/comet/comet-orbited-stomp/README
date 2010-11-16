@@ -1,0 +1,6 @@
+HOW TO INSTALL?
+================
+
+$ easy_install django
+$ easy_install stomp.py
+$ easy_install orbited
