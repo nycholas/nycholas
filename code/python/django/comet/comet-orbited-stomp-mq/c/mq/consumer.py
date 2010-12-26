@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# ask-undrgz system of questions uses data from underguiz.
+# Simple example by comet, orbited and stomp.
 # Copyright (c) 2010, Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
 # All rights reserved.
 #
@@ -27,30 +27,26 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-from django.conf.urls.defaults import *
+import time
+import sys
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+import stomp
 
-urlpatterns = patterns('',
-    # Example:
-    # (r'^ask_undrgz/', include('ask_undrgz.foo.urls')),
-    (r'^$', 'ask_undrgz.question.views.index'),
-    (r'^_recent_stupid_questions/$', 'ask_undrgz.question.views.recent_stupid_questions'),
-    (r'^_is_online/$', 'ask_undrgz.question.views.is_online'),
-    (r'^_send_message/$', 'ask_undrgz.question.views.send_message'),
-    (r'^_ah/xmpp/message/chat/$', 'ask_undrgz.question.views.incoming_chat'),
-    (r'^_oauth/twitter/$', 'ask_undrgz.question.views.oauth_twitter'),
-    (r'^_oauth/twitter/callback/', 'ask_undrgz.question.views.oauth_twitter_callback'),
-    (r'^_show_me_underguiz/$', 'ask_undrgz.question.views.show_me_underguiz'),
-    (r'^(?P<ask_slug>[\w_-]+)/$', 'ask_undrgz.question.views.answer'),
-    (r'^(?P<ask>\w+)/$', 'ask_undrgz.question.views.new_ask'),
 
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+class MyListener(object):
+    def on_error(self, headers, message):
+        print 'received an error %s' % message
 
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
-)
+    def on_message(self, headers, message):
+        print 'received a message %s' % message
+
+
+conn = stomp.Connection([('localhost', 61616)])
+conn.set_listener('', MyListener())
+conn.start()
+conn.connect()
+
+conn.subscribe(destination='/topic/message', ack='auto')
+
+time.sleep(2)
+conn.disconnect()

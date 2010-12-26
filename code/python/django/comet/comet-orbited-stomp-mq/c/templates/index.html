@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block contents %}
+  <div id="message_div">
+    {% if message.text %}
+        <!--<p id="message"><b>Says:</b> {{ message.text }}</p>-->
+        <p id="message"><b>Says:</b> Say something to us!</p>
+    {% else %}
+        <p id="message"><b>Says:</b> Say something to us!</p>
+    {% endif %}
+  </div>
+{% endblock %}

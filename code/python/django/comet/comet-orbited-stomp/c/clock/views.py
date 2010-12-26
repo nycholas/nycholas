@@ -37,7 +37,7 @@ import stomp
 
 from models import Clock
 
-conn = stomp.Connection()
+conn = stomp.Connection([('localhost', 61613)])
 conn.start()
 conn.connect()
 conn.subscribe(destination='/clock', ack='auto')

@@ -1,0 +1,79 @@
+{% load i18n %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+  <meta name="title" content="{% trans 'Django example comet' %}" />
+  <meta name="author" content="Nycholas de Oliveira e Oliveira - nycholas@gmail.com" />
+  <meta name="description" content="{% trans 'Django example comet' %}" />
+  <meta name="keywords" content="django example comet orbited stomp" />
+  <meta name="distribution" content="global" />
+  <meta name="copyright" content="Copyright (C) 2010 by Nycholas de Oliveira e Oliveira - nycholas@gmail.com" />
+
+  <link href="/static/image/c.ico" rel="shortcut icon" type="image/x-icon" />
+  <link href="/static/style/base.css" rel="stylesheet" type="text/css" charset="utf-8" />
+
+  <script type="text/javascript">document.domain = document.domain;</script>
+  <script type="text/javascript" src="/static/script/jquery.js"></script>
+  <script type="text/javascript" src="http://localhost:9000/static/Orbited.js"></script>
+  <script type="text/javascript" src="http://localhost:9000/static/protocols/stomp/stomp.js"></script>
+  <script type="text/javascript">
+    Orbited.settings.port = 9000;
+    Orbited.settings.hostname = 'localhost';
+    TCPSocket = Orbited.TCPSocket;
+  </script>
+  <noscript></noscript>
+
+  <title>{% trans 'Django example comet' %}</title>
+</head>
+<body>
+
+<h1 style="padding: 20px; padding-bottom: 30px;">
+  {% trans 'Django example comet' %}{% block title-page %}{% endblock %}
+</h1>
+
+<div id="contents">
+    {% block contents %}{% endblock %}
+</div>
+
+<div id="status">
+    {% block status %}{% endblock %}
+<div>
+
+<script type="text/javascript">
+function get_message(message) {
+    //window.alert(message['time']);
+    $('#message').append('<br />Says: ' + message['text']);
+}
+
+$(document).ready(function() {
+    stomp = new STOMPClient();
+    stomp.onopen = function() {
+        $('#status').html('<b>Status:</b> Opening stomp client...');
+    };
+    stomp.onclose = function(c) {
+        $('#status').html('<b>Status:</b> Lost Connection, Code: ' + c);
+    };
+    stomp.onerror = function(error) {
+        $('#status').html('<b>Status:</b> Error: ' + error);
+    };
+    stomp.onerrorframe = function(frame) {
+        $('#status').html('<b>Status:</b> Error: ' + frame.body);
+    };
+    stomp.onconnectedframe = function() {
+        $('#status').html('<b>Status:</b> Connected. Subscribing...');
+        stomp.subscribe('/topic/message');
+    };
+    stomp.onmessageframe = function(frame) {
+        //$('#status').data(frame.body);
+        //get_message(JSON.parse(frame.body));
+        $('#message').append('<br /><b>Says:</b> ' + frame.body);
+        //$.get('/add/' + frame.body + '/');
+    };
+    stomp.connect('localhost', 61616);
+});
+</script>
+
+</body>
+</html>
