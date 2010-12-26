@@ -26,6 +26,7 @@ ui_*.h
 .settings/*
 code/java/**/target/*
 code/groovy/grails/**/target/*
+code/android/**/target/*
 projects/ircarus/**/target/*
 projects/ecrawler/build/*
 projects/ecrawler/dist/*
