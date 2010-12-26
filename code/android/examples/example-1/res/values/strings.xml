@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="application_name">Notebook</string>
+	<string name="new_notebook">New notebook</string>
+	<string name="edit_notebook">Edit notebook</string>
+	<string name="delete_notebook">Delete notebook</string>
+	<string name="search">Search</string>
+	<string name="exit">Exit</string>
+	<string name="save">Save</string>
+	<string name="cancel">Cancel</string>
+	<string name="no_notebooks">No Notebooks</string>
+	<string name="title">Title</string>
+	<string name="description">Description</string>
+	<string name="created">Created</string>
+	<string name="modified">Modified</string>
+	<string name="status">Status</string>
+</resources>

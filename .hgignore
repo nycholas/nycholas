@@ -12,6 +12,8 @@ syntax: glob
 *.so
 *.o
 *.db
+*.apk
+*.ap_
 moc_*
 qrc_*
 ui_*.h

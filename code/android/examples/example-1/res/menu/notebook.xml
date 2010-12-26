@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/menuItemNewNotebook" android:title="@string/new_notebook"
+		android:icon="@drawable/ic_new_notebook" android:titleCondensed="@string/new_notebook" />
+	<item android:id="@+id/menuItemSearchNotebook" android:icon="@drawable/ic_search_notebook"
+		android:title="@string/search" android:titleCondensed="@string/search" />
+	<item android:id="@+id/menuItemExitNotebook" android:icon="@drawable/ic_exit"
+		android:title="@string/exit" android:titleCondensed="@string/exit" />
+</menu>
