@@ -1,0 +1,53 @@
+$ python
+Python 2.7.1 (r271:86832, Dec 20 2010, 11:54:29)
+[GCC 4.5.1 20101125 (prerelease)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+>>> e1 = __import__('example-1')
+>>> e1.f('hai hai!')
+In f(n -> hai hai!)
+In call_error(n -> hai hai!)
+Error Message: hai hai!
+>>>
+>>> e2 = __import__('example-2')
+>>> e2.f('hai hai!')
+In f(n -> hai hai!)
+In call_error(n -> hai hai!)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+  File "example-2.py", line 58, in f
+    raise BaseError('New Error Message: %s' % (str(e),))
+BaseError: New Error Message: Error Message: hai hai!
+>>>
+>>> e3 = __import__('example-3')
+>>> e3.f('hai hai!')
+In f(n -> hai hai!)
+In call_error(n -> hai hai!)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+  File "example-3.py", line 53, in f
+    raise BaseError('New Error Message: %s' % (str(e),))
+BaseError: New Error Message: Error Message: hai hai!
+>>>
+>>> e4 = __import__('example-4')
+>>> e4.f('hai hai!')
+In f(n -> hai hai!)
+In call_error(n -> hai hai!)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+  File "example-4.py", line 46, in f
+    raise BaseError('New Error Message: %s' % (str(e),))
+BaseError: New Error Message: Error Message: hai hai!
+>>>
+>>> e5 = __import__('example-5')
+>>> e5.f('hai hai!')
+In f(n -> hai hai!)
+In call_error(n -> hai hai!)
+Traceback (most recent call last):
+  File "<input>", line 1, in <module>
+  File "example-5.py", line 44, in f
+    call_error(n)
+  File "example-5.py", line 39, in call_error
+    raise BaseError('Error Message: %s' % (str(n),)), None, sys.exc_info()[2]
+BaseError: New Error Message: Error Message: hai hai!
+>>>
