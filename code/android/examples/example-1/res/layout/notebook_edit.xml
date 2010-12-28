@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent" android:orientation="vertical"
+	android:id="@+id/linearLayoutWidgetTitle" android:layout_width="fill_parent">
+	<LinearLayout android:layout_height="wrap_content"
+		android:id="@+id/linearLayoutTitle" android:layout_width="match_parent">
+		<TextView android:text="@string/title" android:id="@+id/textViewTitle"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+		<EditText android:id="@+id/editTextTitle" android:layout_weight="1"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></EditText>
+	</LinearLayout>
+	<LinearLayout android:layout_height="wrap_content"
+		android:id="@+id/linearLayoutDescription" android:layout_width="match_parent"
+		android:orientation="vertical">
+		<TextView android:text="@string/description" android:id="@+id/textViewDescription"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"></TextView>
+		<EditText android:id="@+id/editTextDescription" android:layout_weight="1"
+			android:layout_height="wrap_content" android:layout_width="wrap_content"></EditText>
+	</LinearLayout>
+	<!-- <LinearLayout android:layout_height="wrap_content" android:id="@+id/linearLayoutStatus" 
+		android:layout_width="1"> <TextView android:text="@+id/status" 
+		android:id="@string/textViewStatus" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView> 
+		<CheckBox android:id="@+id/checkBoxStatus" android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"></CheckBox> </LinearLayout> -->
+	<LinearLayout android:id="@+id/linearLayoutButtons"
+		android:layout_height="wrap_content" android:layout_width="match_parent">
+		<Button android:text="@string/save" android:id="@+id/buttonSave"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:id="@+id/buttonCancel" android:text="@string/cancel"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+	</LinearLayout>
+</LinearLayout>
