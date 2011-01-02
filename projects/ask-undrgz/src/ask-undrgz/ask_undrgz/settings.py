@@ -62,6 +62,8 @@ TWITTER_OAUTH_TOKEN_SECRET = 'XXX'
 TWITTER_CALLBACK = 'http://ask-undrgz.appspot.com/_oauth/twitter/callback/'
 if DEBUG:
     TWITTER_CALLBACK = 'http://localhost:8080/_oauth/twitter/callback/'
+    
+ugettext = lambda s: s
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -77,8 +79,8 @@ TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
 
 LANGUAGES = (
-    ('en', _('English')),
-    ('pt-BR', _('Portuguese Brazil')),
+    ('en', ugettext('English')),
+    ('pt-BR', ugettext('Portuguese Brazil')),
 )
 
 
