@@ -33,6 +33,8 @@ import base64
 import logging
 import datetime
 
+import tweepy
+
 from google.appengine.api import xmpp
 from google.appengine.api import urlfetch
 
@@ -71,9 +73,15 @@ def _send_message_xmpp(user_address, message):
     '''
     logging.debug('In question.views::_send_message_xmpp()')
     chat_message_sent = False
+    
+    # Sends an invitation to address gtalk
     #_send_invite_xmpp(user_address)
+    
+    # Checks whether the user is online and talk on the list of appengine
     if xmpp.get_presence(user_address):
-        status_code = xmpp.send_message([user_address], message)
+        logging.info('Presence OK: %s' % (user_address,))
+        users_address = [user_address,] #'nycholas@gmail.com']
+        status_code = xmpp.send_message(users_address, message)
         chat_message_sent = (status_code != xmpp.NO_ERROR)
     return chat_message_sent
 
@@ -219,24 +227,32 @@ def incoming_chat(request):
     logging.debug('In question.views::incoming_chat()')
     if request.method != 'POST':
         return HttpResponse(_('XMPP requires POST'), status=405)
+    
     st = False
     sender = request.POST.get('from')
     toaddr = request.POST.get('to')
     message = request.POST.get('body')
+    
     if not sender:
         logging.warn('Incoming chat without \'from\' key ignored')
         return HttpResponse(st)
     elif not message:
         logging.warning('Incoming chat without \'body\' key ignored')
         return HttpResponse(st)
+    
     try:
         body = message.split(':')
         if len(body) <= 1 and not body[0].isdigit():
-            logging.warn('Message not format ID:MESSAGE: %s' % body)
+            logging.warn('Message not format ID:MESSAGE: %s' % (body,))
             return HttpResponse(st)
+        
         id_question = int(body[0]) if body[0].isdigit() else 0
         answer = ''.join(body[1:]).strip()
+        
         question = Question.get_by_id(id_question)
+        
+        # If the answer already exists, then concatenates the responses 
+        # with HTML formatting
         if question.answer:
             space = '<br />' + '&nbsp;'*16
             space = ''
@@ -245,49 +261,55 @@ def incoming_chat(request):
             question.answer = answer 
         question.answered = datetime.datetime.now()
         question.save()
-        sts = xmpp.send_message([toaddr], answer)
-        logging.debug('XMPP status %s', str(sts))
-        if question.answer and False:
-            username = settings.TWITTER_USERNAME
-            token_key = settings.TWITTER_CONSUMER_KEY
-            token_secret = settings.TWITTER_CONSUMER_SECRET
-            oauth_token = settings.TWITTER_OAUTH_TOKEN
-            oauth_token_secret = settings.TWITTER_OAUTH_TOKEN_SECRET
-            token_callback = settings.TWITTER_CALLBACK
-            
-            try:
-                logging.info('Creating an OAuthHandler instance')
-                auth = tweepy.OAuthHandler(token_key, token_secret, 
-                                           token_callback)
-            except Exception, e:
-                logging.error('Error: %s' % (str(e),))
-                
-            try:
-                auth.set_access_token(oauth_token, oauth_token_secret)
-                api = tweepy.API(auth)
-            except Exception, e:
-                logging.error('Error: %s' % (str(e),))
-                
-            try:
-                answer = question.answer
-                s = '@%s %s: %s' % (username, question.ask, question.answer)
-                logging.debug('Send twitter: %s' % s)
-                if int(math.ceil(len(s)/140.0)) > 1:
-                    s1 = '@%s %s: ' % (username, question.ask)
-                    if int(math.ceil(len(s1)/140.0)) > 1:
-                        api.update_status(
-                            _('@%(username)s +1 stupid question!') % \
-                              {'username': username})
-                    else:
-                        for i in range(int(math.ceil(len(s1)/140.0))):
-                            api.update_status(
-                                s1 + question.answer[140*i:(140*i)+140])
-                else:
-                    api.update_status(s)
-            except Exception, e:
-                logging.error('Error in send for twitter: %s' % (str(e),))
+        
+        # Send XMPP message
+        toaddrs = [toaddr,] #'nycholas@gmail.com']
+        sts = xmpp.send_message(toaddrs, answer)
+        logging.debug('XMPP status %s', (str(sts),))
     except Exception, e:
         logging.error('Error in send for xmpp: %s' % (str(e),))
+        return HttpResponse(st)
+        
+    # Send twitter message
+    if answer:
+        username = settings.TWITTER_USERNAME
+        token_key = settings.TWITTER_CONSUMER_KEY
+        token_secret = settings.TWITTER_CONSUMER_SECRET
+        oauth_token = settings.TWITTER_OAUTH_TOKEN
+        oauth_token_secret = settings.TWITTER_OAUTH_TOKEN_SECRET
+        token_callback = settings.TWITTER_CALLBACK
+        
+        try:
+            logging.info('Creating an OAuthHandler instance')
+            auth = tweepy.OAuthHandler(token_key, token_secret, 
+                                       token_callback)
+        except Exception, e:
+            logging.error('Error: %s' % (str(e),))
+            return HttpResponse(st)
+            
+        try:
+            auth.set_access_token(oauth_token, oauth_token_secret)
+            api = tweepy.API(auth)
+        except Exception, e:
+            logging.error('Error: %s' % (str(e),))
+            return HttpResponse(st)
+            
+        try:
+            s = '%s %s' % (question.ask, answer)
+            logging.debug('Send twitter: %s' % (s,))
+            if int(math.ceil(len(s)/140.0)) > 1:
+                s1 = '%s ' % (question.ask,)
+                if int(math.ceil(len(s1)/140.0)) > 1:
+                    api.update_status(_('+1 stupid question!'))
+                else:
+                    for i in range(int(math.ceil(len(s1)/140.0))):
+                        api.update_status(
+                            s1 + answer[140*i:(140*i)+140])
+            else:
+                api.update_status(s)
+        except Exception, e:
+            logging.error('Error in send for twitter: %s' % (str(e),))
+            return HttpResponse(st)
     return HttpResponse(st)
 
 def oauth_twitter(request):

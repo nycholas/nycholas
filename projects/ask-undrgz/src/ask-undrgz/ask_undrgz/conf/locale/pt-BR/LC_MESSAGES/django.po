@@ -50,8 +50,8 @@ msgstr "É necessário POST"
 
 #: question/views.py:279
 #, python-format
-msgid "@%(username)s +1 stupid question!"
-msgstr "@%(username)s +1 pergunta estúpida!"
+msgid "+1 stupid question!"
+msgstr "+1 pergunta estúpida!"
 
 #: question/views.py:307
 #, python-format

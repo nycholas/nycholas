@@ -50,6 +50,7 @@ BASE_DIR = os.path.realpath(os.path.dirname(__file__))
 # Force sys.path to have our own directory first, in case we want to import
 # from it.
 sys.path.insert(0, BASE_DIR)
+sys.path.append(os.path.join(BASE_DIR, 'tweepy-1.7.1-py2.5.egg'))
 
 # Must set this env var *before* importing any part of Django
 os.environ['DJANGO_SETTINGS_MODULE'] = 'ask_undrgz.settings'
