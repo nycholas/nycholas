@@ -32,6 +32,7 @@ import logging
 from google.appengine.ext import db
 
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy
 
 from ask_undrgz.utils.models import SlugProperty
 

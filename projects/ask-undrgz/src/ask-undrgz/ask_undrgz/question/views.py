@@ -206,7 +206,7 @@ def send_message(request):
         if request.is_ajax():
             return HttpResponse(simplejson.dumps(chat_message_sent), 
                                 mimetype='application/json')
-        return HttpResponse('from and message is required', status=405)
+        return HttpResponse(_('From and message is required'), status=405)
     chat_message_sent = _send_message_xmpp(user_address, message)
     if request.is_ajax():
         return HttpResponse(simplejson.dumps(chat_message_sent), 
@@ -218,7 +218,7 @@ def incoming_chat(request):
     '''
     logging.debug('In question.views::incoming_chat()')
     if request.method != 'POST':
-        return HttpResponse('XMPP requires POST', status=405)
+        return HttpResponse(_('XMPP requires POST'), status=405)
     st = False
     sender = request.POST.get('from')
     toaddr = request.POST.get('to')
@@ -276,7 +276,8 @@ def incoming_chat(request):
                     s1 = '@%s %s: ' % (username, question.ask)
                     if int(math.ceil(len(s1)/140.0)) > 1:
                         api.update_status(
-                            '@%s +1 stupid question!' % username)
+                            _('@%(username)s +1 stupid question!') % \
+                              {'username': username})
                     else:
                         for i in range(int(math.ceil(len(s1)/140.0))):
                             api.update_status(
@@ -303,7 +304,8 @@ def oauth_twitter(request):
         logging.debug('auth_url: %s' % (str(auth_url),))
     except Exception, e:
         logging.error('Failed to get a request token: %s' % (str(e),))
-        return HttpResponse('Failed to get a request token: %s' % (str(e),))
+        return HttpResponse(_('Failed to get a request token: %(error)s') % \
+                              {'error': str(e)})
     logging.info(
         'We must store the request token for later use in the callback page')
     return HttpResponseRedirect(auth_url)
@@ -314,7 +316,7 @@ def oauth_twitter_callback(request):
     oauth_verifier = request.GET.get('oauth_verifier', None)
     if not oauth_token or not oauth_verifier:
         logging.warning('Invalid request!')
-        return HttpResponse('Missing required parameters!')
+        return HttpResponse(_('Missing required parameters!'))
     
     logging.info('Lookup the request token')
     token_key = settings.TWITTER_CONSUMER_KEY
@@ -331,7 +333,8 @@ def oauth_twitter_callback(request):
         #auth.set_access_token(auth.access_token.key, auth.access_token.secret)
     except Exception, e:
         logging.error('Failed to get access token: %s', (str(e),))
-        return HttpResponse('Failed to get access token: %s', (str(e),))
+        return HttpResponse(_('Failed to get access token: %(error)s') % \
+                              {'error': str(e)})
     
     #api = tweepy.API(auth)
     #api.update_status('test from hell!')
