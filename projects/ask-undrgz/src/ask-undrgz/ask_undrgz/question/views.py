@@ -36,33 +36,50 @@ import datetime
 from google.appengine.api import xmpp
 from google.appengine.api import urlfetch
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.utils.translation import ugettext as _
-from django.shortcuts import render_to_response
-from django.utils import simplejson
+from django.conf import settings
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.core import serializers
+from django.utils import simplejson
+from django.shortcuts import render_to_response
+from django.utils.translation import ugettext as _
 
 from ask_undrgz.utils import oauth
-from ask_undrgz import settings as ask_undrgz_settings
+from ask_undrgz.question.models import Question
 from ask_undrgz.question.forms import QuestionForm
-from ask_undrgz.question.models import Question, OAuthToken
+
 
 def _recent_stupid_questions():
-    return Question.all().filter('answered != ', None) \
-        .order('-answered').fetch(30)
+    '''The latest stupid questions.
+    '''
+    logging.debug('In question.views::_recent_stupid_questions()')
+    questions = Question.all()
+    if not settings.DEBUG:
+        logging.debug('Debug mode active')
+        questions.filter('answered != ', None)
+    questions = questions.order('-answered').fetch(30)
+    return questions
         
 def _send_invite_xmpp(user_address):
+    '''Sends an invitation to address gtalk.
+    '''
+    logging.debug('In question.views::_send_invite_xmpp()')
     xmpp.send_invite(user_address)
 
 def _send_message_xmpp(user_address, message):
+    '''Sends a message to the address gtalk.
+    '''
+    logging.debug('In question.views::_send_message_xmpp()')
     chat_message_sent = False
-    #self._send_invite_xmpp(user_address)
+    #_send_invite_xmpp(user_address)
     if xmpp.get_presence(user_address):
         status_code = xmpp.send_message([user_address], message)
         chat_message_sent = (status_code != xmpp.NO_ERROR)
     return chat_message_sent
 
 def index(request):
+    '''Main page of the application.
+    '''
     logging.debug('In question.views::index()')
     if request.method == 'POST':
         question_form = QuestionForm(request.POST)
@@ -79,29 +96,14 @@ def index(request):
             return HttpResponseRedirect(new_question.get_absolute_url())
     else:
         question_form = QuestionForm()
-        
-        
-     
-    
-    token_consumer_key = ask_undrgz_settings.TWITTER_CONSUMER_KEY
-    token_consumer_secret = ask_undrgz_settings.TWITTER_CONSUMER_SECRET
-    token_callback = ask_undrgz_settings.TWITTER_CALLBACK
-    
-    client = oauth.TwitterClient(token_consumer_key, 
-                                 token_consumer_secret, token_callback)
-    logging.info('url auth: %s' % client.get_authorization_url())
-    
-    timeline_url = "http://twitter.com/statuses/user_timeline.xml"
-    result = client.make_request(url=timeline_url, token=token_consumer_key,
-                                 secret=token_consumer_secret)
-    logging.info('result: %s' % result.content)
-    
     return render_to_response('index.html', {
         'question_form': question_form,
         'recent_stupid_questions': _recent_stupid_questions(),
     })
     
 def new_ask(request, ask):
+    '''Writes a new question and redirects to the response page.
+    '''
     logging.debug('In question.views::new_answer()')
     new_question = Question.all().filter('ask = ', ask).get()
     if not new_question.is_exists():
@@ -114,6 +116,8 @@ def new_ask(request, ask):
     return HttpResponseRedirect(new_question.get_absolute_url())
         
 def answer(request, ask_slug):
+    '''Response page.
+    '''
     logging.debug('In question.views::answer()')
     question = Question.all().filter('ask_slug = ', ask_slug).get()
     if question is None:
@@ -141,6 +145,8 @@ def answer(request, ask_slug):
     })
     
 def recent_stupid_questions(request):
+    '''Latest stupid questions.
+    '''
     logging.debug('In question.views::recent_stupid_questions()')
     question_top10 = _recent_stupid_questions()
     if request.is_ajax():
@@ -150,31 +156,48 @@ def recent_stupid_questions(request):
     return HttpResponse('')
 
 def is_online(request):
+    '''Checks if the underguiz (clients) is online.
+    '''
     logging.debug('In question.views::is_online()')
     user_address = request.REQUEST.get('from')
+    
     # Brazil - America/Sao_Paulo, ;-)
     dt = datetime.datetime.utcnow()
     dt_hour = dt.hour - 3 if dt.hour - 3 > 0 else (dt.hour - 3) + 24
+    
+    # Easter Egg! HA! 
     easter_egg = False
     if dt_hour == 6 and dt.minute == 6 and dt.second >= 6:
         easter_egg = True
+        
+    # Is online?
     chat_message_sent = False
+    
+    # If the parameter 'from' (e-mail) GET is empty, then returns user offline
     if not user_address:
         if request.is_ajax():
             return HttpResponse(simplejson.dumps({
                 'is_online': chat_message_sent,
-                'easter_egg': easter_egg
+                'easter_egg': easter_egg,
             }), mimetype='application/json')
         return HttpResponse('from is required', status=405)
     chat_message_sent = xmpp.get_presence(user_address)
+    
+    # If debug mode, then always online
+    if settings.DEBUG:
+        logging.debug('Debug mode active')
+        chat_message_sent = True
+        
     if request.is_ajax():
         return HttpResponse(simplejson.dumps({
                 'is_online': chat_message_sent,
-                'easter_egg': easter_egg
+                'easter_egg': easter_egg,
             }), mimetype='application/json')
     return HttpResponse(chat_message_sent)
     
 def send_message(request):
+    '''Sends message to underguiz (clients).
+    '''
     logging.debug('In question.views::send_message()')
     user_address = request.REQUEST.get('from')
     message = request.REQUEST.get('body')
@@ -191,6 +214,8 @@ def send_message(request):
     return HttpResponse(chat_message_sent)
     
 def incoming_chat(request):
+    '''Mounts a chat with the underguiz (clients).
+    '''
     logging.debug('In question.views::incoming_chat()')
     if request.method != 'POST':
         return HttpResponse('XMPP requires POST', status=405)
@@ -220,57 +245,26 @@ def incoming_chat(request):
             sts = xmpp.send_message([toaddr], answer)
             logging.debug('XMPP status %s', str(sts))
             if question.answer and False:
-                username = ask_undrgz_settings.TWITTER_USERNAME
-                token_key = ask_undrgz_settings.TWITTER_CONSUMER_KEY
-                token_secret = ask_undrgz_settings.TWITTER_CONSUMER_SECRET
-                token_callback = ask_undrgz_settings.TWITTER_CALLBACK
-                auth = tweepy.OAuthHandler(token_key, token_secret, 
-                                           token_callback)
-                try:
-                    logging.info('Build a new oauth handler and display ' \
-                                 'authorization url to user')
-                    auth_url = auth.get_authorization_url()
-                    logging.debug('auth_url: %s' % str(auth_url))
-                except tweepy.TweepError, e:
-                    logging.error('Failed to get a request token: %s' % str(e))
-                    return HttpResponse(
-                        'Failed to get a request token: %s' % str(e))
-                logging.info('We must store the request token for later use ' \
-                             'in the callback page')
-                request_token = OAuthToken(
-                        token_key = auth.request_token.key,
-                        token_secret = auth.request_token.secret
-                )
-                request_token.put()
+                username = settings.TWITTER_USERNAME
+                token_key = settings.TWITTER_CONSUMER_KEY
+                token_secret = settings.TWITTER_CONSUMER_SECRET
+                oauth_token = settings.TWITTER_OAUTH_TOKEN
+                oauth_token_secret = settings.TWITTER_OAUTH_TOKEN_SECRET
+                token_callback = settings.TWITTER_CALLBACK
                 
-                oauth_token = auth.request_token.key
-                oauth_verifier = auth.request_token.secret
-                logging.info('Lookup the request token')
-                request_token = OAuthToken.gql('WHERE token_key=:key', 
-                                               key=oauth_token).get()
-                if request_token is None:
-                    logging.warning('We do not seem to have this ' \
-                                    'request token, show an error')
-                    return HttpResponse('Invalid token!')
-                logging.info('Rebuild the auth handler')
-                token_key = ask_undrgz_settings.TWITTER_CONSUMER_KEY
-                token_secret = ask_undrgz_settings.TWITTER_CONSUMER_SECRET
-                auth = tweepy.OAuthHandler(token_key, token_secret)
-                auth.set_request_token(request_token.token_key, 
-                                       request_token.token_secret)
-                logging.info('Fetch the access token')
                 try:
-                    auth.get_access_token(oauth_verifier)
-                except tweepy.TweepError, e:
-                    logging.error('Failed to get access token: %s', str(e))
-                    return HttpResponse(
-                        'Failed to get access token: %s', str(e))
-                
-                oauth_token = auth.access_token.key
-                oauth_token_secret = auth.access_token.secret
-                auth = tweepy.OAuthHandler(token_key, token_secret)
-                auth.set_access_token(oauth_token_secret, oauth_token)
-                api = tweepy.API(auth)
+                    logging.info('Creating an OAuthHandler instance')
+                    auth = tweepy.OAuthHandler(token_key, token_secret, 
+                                               token_callback)
+                except Exception, e:
+                    logging.error('Error: %s' % (str(e),))
+                    
+                try:
+                    auth.set_access_token(oauth_token, oauth_token_secret)
+                    api = tweepy.API(auth)
+                except Exception, e:
+                    logging.error('Error: %s' % (str(e),))
+                    
                 try:
                     answer = question.answer
                     s = '@%s %s: %s' % (username, question.ask, question.answer)
@@ -287,63 +281,63 @@ def incoming_chat(request):
                     else:
                         api.update_status(s)
                 except Exception, e:
-                    logging.error('Error in send for twitter: %s' % str(e))
+                    logging.error('Error in send for twitter: %s' % (str(e),))
         except Exception, e:
-            logging.error('Error in send for xmpp: %s' % str(e))
+            logging.error('Error in send for xmpp: %s' % (str(e),))
     return HttpResponse(st)
 
 def oauth_twitter(request):
     logging.debug('In question.views::oauth_twitter()')
-    token_key = ask_undrgz_settings.TWITTER_CONSUMER_KEY
-    token_secret = ask_undrgz_settings.TWITTER_CONSUMER_SECRET
-    token_callback = ask_undrgz_settings.TWITTER_CALLBACK
-    auth = oauth.TwitterClient(token_key, token_secret, token_callback)
+    token_key = settings.TWITTER_CONSUMER_KEY
+    token_secret = settings.TWITTER_CONSUMER_SECRET
+    token_callback = settings.TWITTER_CALLBACK
+    auth = tweepy.OAuthHandler(token_key, token_secret, token_callback)
+    #auth = oauth.TwitterClient(token_key, token_secret, token_callback)
     try:
-        logging.info('Build a new oauth handler and display ' \
-                     'authorization url to user')
+        logging.info(
+            'Build a new oauth handler and display authorization url to user')
         auth_url = auth.get_authorization_url()
-        logging.debug('auth_url: %s' % str(auth_url))
+        logging.debug('auth_url: %s' % (str(auth_url),))
     except Exception, e:
-        logging.error('Failed to get a request token: %s' % str(e))
-        return HttpResponse('Failed to get a request token: %s' % str(e))
-    logging.info('We must store the request token for later use ' \
-                 'in the callback page')
-    #request_token = OAuthToken(
-    #        token_key = auth.request_token.key,
-    #        token_secret = auth.request_token.secret
-    #)
-    #request_token.put()
+        logging.error('Failed to get a request token: %s' % (str(e),))
+        return HttpResponse('Failed to get a request token: %s' % (str(e),))
+    logging.info(
+        'We must store the request token for later use in the callback page')
     return HttpResponseRedirect(auth_url)
 
 def oauth_twitter_callback(request):
     logging.debug('In question.views::oauth_twitter_callback()')
     oauth_token = request.GET.get('oauth_token', None)
     oauth_verifier = request.GET.get('oauth_verifier', None)
-    if oauth_token is None:
-        logging.warning('Ivalid request!')
+    if not oauth_token or not oauth_verifier:
+        logging.warning('Invalid request!')
         return HttpResponse('Missing required parameters!')
+    
     logging.info('Lookup the request token')
-    #request_token = OAuthToken.gql('WHERE token_key=:key', 
-    #                               key=oauth_token).get()
-    #if request_token is None:
-    #    logging.warning('We do not seem to have this request token, ' \
-    #                    'show an error')
-    #    return HttpResponse('Invalid token!')
+    token_key = settings.TWITTER_CONSUMER_KEY
+    token_secret = settings.TWITTER_CONSUMER_SECRET
+    token_callback = settings.TWITTER_CALLBACK
+    
     logging.info('Rebuild the auth handler')
-    token_key = ask_undrgz_settings.TWITTER_CONSUMER_KEY
-    token_secret = ask_undrgz_settings.TWITTER_CONSUMER_SECRET
-    token_callback = ask_undrgz_settings.TWITTER_CALLBACK
-    auth = oauth.TwitterClient(token_key, token_secret, token_callback)
-    user_info = auth.get_user_info(oauth_token, auth_verifier=oauth_verifier)
+    auth = tweepy.OAuthHandler(token_key, token_secret, token_callback)
+    #auth = oauth.TwitterClient(token_key, token_secret, token_callback)
+    
     logging.info('Fetch the access token')
     try:
         auth.get_access_token(oauth_verifier)
+        #auth.set_access_token(auth.access_token.key, auth.access_token.secret)
     except Exception, e:
-        logging.error('Failed to get access token: %s', str(e))
-        return HttpResponse('Failed to get access token: %s', str(e))
-    return HttpResponse(user_info)
+        logging.error('Failed to get access token: %s', (str(e),))
+        return HttpResponse('Failed to get access token: %s', (str(e),))
+    
+    #api = tweepy.API(auth)
+    #api.update_status('test from hell!')
+    
+    return HttpResponse(True)
 
 def show_me_underguiz(request):
+    '''Shows a underguiz (Easter Egg).
+    '''
     logging.debug('In question.views::show_me_underguiz()')
     question_form = QuestionForm()
     return render_to_response('easter_egg.html', {
