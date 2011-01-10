@@ -30,7 +30,7 @@
 # Django settings for ask_undrgz project.
 import os
 
-ROOT_PATH = os.path.dirname(__file__)
+ROOT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -54,11 +54,16 @@ DATABASES = {
 
 # Twitter
 TWITTER_USERNAME = 'ask_undrgz'
-TWITTER_PASSWORD = 'askfromhell'
-TWITTER_CONSUMER_KEY = '8aGEvteYzbmZCOXWOhXg'
-TWITTER_CONSUMER_SECRET = 'qb2UOJ5g4tS0wLNF4ZxdWKYNFFnYZTyp7NOKA3XyU'
-#TWITTER_CALLBACK = 'http://ask-undrgz.appspot.com/_oauth/twitter/callback/'
-TWITTER_CALLBACK = 'http://localhost:8080/_oauth/twitter/callback/'
+TWITTER_PASSWORD = 'XXX'
+TWITTER_CONSUMER_KEY = 'XXX'
+TWITTER_CONSUMER_SECRET = 'XXX'
+TWITTER_OAUTH_TOKEN = 'XXX'
+TWITTER_OAUTH_TOKEN_SECRET = 'XXX'
+TWITTER_CALLBACK = 'http://ask-undrgz.appspot.com/_oauth/twitter/callback/'
+if DEBUG:
+    TWITTER_CALLBACK = 'http://localhost:8080/_oauth/twitter/callback/'
+    
+ugettext = lambda s: s
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -72,6 +77,12 @@ TIME_ZONE = 'America/Chicago'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = (
+    ('en', ugettext('English')),
+    ('pt-BR', ugettext('Portuguese Brazil')),
+)
+
 
 SITE_ID = 1
 
@@ -111,6 +122,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
 #    'django.contrib.sessions.middleware.SessionMiddleware',
 #    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 #    'django.contrib.auth.middleware.AuthenticationMiddleware',
 #    'django.contrib.messages.middleware.MessageMiddleware',
 )

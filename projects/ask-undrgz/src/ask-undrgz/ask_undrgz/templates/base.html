@@ -106,7 +106,7 @@
 				//window.alert('update_answer:'+':'+status+':'+xhr);
 				if (data.answer != 'None') {
 					loading.hide();
-					$('#result').html('<b>{% trans 'underguiz says' %}:</b> '+data.answer);
+					$('#result').html('<b>{% trans 'underguiz says' %}:</b> '+ data.answer);
 				} else {
 					loading.show();
 				}

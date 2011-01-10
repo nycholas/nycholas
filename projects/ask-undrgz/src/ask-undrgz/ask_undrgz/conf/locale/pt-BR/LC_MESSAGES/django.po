@@ -1,0 +1,132 @@
+# ask-undrgz system of questions uses data from underguiz.
+# Copyright (c) 2010-2011, Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# # Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+# # Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+# # Neither the name of the Nycholas de Oliveira e Oliveira nor the names of
+#    its contributors may be used to endorse or promote products derived from
+#    this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-01-02 12:23-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Nycholas de Oliveira e Oliveira <nycholas@gmail.com>\n"
+"Language-Team: pt-BR <nycholas@gmail.com>\n"
+"Language: pt-BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: question/views.py:209
+msgid "From and message is required"
+msgstr "Para e mensagem são necessários"
+
+#: question/views.py:221
+msgid "XMPP requires POST"
+msgstr "É necessário POST"
+
+#: question/views.py:279
+#, python-format
+msgid "+1 stupid question!"
+msgstr "+1 pergunta estúpida!"
+
+#: question/views.py:307
+#, python-format
+msgid "Failed to get a request token: %(error)s"
+msgstr "Falha ao receber uma solicitação de token: %(error)s"
+
+#: question/views.py:319
+msgid "Missing required parameters!"
+msgstr "Faltam parâmetros obrigatórios!"
+
+#: question/views.py:336
+#, python-format
+msgid "Failed to get access token: %(error)s"
+msgstr "Falha ao obter o token de acesso: %(error)s"
+
+#: templates/404.html:8 templates/500.html:8
+msgid "underguiz - page error!"
+msgstr "underguiz - página de erro!"
+
+#: templates/404.html:9 templates/500.html:9 templates/base.html:109
+#: templates/index.html:34
+msgid "underguiz says"
+msgstr "underguiz diz"
+
+#: templates/404.html:9 templates/500.html:9
+msgid "Page not found!"
+msgstr "Página não encontrada!"
+
+#: templates/base.html:30 templates/index.html:10
+msgid "Recent stupid questions"
+msgstr "Perguntas estúpidas recentes"
+
+#: templates/base.html:32
+msgid "WTF?"
+msgstr "FDP?"
+
+#: templates/base.html:33
+msgid "Where's my phone?"
+msgstr "Onde está o meu telefone?"
+
+#: templates/base.html:34
+msgid "How many pounds I'll lose weight today?"
+msgstr "Quantos quilos eu vou perder hoje?"
+
+#: templates/base.html:40
+msgid "Written by"
+msgstr "Escrito por"
+
+#: templates/base.html:40
+msgid "Uses data from"
+msgstr "Utiliza dados a partir de"
+
+#: templates/base.html:60 templates/base.html.py:62 templates/index.html:22
+msgid "underguiz - online"
+msgstr "underguiz - conectado"
+
+#: templates/base.html:69 templates/base.html.py:71
+msgid "underguiz - offline"
+msgstr "underguiz - ausente"
+
+#: templates/base.html:130
+msgid "Loading..."
+msgstr "Carregando..."
+
+#: templates/index.html:4 templates/index.html.py:5
+msgid "ask-undrgz :: system of questions uses data from underguiz"
+msgstr "ask-undrgz :: Sistema de perguntas utilizando os dados a partir de underguiz"
+
+#: templates/index.html:27
+msgid ""
+"Ask a question to underguiz (WTF?, Where's my phone?, "
+"How many pounds am I going to lose today?):"
+msgstr "Faça uma pergunta ao underguiz (FDP?, Onde está o meu telefone?, " 
+"Quantos quilos eu vou perder hoje?):"
+
+#: templates/index.html:31
+msgid "Send question"
+msgstr "Enviar pergunta"

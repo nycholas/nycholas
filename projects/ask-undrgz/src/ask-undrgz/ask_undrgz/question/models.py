@@ -27,9 +27,12 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+import logging
+
 from google.appengine.ext import db
 
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy
 
 from ask_undrgz.utils.models import SlugProperty
 
@@ -42,38 +45,32 @@ class Question(db.Model):
     answered = db.DateTimeProperty()
 
     def __str__(self):
+        logging.debug('In Question::__str__()')
         return '%s' % self.ask
 
     def __unicode__(self):
+        logging.debug('In Question::__unicode__()')
         return u'%s' % self.ask
     
     def get_absolute_url(self):
+        logging.debug('In Question::get_absolute_url()')
         return reverse('ask_undrgz.question.views.answer', 
                        kwargs={'ask_slug': self.slugify()})
         
     def slugify(self):
+        logging.debug('In Question::slugify()')
         slug = SlugProperty.slugify(self.ask) or str(self.key())
         count = Question.all().filter('ask_slug = ', slug).count()
         self.ask_slug = str(self.key()) if count > 1 else slug
         return self.ask_slug
     
     def is_exists(self):
+        logging.debug('In Question::is_exists()')
         q = Question.all().filter('ask = ', self.ask).get()
         return (q != None)
     
     def to_dict(self):
+        logging.debug('In Question::to_dict()')
         d = dict([(p, unicode(getattr(self, p))) for p in self.properties()])
         d['get_absolute_url'] = self.get_absolute_url()
         return d
-
-
-class OAuthToken(db.Model):
-    token_key = db.StringProperty(required=True)
-    token_secret = db.StringProperty(required=True)
-    created = db.DateTimeProperty(required=True, auto_now_add=True)
-    
-    def __str__(self):
-        return 'secret!'
-
-    def __unicode__(self):
-        return u'secret!'

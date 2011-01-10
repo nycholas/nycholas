@@ -33,5 +33,6 @@ from ask_undrgz.question.models import Question
 
 
 class QuestionForm(djangoforms.ModelForm):
+    
     class Meta:
         model = Question

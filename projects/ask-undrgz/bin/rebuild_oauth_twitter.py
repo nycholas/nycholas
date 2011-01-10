@@ -28,42 +28,38 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
+import os
 import sys
-import socket
-import string
-import threading
 
-NICK="undrz-answers"
-IDENT="undrz-answers"
-REALNAME="undrz-answers"
-readbuffer=""
-CHANNELINIT="#moonstonemedical"
+BASE_DIR = os.path.abspath(
+    os.path.join(os.path.realpath(os.path.dirname(__file__)), 
+                 os.pardir, 'src')
 
+import tweepy
 
-class What(threading.Thread):
-    def __init__(self, id, username):
-        super(What, self).__init__()
-        self.id = id
-        self.username = "%s-%d" % (username, id)
+from ask_undrgz import settings
 
-    def run(self):
-        server = socket.socket()
-        server.connect(("irc.freenode.net", 6667))
-        server.send("NICK %s\r\n" % self.username)
-        server.send("USER %s %s :%s\r\n" % (self.username, self.username, self.username))
-        server.send('JOIN %s\r\n' % CHANNELINIT)
-        server.send('NOTICE underguiz WTF?\r\n')
-        while True:
-            data = server.recv(1024)
-            if data.find('PING') != -1:
-                server.send("PONG %s\r\n" % data.split()[1])
-            print data
+username = settings.TWITTER_USERNAME
+token_key = settings.TWITTER_CONSUMER_KEY
+token_secret = settings.TWITTER_CONSUMER_SECRET
+oauth_token = settings.TWITTER_OAUTH_TOKEN
+oauth_token_secret = settings.TWITTER_OAUTH_TOKEN_SECRET
+token_callback = settings.TWITTER_CALLBACK
 
+def get_authorization_url(token_key, token_secret, token_callback=None):
+    auth = tweepy.OAuthHandler(token_key, token_secret)
+    return auth.get_authorization_url()
+
+def get_access_token(oauth_verifier, token_key, token_secret, token_callback=None):
+    auth = tweepy.OAuthHandler(token_key, token_secret)
+    auth.get_access_token(oauth_verifier)
+    return (auth.access_token.key, auth.access_token.secret)
+
+def main(args):
+    # TODO: command for call functions!
+    pass
 
 
-number_threads = 1
-threads = [What(i, NICK) for i in range(number_threads)]
-for i, thread in enumerate(threads):
-    thread.start()
-for i, thread in enumerate(threads):
-    thread.join()
+if __name__ == 'main':
+    main(sys.argv)
+    

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # ask-undrgz system of questions uses data from underguiz.
-# Copyright (c) 2010, Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
+# Copyright (c) 2010-2011, Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,9 @@
 # CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
-import logging, os, sys
+import os
+import sys
+import logging
 
 # Google App Engine imports.
 from google.appengine.ext import db
@@ -43,11 +45,12 @@ from google.appengine.dist import use_library
 for k in [k for k in sys.modules if k.startswith('django')]:
     del sys.modules[k]
     
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+BASE_DIR = os.path.realpath(os.path.dirname(__file__))
 
 # Force sys.path to have our own directory first, in case we want to import
 # from it.
 sys.path.insert(0, BASE_DIR)
+sys.path.append(os.path.join(BASE_DIR, 'tweepy-1.7.1-py2.5.egg'))
 
 # Must set this env var *before* importing any part of Django
 os.environ['DJANGO_SETTINGS_MODULE'] = 'ask_undrgz.settings'
