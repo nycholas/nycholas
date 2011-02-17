@@ -1,6 +1,13 @@
+COMPILE
+========
+
 $ make
 gcc -o calc calc.c erl_comm.c calc_driver.c
 gcc -o calc_drv.so -fpic -shared calc.c
+
+
+RUNNING
+========
 
 $ erl
 Erlang R14B (erts-5.8.1) [source] [64-bit] [smp:2:2] [rq:2] [async-threads:0] [hipe] [kernel-poll:false]
@@ -18,3 +25,23 @@ Eshell V5.8.1  (abort with ^G)
 16
 6> calc:divides(4, 2).   
 2
+
+
+SERVER/CLIENT RUNNING
+======================
+
+$ erl -name chattarer
+Erlang R14B (erts-5.8.1) [source] [64-bit] [smp:2:2] [rq:2] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.8.1  (abort with ^G)
+(chattarer@localhost.localdomain)1> c(calc).
+{ok,calc}
+(chattarer@localhost.localdomain)2> calc:start().
+<0.45.0>
+
+$ erl -name pinhead
+Erlang R14B (erts-5.8.1) [source] [64-bit] [smp:2:2] [rq:2] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.8.1  (abort with ^G)
+(pinhead@localhost.localdomain)1> rpc:call(chattarer@localhost.localdomain, calc, sum, [2, 3]).
+5
