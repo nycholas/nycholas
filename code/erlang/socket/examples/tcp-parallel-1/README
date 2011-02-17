@@ -1,0 +1,35 @@
+STARTING SERVER
+================
+
+$ erl -name pinhead
+Erlang R14B (erts-5.8.1) [source] [64-bit] [smp:2:2] [rq:2] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.8.1  (abort with ^G)
+(pinhead@localhost.localdomain)2> c(server).
+{ok,server}
+(pinhead@localhost.localdomain)3> server:start().
+<0.49.0>
+
+
+SENDING A MESSAGE
+==================
+
+$ erl
+Erlang R14B (erts-5.8.1) [source] [64-bit] [smp:2:2] [rq:2] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.8.1  (abort with ^G)
+1> c(client).
+{ok,client}
+2> client:send("HA!").
+Client received binary = <<131,107,0,3,72,65,33>>
+Client result = "HA!"
+ok
+
+
+IN SERVER RECEIVED MESSAGE
+===========================
+
+Server received binary = <<131,107,0,3,72,65,33>>
+Server (unpacked) "HA!"
+Server replying = "HA!"
+Server socket closed
