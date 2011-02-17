@@ -38,7 +38,7 @@ start() ->
     end).
 
 stop() ->
-    cacl ! stop.
+    calc ! stop.
 
 sum(A, B) -> call_port({sum, A, B}).
 subtract(A, B) -> call_port({subtract, A, B}).
