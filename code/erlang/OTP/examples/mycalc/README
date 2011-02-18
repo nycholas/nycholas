@@ -1,0 +1,19 @@
+$ erl
+Erlang R14B (erts-5.8.1) [source] [64-bit] [smp:2:2] [rq:2] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.8.1  (abort with ^G)
+1> c(mycalc).
+{ok,mycalc}
+2> mycalc:start().
+{ok,<0.39.0>}
+3> mycalc:sum(4, 5).
+9
+4> mycalc:subtract(5, 4).
+1
+5> mycalc:multiplies(4, 6).
+24
+6> mycalc:divides(6, 2).
+3.0
+7> mycalc:stop().
+stopped
+
