@@ -22,9 +22,8 @@ int main(int argc, char **argv) {
 
     char hostname[] = "pihhead";
     char nodename[] = "cenobites";
-    char fullnodename[] = "pinhead@cenobites.org";
-    char domainname[] = "cenobites.org";
-    char addrname[] = "10.10.100.5";
+    char fullnodename[] = "cenobites@cenobites.org";
+    char addrname[] = "0.0.0.0";
     char cookie[] = "secretcookie";
     int port;
 

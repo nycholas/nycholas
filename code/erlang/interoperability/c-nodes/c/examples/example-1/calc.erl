@@ -34,7 +34,7 @@ multiplies(A, B) -> call_cnode({multiplies, A, B}).
 divides(A, B) -> call_cnode({divides, A, B}).
 
 call_cnode(Msg) ->
-    {any, 'pinhead@cenobites.org'} ! {call, self(), Msg},
+    {any, 'cenobites@cenobites.org'} ! {call, self(), Msg},
     receive
         {cenobites, Result} ->
             Result

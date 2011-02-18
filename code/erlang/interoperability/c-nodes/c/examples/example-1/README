@@ -21,7 +21,51 @@ CONFIGURE
 # echo "127.0.0.1 cenobites.org" >> /etc/hosts
 
 
-RUNNING
-========
+SERVER/CLIENT RUNNING
+======================
 
+$ ./cnode_server 6001
+Starting the memory manager...
+Starting the node 'cenobites@cenobites.org'...
+Make a listen socket...
+Open socket...
+Setting config socket...
+Binding socket...
+Listen socket...
+Publishing on the door 6001...
+Accepting connections we...
+
+
+$ erl -name chatterer -setcookie secretcookie
+Erlang R14B (erts-5.8.1) [source] [64-bit] [smp:2:2] [rq:2] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.8.1  (abort with ^G)
+(chatterer@localhost.localdomain)1> calc:sum(6, 6).
+12
+(chatterer@localhost.localdomain)2> calc:subtract(6, 6).
+0
+(chatterer@localhost.localdomain)3> calc:multiplies(6, 6).
+36
+(chatterer@localhost.localdomain)4> calc:divides(6, 6).
+1
+
+
+Connected to chatterer@localhost.localdomain
+Calling sum...
+Calling subtract...
+Calling multiplies...
+Calling divides...
+
+
+SERVER/CLIENT RUNNING
+======================
+
+$ ./cnode_client
+Starting the memory manager...
+Setting cookie 'secretcookie'...
+Connecting in cenobites@cenobites.org...
+Connected to cenobites@cenobites.org
+
+
+Connected to c1@localhost
 

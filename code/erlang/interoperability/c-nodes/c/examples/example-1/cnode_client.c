@@ -16,11 +16,9 @@ int main(int argc, char **argv) {
     ETERM *fromp, *tuplep, *fnp, *arg1, *arg2, *resp;
     int res;
 
-    char nodename[] = "cenobites";
-    char fullnodename[] = "chatterer@cenobites.org";
     char hostname[] = "chatterer";
-    char domainname[] = "cenobites.org";
-    char addrname[] = "0.0.0.0";
+    char nodename[] = "cenobites";
+    char fullnodename[] = "cenobites@cenobites.org";
     char cookie[] = "secretcookie";
 
     fprintf(stdout, "Starting the memory manager...\n\r");
