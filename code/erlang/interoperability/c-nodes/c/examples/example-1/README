@@ -1,0 +1,27 @@
+COMPILE
+========
+
+$ make
+gcc -o cnode_server \
+        -I/usr/lib/erlang/lib/erl_interface-3.7.1/include/ \
+        -L/usr/lib/erlang/lib/erl_interface-3.7.1/lib/ \
+        calc.c cnode_server.c \
+        -lerl_interface -lei -lpthread -lnsl
+gcc -o cnode_client \
+        -I/usr/lib/erlang/lib/erl_interface-3.7.1/include/ \
+        -L/usr/lib/erlang/lib/erl_interface-3.7.1/lib/ \
+        calc.c cnode_client.c \
+        -lerl_interface -lei -lpthread -lnsl
+erl -compile calc
+
+
+CONFIGURE
+==========
+
+# echo "127.0.0.1 cenobites.org" >> /etc/hosts
+
+
+RUNNING
+========
+
+
