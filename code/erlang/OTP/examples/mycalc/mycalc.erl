@@ -1,3 +1,4 @@
+%%%----------------------------------------------------------------------------
 %%% Example OTP.
 %%% Copyright (c) 2011, Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
 %%% All rights reserved.
@@ -25,7 +26,14 @@
 %%% CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 %%% ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 %%% POSSIBILITY OF SUCH DAMAGE.
+%%%----------------------------------------------------------------------------
 -module(mycalc).
+
+-revision('Revision: 0.1 ').
+-created('Date: 2011/02/18 11:02:00 ').
+-created_by('nycholas@gmail.com').
+-modified('Date: 2011/02/18 11:02:00 ').
+-modified_by('nycholas@gmail.com').
 
 -behaviour(gen_server).
 -export([start/0, stop/0]).
