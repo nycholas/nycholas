@@ -1,0 +1,27 @@
+<h1 style="padding: 20px; padding-bottom: 30px;">Notebook's list</h1>
+
+<div style="padding: 10px; text-align: right;"><a href="<?php echo $this->url(array('controller' => 'notebook', 'action' => 'add'), 'default', true) ?>" class="addlink">Add</a></div>
+<table width="98%" align="center" border="0" cellpadding="5" cellpadding="5">
+  <tr>
+    <th width="10%">Name</th>
+    <th width="40%">Description</th>
+    <th width="10%">Date Joined</th>
+    <th width="10%">Actions</th>
+  </th>
+  <?php if ($this->entries): ?>
+    <?php foreach ($this->entries as $entry): ?>
+        <tr>
+        <td><a href="<?php echo $this->url(array('controller' => 'notebook', 'action' => 'edit', 'id' => $entry->id), 'default', true) ?>"><?php echo $entry->title ?></a></td>
+        <td><a href="<?php echo $this->url(array('controller' => 'notebook', 'action' => 'edit', 'id' => $entry->id), 'default', true) ?>"><?php echo $entry->description ?></a></td>
+        <td><a href="<?php echo $this->url(array('controller' => 'notebook', 'action' => 'edit', 'id' => $entry->id), 'default', true) ?>"><?php echo $entry->dateJoined ?></a></td>
+        <td>
+            <a href="<?php echo $this->url(array('controller' => 'notebook', 'action' => 'edit', 'id' => $entry->id), 'default', true) ?>" class="changelink">edit</a> |
+            <a href="<?php echo $this->url(array('controller' => 'notebook', 'action' => 'status', 'id' => $entry->id), 'default', true) ?>" class="<?php if ($entry->status): ?>statuslink_1<?php else: ?>statuslink_0<?php endif ?>">status</a> |
+            <a href="<?php echo $this->url(array('controller' => 'notebook', 'action' => 'delete', 'id' => $entry->id), 'default', true) ?>" class="deletelink">delete</a>
+        </td>
+        </tr>
+    <?php endforeach ?>
+  <?php else: ?>
+    <tr><td colspan="4">There are no notebooks to display.</td><tr>
+  <?php endif ?>
+</table>

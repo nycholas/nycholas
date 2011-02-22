@@ -28,6 +28,7 @@ ui_*.h
 code/java/**/target/*
 code/groovy/grails/**/target/*
 code/android/**/target/*
+code/php/**/library/Zend
 projects/ircarus/**/target/*
 projects/ecrawler/build/*
 projects/ecrawler/dist/*

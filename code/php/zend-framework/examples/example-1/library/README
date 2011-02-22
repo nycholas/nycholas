@@ -1,0 +1,5 @@
+# Symlink:
+$ cd library; ln -s path/to/ZendFramework/library/Zend .
+
+# Copy:
+$ cd library; cp -r path/to/ZendFramework/library/Zend .

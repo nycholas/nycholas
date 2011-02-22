@@ -1,0 +1,25 @@
+<?php echo $this->doctype(); ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+  <meta name="title" content="zf :: example" />
+  <meta name="author" content="Nycholas de Oliveira e Oliveira - nycholas@gmail.com" />
+  <meta name="description" content="zf :: example" />
+  <meta name="keywords" content="php zend framework example" />
+  <meta name="distribution" content="global" />
+  <meta name="copyright" content="Copyright (C) 2010 by Nycholas de Oliveira e Oliveira - nycholas@gmail.com" />
+
+  <?php echo $this->headTitle() ?>
+  <?php echo $this->headLink() ?>
+  <?php echo $this->headStyle() ?>
+  <?php echo $this->headScript() ?>
+  <noscript></noscript>
+</head>
+<body>
+  <?php echo $this->render('header.phtml') ?>
+  <div id="nav"><?php echo $this->placeholder('nav') ?></div>
+  <div id="content"><?php echo $this->layout()->content ?></div>
+  <?php echo $this->render('footer.phtml') ?>
+</body>
+</html>
