@@ -58,8 +58,6 @@ class NotebookController extends Zend_Controller_Action
                 $mapper = new Application_Model_NotebookMapper();
                 $mapper->save($model);
                 return $this->_helper->redirector('index');
-            } else {
-                $form->populate($formData);
             }
         }
 

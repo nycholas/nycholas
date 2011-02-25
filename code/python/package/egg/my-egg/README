@@ -1,0 +1,19 @@
+GENERATING THE EGG
+===================
+
+$ python setup.py bdist_egg
+
+
+TESTING THE EGG
+================
+
+>>> import sys
+>>> sys.path.append('my_egg-0.1-py2.7.egg')
+>>> from my_package.my_module import MyClass
+>>> myClass = MyClass()
+All gone to Hell!
+
+
+--
+So long and good luck,
+Nycholas de Oliveira e Oliveira.
