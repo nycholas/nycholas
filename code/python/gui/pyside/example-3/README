@@ -1,0 +1,1 @@
+$ pyside-uic -o mylistbands_ui.py -x mainwindow_ui.ui
