@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import sys
+
 from PySide import QtCore, QtGui
 
 from mylistbands_ui import Ui_MyListBands
@@ -24,7 +25,7 @@ from mylistbands_ui import Ui_MyListBands
 
 class MyListBands(QtGui.QMainWindow):
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        super(MyListBands, self).__init__(parent)
         self.ui = Ui_MyListBands()
         self.ui.setupUi(self)
 

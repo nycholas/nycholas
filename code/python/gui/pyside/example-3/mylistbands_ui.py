@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mylistbands_ui.ui'
+# Form implementation generated from reading ui file 'mylistbands.ui'
 #
-# Created: Wed Aug 19 18:16:25 2009
-#      by: PyQt4 UI code generator 4.5.4
+# Created: Sun Mar 13 14:14:42 2011
+#      by: pyside-uic 0.2.7 running on PySide 1.0.0~rc1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,6 +17,7 @@ class Ui_MyListBands(object):
         self.gridWidget.setGeometry(QtCore.QRect(9, 9, 361, 371))
         self.gridWidget.setObjectName("gridWidget")
         self.gridLayout_2 = QtGui.QGridLayout(self.gridWidget)
+        self.gridLayout_2.setMargin(0)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.label = QtGui.QLabel(self.gridWidget)
         self.label.setObjectName("label")
@@ -217,4 +218,14 @@ class Ui_MyListBands(object):
         self.listWidget.item(86).setText(QtGui.QApplication.translate("MyListBands", "ZZ Top", None, QtGui.QApplication.UnicodeUTF8))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.pbExit.setText(QtGui.QApplication.translate("MyListBands", "Exit", None, QtGui.QApplication.UnicodeUTF8))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    MyListBands = QtGui.QWidget()
+    ui = Ui_MyListBands()
+    ui.setupUi(MyListBands)
+    MyListBands.show()
+    sys.exit(app.exec_())
 
