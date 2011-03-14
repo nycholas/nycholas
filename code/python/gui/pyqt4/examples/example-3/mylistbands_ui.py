@@ -1,28 +1,34 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mylistbands_ui.ui'
+# Form implementation generated from reading ui file 'mylistbands.ui'
 #
-# Created: Wed Aug 19 18:16:25 2009
-#      by: PyQt4 UI code generator 4.5.4
+# Created: Mon Mar 14 12:41:53 2011
+#      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
 
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    _fromUtf8 = lambda s: s
+
 class Ui_MyListBands(object):
     def setupUi(self, MyListBands):
-        MyListBands.setObjectName("MyListBands")
+        MyListBands.setObjectName(_fromUtf8("MyListBands"))
         MyListBands.resize(380, 389)
         self.gridWidget = QtGui.QWidget(MyListBands)
         self.gridWidget.setGeometry(QtCore.QRect(9, 9, 361, 371))
-        self.gridWidget.setObjectName("gridWidget")
+        self.gridWidget.setObjectName(_fromUtf8("gridWidget"))
         self.gridLayout_2 = QtGui.QGridLayout(self.gridWidget)
-        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.gridLayout_2.setMargin(0)
+        self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.label = QtGui.QLabel(self.gridWidget)
-        self.label.setObjectName("label")
+        self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
         self.listWidget = QtGui.QListWidget(self.gridWidget)
-        self.listWidget.setObjectName("listWidget")
+        self.listWidget.setObjectName(_fromUtf8("listWidget"))
         QtGui.QListWidgetItem(self.listWidget)
         QtGui.QListWidgetItem(self.listWidget)
         QtGui.QListWidgetItem(self.listWidget)
@@ -112,11 +118,11 @@ class Ui_MyListBands(object):
         QtGui.QListWidgetItem(self.listWidget)
         self.gridLayout_2.addWidget(self.listWidget, 1, 0, 1, 1)
         self.pbExit = QtGui.QPushButton(self.gridWidget)
-        self.pbExit.setObjectName("pbExit")
+        self.pbExit.setObjectName(_fromUtf8("pbExit"))
         self.gridLayout_2.addWidget(self.pbExit, 2, 0, 1, 1)
 
         self.retranslateUi(MyListBands)
-        QtCore.QObject.connect(self.pbExit, QtCore.SIGNAL("clicked()"), MyListBands.close)
+        QtCore.QObject.connect(self.pbExit, QtCore.SIGNAL(_fromUtf8("clicked()")), MyListBands.close)
         QtCore.QMetaObject.connectSlotsByName(MyListBands)
 
     def retranslateUi(self, MyListBands):
@@ -217,4 +223,14 @@ class Ui_MyListBands(object):
         self.listWidget.item(86).setText(QtGui.QApplication.translate("MyListBands", "ZZ Top", None, QtGui.QApplication.UnicodeUTF8))
         self.listWidget.setSortingEnabled(__sortingEnabled)
         self.pbExit.setText(QtGui.QApplication.translate("MyListBands", "Exit", None, QtGui.QApplication.UnicodeUTF8))
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    MyListBands = QtGui.QWidget()
+    ui = Ui_MyListBands()
+    ui.setupUi(MyListBands)
+    MyListBands.show()
+    sys.exit(app.exec_())
 

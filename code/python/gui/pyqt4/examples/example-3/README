@@ -1,0 +1,2 @@
+$ pyuic4 -o mylistbands_ui.py -x mylistbands.ui
+
