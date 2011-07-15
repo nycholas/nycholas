@@ -1,0 +1,52 @@
+$ erl
+Erlang R14B (erts-5.8.1) [source] [64-bit] [smp:2:2] [rq:2] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.8.1  (abort with ^G)
+1> c(notebook).
+{ok,notebook}
+
+2> notebook:create_schema().
+ ++ Create schema database ++
+
+=INFO REPORT==== 1-Jul-2011::20:18:07 ===
+    application: mnesia
+    exited: stopped
+    type: temporary
+stopped
+3>
+3> notebook:start().
+ ++ Starting database ++
+ok
+4>
+4> N = notebook:create({1, "Hai hai!", "...", "2011-07-01", 1}).
+{notebook,1,"Hai hai!","...","2011-07-01",1}
+5>
+5> notebook:insert_or_update(N).
+ ++ Create notebook ++
+{atomic,ok}
+6>
+6> notebook:read(1).
+ ++ Reading the notebook: 1 ++
+Notebook: id: 1, title: "Hai hai!", description: "...", date_joined: "2011-07-01", status: 1
+{atomic,ok}
+7>
+7> notebook:delete(1).
+ ++ Delete notebook: 1 ++
+{atomic,ok}
+8>
+8> N1 = notebook:create({1, "Hai hai!", "...", "2011-07-01", 1}).
+{notebook,1,"Hai hai!","...","2011-07-01",1}
+8> 
+8> notebook:insert_or_update(N1).                                
+ ++ Create notebook ++
+{atomic,ok}
+9> 
+9> notebook:insert_or_update(N1).
+ ++ Update notebook: 1 ++
+{atomic,ok}
+10>
+10> notebook:list(). 
+ ++ Notebook's list ++
+{atomic,["Hai hai!"]}
+
+
