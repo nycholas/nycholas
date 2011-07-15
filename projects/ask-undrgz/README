@@ -1,1 +1,38 @@
-Moving to the http://code.google.com/p/nycholas/ https://github.com/nycholas/ask-undrgz.
+ask-undrgz
+==========
+
+System of questions uses data from underguiz (http://ask-undrgz.appspot.com/).
+
+See https://github.com/nycholas/ask-undrgz.
+
+
+Uploading the Application
+*************************
+
+::
+
+    $ appcfg.py update ask-undrgz
+
+
+Referencies
+***********
+
+* http://code.google.com/appengine/
+* http://code.google.com/appengine/docs/python/gettingstarted/
+* http://code.google.com/appengine/articles/django.html
+* http://www.42topics.com/dumps/django/docs.html
+* https://github.com/tweepy/tweepy
+
+
+Dependecies
+***********
+
+* Python 2.6 or later (http://www.python.org)
+* Google App Engine SDK for Python (http://code.google.com/appengine/downloads.html#Google_App_Engine_SDK_for_Python)
+
+Project Information
+*******************
+
+:Author: Nycholas de Oliveira e Olivera
+:Data: Guilherme França (underguiz)
+:License: New BSD License

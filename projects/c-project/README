@@ -1,0 +1,45 @@
+c-project
+=========
+
+A digital registry.
+
+See https://github.com/nycholas/c-project.
+
+
+Compile & Running
+*****************
+
+::
+
+    $ mysql -u root -p < doc/database/mysql/create-database.sql
+    $ mysql -u root -p < doc/database/mysql/populate-auth_user.sql
+    $ qmake -r
+    $ make
+    $ ./bin/c-project
+    
+    
+Log in
+******
+:Username: admin
+:Password: admin
+
+
+Referencies
+***********
+
+* http://qt.nokia.com/
+
+
+Dependecies
+***********
+
+* Compile C++ (gcc - http://gcc.gnu.org/releases.html)
+* Qt 4.x (qt.nokia.com/downloads)
+
+
+Project Information
+*******************
+
+:Author: Nycholas de Oliveira e Olivera
+:License: New BSD License
+

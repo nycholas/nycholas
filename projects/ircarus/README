@@ -1,1 +1,29 @@
-Moving to the http://code.google.com/p/nycholas/ https://github.com/nycholas/ircarus.
+ircarus
+=======
+
+Irc server in Java.
+
+See https://github.com/nycholas/ircarus.
+
+
+Running
+*******
+
+::
+    
+    $ mvn clean install
+
+
+Dependecies
+***********
+
+* Java 1.6 or later (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* Maven 2.x or later (maven.apache.org)
+
+
+Project Information
+*******************
+
+:Author: Nycholas de Oliveira e Olivera
+:License: LGPL - GNU LESSER GENERAL PUBLIC LICENSE
+
