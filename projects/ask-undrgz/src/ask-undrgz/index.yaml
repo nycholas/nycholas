@@ -1,6 +1,0 @@
-indexes:
-- kind: Question
-  properties:
-  - name: answer
-  - name: answered
-    direction: desc
