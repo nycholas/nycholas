@@ -1,7 +1,0 @@
-# Create template
-find . -name "*.py" | xargs xgettext -i -L Python -w 80 --force-po \
-    --copyright-holder='Nycholas de Oliveira e Oliveira <nycholas@gmail.com>' \
-    -F --msgid-bugs-address='nycholas@gmail.com' -o ecrawler/share/locale/ecrawler.pot
-
-# Compile template
-msgfmt -o LC_MESSAGES/ecrawler.mo ecrawler.po
