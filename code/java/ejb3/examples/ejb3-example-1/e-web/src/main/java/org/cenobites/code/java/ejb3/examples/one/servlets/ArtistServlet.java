@@ -17,10 +17,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package hell.cenobites.code.java.ejb3.examples.one.servlets;
+package org.cenobites.code.java.ejb3.examples.one.servlets;
 
-import hell.cenobites.java.ejb3.examples.one.ejb.remote.IArtistServiceRemote;
-import hell.cenobites.java.ejb3.examples.one.model.Artist;
+import org.cenobites.java.ejb3.examples.one.ejb.remote.IArtistServiceRemote;
+import org.cenobites.java.ejb3.examples.one.model.Artist;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * TODO:
  * 
- * @package hell.cenobites.code.java.ejb3.examples.two.servlets
+ * @package org.cenobites.code.java.ejb3.examples.two.servlets
  * @author Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
  * @version 1.0
  */
@@ -54,7 +54,7 @@ public class ArtistServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PrintWriter out = resp.getWriter();
-		out.println("All gone to Hell!");
+		out.println("All gone to org!");
 	}
 
 	@Override

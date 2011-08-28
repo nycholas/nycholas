@@ -1,5 +1,5 @@
 /**
- * @(#)IArtistServiceRemote.java 1.0 2009/09/09
+ * @(#)IArtistServiceHome.java 1.0 2009/09/09
  * 
  * A simple example ejb3.
  * Copyright (C) 2009 by Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
@@ -17,28 +17,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package hell.cenobites.java.ejb3.examples.one.ejb.remote;
+package org.cenobites.java.ejb3.examples.one.ejb.home;
 
-import hell.cenobites.java.ejb3.examples.one.model.Artist;
+import org.cenobites.java.ejb3.examples.one.model.Artist;
 
 import java.util.List;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 /**
  * TODO:
  * 
- * @package hell.cenobites.java.ejb3.examples.one.ejb.remote
+ * @package org.cenobites.java.ejb3.examples.one.ejb.home
  * @author Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
  * @version 1.0
  */
-@Remote
-public interface IArtistServiceRemote {
-	
+@Local
+public interface IArtistServiceHome {
+
 	public final static String BEAN_NAME = "ArtistService";
 
-	public final static String REMOTE_JNDI_NAME = "e-ear/" + BEAN_NAME + "/remote";
-	
+	public final static String LOCAL_JNDI_NAME = "e-ear/" + BEAN_NAME + "/local";
+
 	public int add(Artist artist);
 
 	public void update(Artist artist);

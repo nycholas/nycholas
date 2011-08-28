@@ -2,11 +2,11 @@
 <project>
 	<parent>
 		<artifactId>ejb3-example-1</artifactId>
-		<groupId>hell.cenobites.java.ejb3.examples.one</groupId>
+		<groupId>org.cenobites.java.ejb3.examples.one</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>hell.cenobites.java.ejb3.examples.one</groupId>
+	<groupId>org.cenobites.java.ejb3.examples.one</groupId>
 	<artifactId>e-web</artifactId>
 	<packaging>war</packaging>
 	<name>e-web</name>

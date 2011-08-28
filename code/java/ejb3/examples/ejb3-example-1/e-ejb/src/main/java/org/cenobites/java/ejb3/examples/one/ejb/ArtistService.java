@@ -17,11 +17,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package hell.cenobites.java.ejb3.examples.one.ejb;
+package org.cenobites.java.ejb3.examples.one.ejb;
 
-import hell.cenobites.java.ejb3.examples.one.ejb.home.IArtistServiceHome;
-import hell.cenobites.java.ejb3.examples.one.ejb.remote.IArtistServiceRemote;
-import hell.cenobites.java.ejb3.examples.one.model.Artist;
+import org.cenobites.java.ejb3.examples.one.ejb.home.IArtistServiceHome;
+import org.cenobites.java.ejb3.examples.one.ejb.remote.IArtistServiceRemote;
+import org.cenobites.java.ejb3.examples.one.model.Artist;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * TODO:
  * 
- * @package hell.cenobites.java.ejb3.examples.one.ejb
+ * @package org.cenobites.java.ejb3.examples.one.ejb
  * @author Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
  * @version 1.0
  */

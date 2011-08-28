@@ -1,4 +1,4 @@
-package hell.cenobites.java.ejb3.examples.one.model;
+package org.cenobites.java.ejb3.examples.one.model;
 
 import java.io.Serializable;
 import java.util.Date;
