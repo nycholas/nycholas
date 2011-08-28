@@ -1,0 +1,48 @@
+VRaptor Example 1
+=================
+
+VRaptor basic example
+
+
+Install
+=======
+
+$ mvn clean install
+
+
+Configure IDE Eclipse
+=====================
+
+$ mvn eclipse:clean eclipse:eclipse
+
+
+Deploy
+======
+
+$ export JAVA_HOME=/path/to/java
+$ export CATALINA_HOME=/path/to/apache-tomcat
+$ mvn clean install cargo:deploy
+
+
+References
+==========
+
+http://maven.apache.org/archetype/maven-archetype-plugin/usage.html
+http://vraptor.caelum.com.br/documentation/vraptor3-ten-minutes-guide/
+http://cargo.codehaus.org/Maven2+plugin
+
+
+Dependecies
+===========
+
+. JDK 1.6 - http://www.oracle.com/technetwork/java/javase/downloads/index.html
+. Maven 3.x - http://maven.apache.org/
+. Maven plugin Cargo - http://cargo.codehaus.org/Maven2+plugin
+. VRaptor 3.x - http://vraptor.caelum.com.br/
+
+
+Project Information
+===================
+
+Author: Nycholas de Oliveira e Olivera
+License: New BSD License

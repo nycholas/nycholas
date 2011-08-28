@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.cenobites.java.vraptor</groupId>
+	<artifactId>vraptor-example-1</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>vraptor-example-1</name>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>br.com.caelum</groupId>
+			<artifactId>vraptor</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging-api</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.5</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.1.2</version>
+				<configuration>
+					<!-- <wait>true</wait> -->
+					<container>
+						<containerId>tomcat7x</containerId>
+						<type>installed</type>
+						<home>${env.CATALINA_HOME}</home>
+					</container>
+					<configuration>
+						<type>existing</type>
+						<home>${env.CATALINA_HOME}</home>
+						<properties>
+							<cargo.jboss.configuration>default</cargo.jboss.configuration>
+							<cargo.rmi.port>1099</cargo.rmi.port>
+						</properties>
+					</configuration>
+					<deployer>
+						<type>installed</type>
+						<deployables>
+							<deployable>
+								<type>war</type>
+								<location>target/vraptor-example-1-1.0-SNAPSHOT.war</location>
+							</deployable>
+						</deployables>
+					</deployer>
+				</configuration>
+				<!-- <executions> <execution> <id>verify-deploy</id> <phase>install</phase> 
+					<goals> <goal>deployer-deploy</goal> <goal>start</goal> </goals> </execution> 
+					<execution> <id>clean-undeploy</id> <phase>pre-clean</phase> <goals> <goal>stop</goal> 
+					</goals> </execution> </executions> -->
+			</plugin>
+		</plugins>
+	</build>
+</project>
