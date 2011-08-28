@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package hell.cenobites.code.java.jcurses.examples.one;
+package org.cenobites.code.java.jcurses.examples.one;
 
 import jcurses.system.CharColor;
 import jcurses.widgets.DefaultLayoutManager;
@@ -27,16 +27,16 @@ import jcurses.widgets.Window;
 
 /**
  * Simple example in JCurses
- *
- * @package hell.cenobites.code.java.jcurses.examples.one
+ * 
+ * @package org.cenobites.code.java.jcurses.examples.one
  * @author Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
  * @version 1.0
  */
-public class Hello {	
+public class Hello {
 	public static void main(String[] args) throws Exception {
-		Window w = new Window(100, 100, true, "All gone to hell!");
-		Label label = new Label("All gone to hell!", new CharColor(
-				CharColor.BLACK, CharColor.GREEN));
+		Window w = new Window(100, 100, true, "Hai hai!");
+		Label label = new Label("Hai hai!", new CharColor(CharColor.BLACK,
+				CharColor.GREEN));
 		DefaultLayoutManager mgr = new DefaultLayoutManager();
 		mgr.bindToContainer(w.getRootPanel());
 		mgr.addWidget(label, 0, 0, 100, 100, WidgetsConstants.ALIGNMENT_CENTER,
