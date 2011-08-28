@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package hell.cenobites.code.java.socket.examples.one.client;
+package org.cenobites.code.java.socket.examples.one.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import java.net.Socket;
 /**
  * Client socket
  * 
- * @package hell.cenobites.code.java.socket.examples.one.client
+ * @package org.cenobites.code.java.socket.examples.one.client
  * @author Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
  * @version 1.0
  */

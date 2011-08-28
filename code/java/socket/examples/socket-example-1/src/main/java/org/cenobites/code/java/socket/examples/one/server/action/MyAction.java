@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package hell.cenobites.code.java.socket.examples.one.server.action;
+package org.cenobites.code.java.socket.examples.one.server.action;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -27,7 +27,7 @@ import java.net.Socket;
 /**
  * Socket action in requisition
  * 
- * @package hell.cenobites.code.java.socket.examples.one.server.action
+ * @package org.cenobites.code.java.socket.examples.one.server.action
  * @author Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
  * @version 1.0
  */

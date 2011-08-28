@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package hell.cenobites.code.java.socket.examples.one.server;
+package org.cenobites.code.java.socket.examples.one.server;
 
-import hell.cenobites.code.java.socket.examples.one.server.action.MyAction;
+import org.cenobites.code.java.socket.examples.one.server.action.MyAction;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -29,7 +29,7 @@ import java.net.Socket;
 /**
  * Socket server multithreaded
  *
- * @package hell.cenobites.code.java.socket.examples.one.server
+ * @package org.cenobites.code.java.socket.examples.one.server
  * @author Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
  * @version 1.0
  */

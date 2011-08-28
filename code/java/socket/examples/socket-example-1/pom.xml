@@ -40,7 +40,7 @@
 				<configuration>
 					<executable>maven</executable>
 					<workingDirectory>/tmp</workingDirectory>
-					<mainClass>hell.cenobites.code.java.socket.examples.one.client.ClientNtp</mainClass>
+					<mainClass>org.cenobites.code.java.socket.examples.one.client.ClientNtp</mainClass>
 					<arguments>
 						<argument>a.ntp.br</argument>
 					</arguments>
