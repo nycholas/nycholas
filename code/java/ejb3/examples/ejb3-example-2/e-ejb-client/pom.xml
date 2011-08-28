@@ -2,11 +2,11 @@
 <project>
 	<parent>
 		<artifactId>ejb3-example-2</artifactId>
-		<groupId>hell.cenobites.java.ejb3.examples.two</groupId>
+		<groupId>org.cenobites.java.ejb3.examples.two</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>hell.cenobites.java.ejb3.examples.two</groupId>
+	<groupId>org.cenobites.java.ejb3.examples.two</groupId>
 	<artifactId>e-ejb-client</artifactId>
 	<name>e-ejb-client</name>
 	<version>${pom.parent.version}</version>

@@ -2,11 +2,11 @@
 <project>
 	<parent>
 		<artifactId>ejb3-example-2</artifactId>
-		<groupId>hell.cenobites.java.ejb3.examples.two</groupId>
+		<groupId>org.cenobites.java.ejb3.examples.two</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>hell.cenobites.java.ejb3.examples.two</groupId>
+	<groupId>org.cenobites.java.ejb3.examples.two</groupId>
 	<artifactId>e-ear</artifactId>
 	<packaging>ear</packaging>
 	<name>e-ear</name>
@@ -47,7 +47,7 @@
 					<jboss>
 						<version>4.2</version>
 						<loader-repository>
-							hell.cenobites.java.ejb3.examples.two:loader=e-ear.ear
+							org.cenobites.java.ejb3.examples.two:loader=e-ear.ear
 						</loader-repository>
 						<data-sources>
 							<data-source>config/e-ds.xml</data-source>

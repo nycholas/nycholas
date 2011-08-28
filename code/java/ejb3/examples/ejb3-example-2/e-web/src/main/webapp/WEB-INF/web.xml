@@ -7,7 +7,7 @@
 
 	<servlet>
 		<servlet-name>artistServlet</servlet-name>
-		<servlet-class>hell.cenobites.code.java.ejb3.examples.two.servlets.ArtistServlet</servlet-class>
+		<servlet-class>org.cenobites.code.java.ejb3.examples.two.servlets.ArtistServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
