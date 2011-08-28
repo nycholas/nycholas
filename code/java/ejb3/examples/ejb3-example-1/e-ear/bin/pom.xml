@@ -30,6 +30,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.6</version>
 				<configuration>
 					<finalName>e-ear</finalName>
 					<modules>
@@ -44,7 +45,7 @@
 						</webModule>
 					</modules>
 					<jboss>
-						<version>4.2</version>
+						<version>4</version>
 						<loader-repository>
 							org.cenobites.java.ejb3.examples.one:loader=e-ear.ear
 						</loader-repository>

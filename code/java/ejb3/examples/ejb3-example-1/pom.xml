@@ -45,7 +45,7 @@
 				<version>1.1.2</version>
 				<configuration>
 					<container>
-						<containerId>jboss4x</containerId>
+						<containerId>jboss7x</containerId>
 						<home>${env.JBOSS_HOME}</home>
 					</container>
 					<configuration>
@@ -82,145 +82,106 @@
 				<version>${project.version}</version>
 			</dependency>
 
+			<!-- MODEL -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>3.6.6.Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-annotations</artifactId>
+				<version>3.5.6-Final</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.persistence</groupId>
+				<artifactId>persistence-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.spec.ee</groupId>
+				<artifactId>ow2-ejb-3.1-spec</artifactId>
+				<version>1.0.9</version>
+			</dependency>
+
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
-				<version>5.1.6</version>
+				<version>5.1.17</version>
 				<scope>provided</scope>
 			</dependency>
+
+			<!-- WEB -->
 			<dependency>
-				<groupId>javax.ejb</groupId>
-				<artifactId>ejb-api</artifactId>
-				<version>3.0</version>
+				<groupId>javax.el</groupId>
+				<artifactId>el-api</artifactId>
+				<version>1.0</version>
 			</dependency>
 			<dependency>
-				<groupId>javax.persistence</groupId>
-				<artifactId>persistence-api</artifactId> <!--<artifactId>ejb</artifactId> -->
-				<version>1.0</version> <!-- <version>3.0-public_review</version> -->
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>hibernate</groupId>
-				<artifactId>hibernate-annotations</artifactId>
-				<version>3.1beta4</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>hibernate</groupId>
-				<artifactId>hibernate-avalon</artifactId>
-				<version>0.1</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>jboss</groupId>
-				<artifactId>jboss-ejb3x</artifactId>
-				<version>4.2.3.GA</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>jboss</groupId>
-				<artifactId>jboss</artifactId>
-				<version>4.2.3.GA</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>jboss-jaxws</groupId>
-				<artifactId>jboss-jaxws</artifactId>
-				<version>2.0.0</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.jboss.client</groupId>
-				<artifactId>jbossall-client</artifactId>
-				<version>4.2.3.GA</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>jboss</groupId>
-				<artifactId>jboss-annotations-ejb3</artifactId>
-				<version>4.2.3.GA</version>
-			</dependency>
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.14</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>jboss</groupId>
-				<artifactId>jboss</artifactId>
-				<version>4.2.3.GA</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>jboss-jaxws</groupId>
-				<artifactId>jboss-jaxws</artifactId>
-				<version>2.0.0</version>
-				<scope>provided</scope>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jstl</artifactId>
+				<version>1.2</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>2.5</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax.servlet.jsp</groupId>
-				<artifactId>jsp-api</artifactId>
-				<version>2.1</version>
-				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
-				<artifactId>jstl</artifactId>
-				<version>1.1.2</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax.el</groupId>
-				<artifactId>el-api</artifactId>
-				<version>1.0</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>commons-beanutils</groupId>
-				<artifactId>commons-beanutils</artifactId>
-				<version>1.8.0</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-digester</groupId>
-				<artifactId>commons-digester</artifactId>
+				<artifactId>jsp-api</artifactId>
 				<version>2.0</version>
 			</dependency>
-			<dependency>
-				<groupId>commons-collections</groupId>
-				<artifactId>commons-collections</artifactId>
-				<version>3.2</version>
-			</dependency>
+
+			<!-- COMMONS -->
 			<dependency>
 				<groupId>commons-logging</groupId>
 				<artifactId>commons-logging</artifactId>
 				<version>1.1.1</version>
 			</dependency>
 			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.16</version>
+			</dependency>
+
+
+			<!-- <dependency> <groupId>hibernate</groupId> <artifactId>hibernate-annotations</artifactId> 
+				<version>3.1beta4</version> <scope>provided</scope> </dependency> <dependency> 
+				<groupId>hibernate</groupId> <artifactId>hibernate-avalon</artifactId> <version>0.1</version> 
+				<scope>provided</scope> </dependency> <dependency> <groupId>jboss</groupId> 
+				<artifactId>jboss-ejb3x</artifactId> <version>4.2.3.GA</version> <scope>provided</scope> 
+				</dependency> <dependency> <groupId>jboss</groupId> <artifactId>jboss</artifactId> 
+				<version>4.2.3.GA</version> <scope>provided</scope> </dependency> <dependency> 
+				<groupId>jboss-jaxws</groupId> <artifactId>jboss-jaxws</artifactId> <version>2.0.0</version> 
+				<scope>provided</scope> </dependency> <dependency> <groupId>org.jboss.client</groupId> 
+				<artifactId>jbossall-client</artifactId> <version>4.2.3.GA</version> <scope>provided</scope> 
+				</dependency> <dependency> <groupId>jboss</groupId> <artifactId>jboss-annotations-ejb3</artifactId> 
+				<version>4.2.3.GA</version> </dependency> <dependency> <groupId>log4j</groupId> 
+				<artifactId>log4j</artifactId> <version>1.2.14</version> <scope>provided</scope> 
+				</dependency> <dependency> <groupId>jboss</groupId> <artifactId>jboss</artifactId> 
+				<version>4.2.3.GA</version> <scope>provided</scope> </dependency> <dependency> 
+				<groupId>jboss-jaxws</groupId> <artifactId>jboss-jaxws</artifactId> <version>2.0.0</version> 
+				<scope>provided</scope> </dependency> <dependency> <groupId>javax.servlet</groupId> 
+				<artifactId>servlet-api</artifactId> <version>2.5</version> <scope>provided</scope> 
+				</dependency> <dependency> <groupId>javax.servlet.jsp</groupId> <artifactId>jsp-api</artifactId> 
+				<version>2.1</version> <scope>provided</scope> </dependency> <dependency> 
+				<groupId>javax.servlet</groupId> <artifactId>jstl</artifactId> <version>1.1.2</version> 
+				<scope>provided</scope> </dependency> <dependency> <groupId>javax.el</groupId> 
+				<artifactId>el-api</artifactId> <version>1.0</version> <scope>provided</scope> 
+				</dependency> <dependency> <groupId>commons-beanutils</groupId> <artifactId>commons-beanutils</artifactId> 
+				<version>1.8.0</version> </dependency> <dependency> <groupId>commons-digester</groupId> 
+				<artifactId>commons-digester</artifactId> <version>2.0</version> </dependency> 
+				<dependency> <groupId>commons-collections</groupId> <artifactId>commons-collections</artifactId> 
+				<version>3.2</version> </dependency> -->
+
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>3.8.2</version>
+				<version>4.8.2</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<dependencies>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.2</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 </project>
