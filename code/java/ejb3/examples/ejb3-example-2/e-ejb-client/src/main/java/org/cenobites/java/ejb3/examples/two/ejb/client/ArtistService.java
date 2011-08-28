@@ -1,5 +1,5 @@
 /**
- * @(#)ArtistServletTest.java 2.0 2011/08/28
+ * @(#)ArtistService.java 2.0 2011/08/28
  * 
  * A simple example ejb3.
  * Copyright (c) 2009-2011, Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
@@ -29,17 +29,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.cenobites.code.java.ejb3.examples.two.servlets;
+package org.cenobites.java.ejb3.examples.two.ejb.client;
 
-import javax.naming.InitialContext;
+import java.util.List;
 
-import org.cenobites.java.ejb3.examples.two.ejb.client.ArtistService;
+import org.cenobites.java.ejb3.examples.two.domain.Artist;
 
-public class ArtistServletTest {
-	public static void main(String[] args) throws Exception {
-		ArtistService service = null;
-		service = (ArtistService) new InitialContext()
-				.lookup(ArtistService.REMOTE_JNDI_NAME);
-		service.findAll();
-	}
+public interface ArtistService {
+
+	public final static String BEAN_NAME = "ArtistService";
+
+	public final static String REMOTE_JNDI_NAME = "e-ear/" + BEAN_NAME
+			+ "/remote";
+
+	public int add(Artist artist);
+
+	public void update(Artist artist);
+
+	public void remove(Artist artist);
+
+	public Artist findById(int id);
+
+	public List<Artist> findAll();
 }

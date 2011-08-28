@@ -1,26 +1,35 @@
 /**
- * @(#)ArtistServlet.java 1.0 2009/09/14
+ * @(#)ArtistServlet.java 2.0 2011/08/28
  * 
- * A simple example EJB3.
- * Copyright (C) 2009 by Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
+ * A simple example ejb3.
+ * Copyright (c) 2009-2011, Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
+ * All rights reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  * Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *  * Neither the name of the Nycholas de Oliveira e Oliveira nor the names of
+ *    its contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.cenobites.code.java.ejb3.examples.two.servlets;
-
-import org.cenobites.java.ejb3.examples.two.ejb.client.IArtistService;
-import org.cenobites.java.ejb3.examples.two.model.Artist;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,25 +44,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.WebServiceRef;
 
-/**
- * TODO:
- * 
- * @package org.cenobites.code.java.ejb3.examples.two.servlets
- * @author Nycholas de Oliveira e Oliveira <nycholas@gmail.com>
- * @version 1.0
- */
+import org.cenobites.java.ejb3.examples.two.domain.Artist;
+import org.cenobites.java.ejb3.examples.two.ejb.client.ArtistService;
+
 public class ArtistServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -8004818354081231625L;
 
-	@WebServiceRef(name = IArtistService.REMOTE_JNDI_NAME)
-	private IArtistService artistService;
-	
+	@WebServiceRef(name = ArtistService.REMOTE_JNDI_NAME)
+	private ArtistService artistService;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PrintWriter out = resp.getWriter();
-	    out.println("All gone to org!");
+		out.println("All gone to org!");
 	}
 
 	@Override
