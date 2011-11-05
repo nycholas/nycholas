@@ -6,7 +6,7 @@
 	<name>Example 1 - Java JCurses</name>
 	<version>1.0-SNAPSHOT</version>
 	<description>Simple example Java powered JCurses</description>
-    <url>http://code.google.com/p/nycholas/</url>
+	<url>http://code.google.com/p/nycholas/</url>
 	<build>
 		<plugins>
 			<plugin>
@@ -28,7 +28,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.1</version>
+				<version>1.2.1</version>
 				<executions>
 					<execution>
 						<goals>
@@ -37,7 +37,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>hell.cenobites.code.java.jcurses.examples.one.Hello</mainClass>
+					<mainClass>org.cenobites.code.java.jcurses.examples.one.Hello</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -47,6 +47,7 @@
 			<groupId>com.baulsupp.kolja</groupId>
 			<artifactId>jcurses</artifactId>
 			<version>0.9.5.3</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

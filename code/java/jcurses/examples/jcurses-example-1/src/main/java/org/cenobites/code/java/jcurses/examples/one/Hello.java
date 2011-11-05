@@ -33,7 +33,11 @@ import jcurses.widgets.Window;
  * @version 1.0
  */
 public class Hello {
+	
 	public static void main(String[] args) throws Exception {
+		System.out.println("+++++ " + System.getProperty("java.library.path"));
+		
+		
 		Window w = new Window(100, 100, true, "Hai hai!");
 		Label label = new Label("Hai hai!", new CharColor(CharColor.BLACK,
 				CharColor.GREEN));
