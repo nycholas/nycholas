@@ -1,0 +1,68 @@
+$ make start
+rm -rf *.beam erl_crash.dump
+erlc -W socket_server.erl
+erlc -W server.erl
+erlc -W client.erl
+erlc -W mycalc.erl
+erl -boot start_clean -pa '/home/nycholas/project/src/o_lalertom/nycholas/src/nycholas/code/erlang/OTP/examples/mycalc-tcp' -s server start
+Erlang R14B04 (erts-5.8.5) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.8.5  (abort with ^G)
+1> client:send("HA!").
+Server received binary = <<131,107,0,3,72,65,33>>
+Server (unpacked) = "HA!"
+Client received binary = <<131,107,0,3,72,65,33>>
+Client result = "HA!"
+"HA!"
+2> client:sum(6, 8).
+Server received binary = <<131,104,3,100,0,3,115,117,109,97,6,97,8>>
+Server (unpacked) = {sum,6,8}
+Client received binary = <<131,97,14>>
+Client result = 14
+14
+3> 
+
+
+$ make test
+./mycalc
+ + Starting server: {ok,<0.31.0>}
+
+Server received binary = <<131,107,0,3,72,65,33>>
+Server (unpacked) = "HA!"
+Client received binary = <<131,107,0,3,72,65,33>>
+Client result = "HA!"
+  -> Send 'HA!': "HA!"
+
+Server received binary = <<131,104,3,100,0,3,115,117,109,97,3,97,4>>
+Server (unpacked) = {sum,3,4}
+Client received binary = <<131,97,7>>
+Client result = 7
+  -> Sum 3+4: 7
+
+Server received binary = <<131,104,3,100,0,8,115,117,98,116,114,97,99,116,97,8,
+                           97,5>>
+Server (unpacked) = {subtract,8,5}
+Client received binary = <<131,97,3>>
+Client result = 3
+  -> Subtract 8-5: 3
+
+Server received binary = <<131,104,3,100,0,10,109,117,108,116,105,112,108,105,
+                           101,115,97,6,97,9>>
+Server (unpacked) = {multiplies,6,9}
+Client received binary = <<131,97,54>>
+Client result = 54
+  -> Multiplies 6*9: 54
+
+Server received binary = <<131,104,3,100,0,7,100,105,118,105,100,101,115,97,6,
+                           97,3>>
+Server (unpacked) = {divides,6,3}
+Client received binary = <<131,99,50,46,48,48,48,48,48,48,48,48,48,48,48,48,48,
+                           48,48,48,48,48,48,48,101,43,48,48,0,0,0,0,0>>
+Client result = 2.0
+  -> Divides 6/3: 2.0
+
+ + Stop server: stopped
+
+
+
+
