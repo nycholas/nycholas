@@ -28,6 +28,13 @@
 %%% POSSIBILITY OF SUCH DAMAGE.
 %%%----------------------------------------------------------------------------
 -module(server).
+
+-revision('Revision: 0.1 ').
+-created('Date: 2011/11/06 15:11:10 ').
+-created_by('nycholas@gmail.com').
+-modified('Date: 2011/11/06 15:11:10 ').
+-modified_by('nycholas@gmail.com').
+
 -export([start/0, loop/1, stop/0]).
 
 start() ->

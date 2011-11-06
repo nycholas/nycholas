@@ -30,9 +30,9 @@
 -module(mycalc).
 
 -revision('Revision: 0.1 ').
--created('Date: 2011/02/18 11:02:00 ').
+-created('Date: 2011/11/06 15:11:10 ').
 -created_by('nycholas@gmail.com').
--modified('Date: 2011/02/18 11:02:00 ').
+-modified('Date: 2011/11/06 15:11:10 ').
 -modified_by('nycholas@gmail.com').
 
 -export([sum/2, subtract/2, multiplies/2, divides/2]).
