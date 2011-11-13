@@ -36,4 +36,4 @@ main(_) ->
     io:format("  -> 31 * 24 = ~p~n", [client:calculator({multiplies, 31, 24})]),
     io:format("  -> 6 * 9 = ~p~n", [client:calculator({divides, 6, 9})]),
     io:format("  -> Not found operation: ~p~n", [client:calculator({haihai, 3, 4})]),
-    io:format(" + Stoping server process: ~p~n", [server:stop()]).
+    io:format(" + Stopping server process: ~p~n", [server:stop()]).

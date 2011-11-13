@@ -8,5 +8,5 @@ erlc -W client.erl
   -> 31 * 24 = 744
   -> 6 * 9 = 0.6666666666666666
   -> Not found operation: {error,{haihai,3,4}}
- + Stoping server process: stop
+ + Stopping server process: stop
 
