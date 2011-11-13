@@ -1,0 +1,9 @@
+$ make test
+erlc -W server.erl
+./mycalc
+ + Starting server process: <0.31.0>
+  -> 3 + 4 = 7
+  -> 23 - 7 = 16
+  -> 31 * 24 = 744
+  -> 6 * 9 = 0.6666666666666666
+  -> Not found operation: {error,{haihai,3,4}}
