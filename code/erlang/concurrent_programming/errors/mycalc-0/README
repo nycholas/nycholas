@@ -1,0 +1,13 @@
+$ make test
+./mycalc
+ + Starting server process: <0.31.0>
+  -> 3 + 4 = 7
+  -> 23 - 7 = 16
+  -> 31 * 24 = 744
+  -> 6 / 9 = 0.6666666666666666
+  -> Not found operation: {haihai,3,4}
+  => <0.31.0> died with: {badarith,[{server,loop,0}]}
+
+=ERROR REPORT==== 13-Nov-2011::16:11:12 ===
+Error in process <0.31.0> with exit value: {badarith,[{server,loop,0}]}
+

@@ -1,0 +1,20 @@
+$ make test
+erlc -W server.erl
+./mycalc
+ + Starting server process: true
+  -> 3 + 4 = 7
+  -> 23 - 7 = 16
+  -> 31 * 24 = 744
+  -> 6 / 9 = 0.6666666666666666
+  -> 6 / 0 = {exit,<0.31.0>,{badarith,[{server,loop,0}]}}
+
+=ERROR REPORT==== 13-Nov-2011::16:49:26 ===
+Error in process <0.31.0> with exit value: {badarith,[{server,loop,0}]}
+
+ - Server is down: undefined
+  -> Not found operation: ok
+ - Server is down: undefined
+  -> 6 / 0 = ok
+escript: exception error: bad argument
+  in function  server:stop/0
+make: ** [test] Erro 127
