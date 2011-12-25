@@ -1,0 +1,5 @@
+priv
+    Used for application specific files. For example, C 
+    executables are placed here. The function 
+    code:priv_dir/1 should be used to access this 
+    directory.
