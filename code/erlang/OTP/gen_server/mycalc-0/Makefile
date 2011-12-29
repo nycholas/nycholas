@@ -7,10 +7,12 @@
 	erlc -W $<
 
 ERL = erl -boot start_clean
+ERL_PROJECT_DIR = ebin priv include
 
 all: compile
 
 compile:
+	mkdir -p ${ERL_PROJECT_DIR}
 	${ERL} -make
 
 start: compile
