@@ -1,0 +1,3 @@
+ebin
+    Contains the Erlang object code, the beam files. The 
+    .app file is also placed here.
