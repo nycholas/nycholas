@@ -1,0 +1,115 @@
+[nycholas@pinhead dojo]$ make
+mkdir -p ebin priv include
+erl -boot start_clean -make
+Recompile: src/sensei
+Recompile: src/fighters
+[nycholas@pinhead dojo]$ make start
+mkdir -p ebin priv include
+erl -boot start_clean -make
+erl -boot start_clean -pa ebin
+Erlang R14B04 (erts-5.8.5) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.8.5  (abort with ^G)
+1> sensei:start_link(kame).
+Fighter Retsu aikido start training
+Fighter Eagle box start training
+Fighter Gen judo start training
+Fighter Retsu kung_fu start training
+Fighter Birdie jiu_jitsu start training
+Fighter Ken karate start training
+Fighter Lee samurai start training
+{ok,<0.34.0>}
+Retsu nice blow!
+Eagle stands for and tries to talk back
+Gen nice blow!
+Retsu nice blow!
+Birdie stands for and tries to talk back
+Ken nice blow!
+Lee nice blow!
+Retsu nice blow!
+Eagle lowers his guard and takes a punch
+Eagle falls
+2> 
+=ERROR REPORT==== 3-Jan-2012::20:50:44 ===
+** Generic server box terminating 
+** Last message in was timeout
+** When Server state == {state,"Eagle","box",bad}
+** Reason for termination == 
+** bad_struck
+Gen nice blow!
+Retsu nice blow!
+Birdie stands for and tries to talk back
+Ken are tired
+Ken tired of training
+2> 
+=ERROR REPORT==== 3-Jan-2012::20:50:44 ===
+** Generic server karate terminating 
+** Last message in was timeout
+** When Server state == {state,"Ken","karate",good}
+** Reason for termination == 
+** tired
+Fighter Retsu karate start training
+Lee nice blow!
+Retsu nice blow!
+Gen nice blow!
+Retsu nice blow!
+Birdie stands for and tries to talk back
+Lee nice blow!
+Retsu nice blow!
+Gen nice blow!
+Retsu nice blow!
+Birdie stands for and tries to talk back
+Lee nice blow!
+Retsu nice blow!
+Retsu nice blow!
+Gen nice blow!
+Retsu nice blow!
+Birdie stands for and tries to talk back
+Lee nice blow!
+Retsu nice blow!
+Retsu nice blow!
+Gen nice blow!
+Retsu nice blow!
+Birdie stands for and tries to talk back
+Lee nice blow!
+Retsu nice blow!
+Retsu nice blow!
+Gen nice blow!
+Retsu are tired
+Retsu tired of training
+2> 
+=ERROR REPORT==== 3-Jan-2012::20:50:48 ===
+** Generic server kung_fu terminating 
+** Last message in was timeout
+** When Server state == {state,"Retsu","kung_fu",good}
+** Reason for termination == 
+** tired
+Fighter Geki kung_fu start training
+Birdie are tired
+Birdie tired of training
+2> 
+=ERROR REPORT==== 3-Jan-2012::20:50:48 ===
+** Generic server jiu_jitsu terminating 
+** Last message in was timeout
+** When Server state == {state,"Birdie","jiu_jitsu",bad}
+** Reason for termination == 
+** tired
+Fighter Geki jiu_jitsu start training
+Lee nice blow!
+Retsu are tired
+Retsu tired of training
+2> 
+=ERROR REPORT==== 3-Jan-2012::20:50:48 ===
+** Generic server karate terminating 
+** Last message in was timeout
+** When Server state == {state,"Retsu","karate",good}
+** Reason for termination == 
+** tired
+End of training of the Lee!
+End of training of the Geki!
+End of training of the Geki!
+End of training of the Gen!
+End of training of the Retsu!
+** exception error: shutdown
+2> 
+
