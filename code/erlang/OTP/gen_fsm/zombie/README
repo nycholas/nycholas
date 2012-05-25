@@ -1,0 +1,32 @@
+$ make start
+mkdir -p ebin priv include
+erl -boot start_clean -make
+erl -boot start_clean -pa ebin
+Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+1> Zombie = zombie_fsm:start().
+Zombie is looking for food
+<0.34.0>
+Zombie is looking for food
+Zombie is looking for food
+Zombie is looking for food
+Zombie is looking for food
+Zombie is looking for food   
+2> zombie_fsm:victim(Zombie).
+Zombie caught the smell of fresh meat
+victim
+Zombie food found
+Trips and the victim Zombie eats...
+Zombie is looking for food
+Zombie is looking for food
+Zombie is looking for food   
+Zombie is looking for food   
+Zombie is looking for food
+Zombie is looking for food 
+3> zombie_fsm:shotgun(Zombie).
+Zombie is lost!
+shotgun
+Zombie is looking for food
+Zombie is looking for food
+Zombie is looking for food
