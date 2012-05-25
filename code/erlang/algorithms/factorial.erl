@@ -14,7 +14,13 @@
 % You should have received a copy of the GNU Lesser General Public License
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -module(factorial).
--export([fac/1]).
+-export([fac/1, fac_closed_form/1]).
+
+-define(SQRT_5, 2.236067977499789696409173668731276235440618359611525724270897245410520925637804899414414408378782274969508176150773783504).
+-define(A, (1 + ?SQRT_5) / 2).
+-define(B, (1 - ?SQRT_5) / 2).
 
 fac(0) -> 1;
 fac(N) -> N * fac(N - 1).
+
+fac_closed_form(N) -> ((1 / ?SQRT_5) * math:pow(?A, N)) - ((1 / ?SQRT_5) * math:pow(?B, N)).
