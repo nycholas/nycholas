@@ -1,0 +1,28 @@
+SERVER
+======
+
+$ erl -env ERL_LIBS "."
+Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+1> application:load(esocketcho).
+ok
+2> application:start(esocketcho).
+ok
+3>
+
+CLIENT
+======
+
+$ telnet localhost 9009
+Trying ::1...
+Connection failed: Connection refused
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+What's your name?
+Bozo
+Pleasure, my name is E, "Bozo" let's talk?
+y
+I remembered that I have something else more important to do, bye!
+Connection closed by foreign host.

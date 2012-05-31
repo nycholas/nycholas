@@ -1,0 +1,6 @@
+{release,
+ {"esocketcho", "1.0.0"},
+ {erts, "5.8.4"},
+ [{kernel, "2.15.1"},
+  {stdlib, "1.18.1"},
+  {esocketcho, "1.0.0", permanent}]}.
