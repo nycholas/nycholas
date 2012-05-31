@@ -29,13 +29,26 @@
 -include_lib("eunit/include/eunit.hrl").
 
 sum_test() ->
-    4 = mycalc:sum(2, 2).
+    4 = mycalc:sum(2, 2),
+	?assertEqual(4, mycalc:sum(2, 2)),
+	?assertEqual(7, mycalc:sum(2, 5)),
+	?assert(is_number(mycalc:sum(2, 2))).
 
 subtract_test() ->
-    0 = mycalc:subtract(2, 2).
+    0 = mycalc:subtract(2, 2),
+    ?assertEqual(0, mycalc:subtract(2, 2)),
+	?assertEqual(999, mycalc:subtract(1000, 1)),
+	?assert(is_number(mycalc:subtract(2, 423))).
 
 multiplies_test() ->
-    2 = mycalc:multiplies(1, 2).
+    2 = mycalc:multiplies(1, 2),
+    ?assertEqual(4, mycalc:multiplies(2, 2)),
+	?assertEqual(1000, mycalc:multiplies(1000, 1)),
+	?assert(is_number(mycalc:multiplies(2, 423))).
 
 divides_test() ->
-    8 = mycalc:divides(16, 2).
+    8 = mycalc:divides(16, 2),
+    ?assertEqual(1, mycalc:divides(2, 2)),
+	?assertEqual(1000, mycalc:divides(1000, 1)),
+	?assert(is_number(mycalc:divides(2, 423))),
+	?assertError(badarith, mycalc:divides(1, 0)).
