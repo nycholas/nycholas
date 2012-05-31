@@ -1,0 +1,12 @@
+$ erl
+Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+1> c(mycalc).
+{ok,mycalc}
+2> c(mycalc_tests).
+{ok,mycalc_tests}
+3> eunit:test(mycalc).
+  All 4 tests passed.
+ok
+4>
