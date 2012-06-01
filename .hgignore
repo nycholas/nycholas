@@ -25,6 +25,7 @@ ui_*.h
 .pydevproject
 .cproject
 .settings/*
+.idea/*
 code/java/**/target/*
 code/groovy/grails/**/target/*
 code/android/**/target/*
