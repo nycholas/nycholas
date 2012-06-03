@@ -1,0 +1,117 @@
+MASTER A
+========
+
+$ erl -sname a -config config/a -pa ebin -eval 'application:start(crypto), application:start(echo)'
+Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+(a@localhost)1> echo:ask("ok").
+<<"Doubtful">>
+(a@localhost)2> echo:ask("ok").
+<<"I don't like your tone">>
+(a@localhost)3> echo:ask("ok").
+<<"Of course">>
+(a@localhost)4> echo:ask("ok").
+<<"No">>
+(a@localhost)5> application:which_applications().
+[{echo,"Simple example application distributed","1.0.0"},
+ {crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(a@localhost)6> 
+BREAK: (a)bort (c)ontinue (p)roc info (i)nfo (l)oaded
+       (v)ersion (k)ill (D)b-tables (d)istribution
+a
+[nycholas@pinhead esocketcho_dist]$ erl -sname a -config config/a -pa ebin -eval 'application:start(crypto), application:start(echo)'
+Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+(a@localhost)1> application:which_applications()
+(a@localhost)1> .
+[{echo,"Simple example application distributed","1.0.0"},
+ {crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(a@localhost)2>
+
+
+SLAYER B
+========
+
+$ erl -sname b -config config/b -pa ebin -eval 'application:start(crypto), application:start(echo)'
+Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+(b@localhost)1> echo:ask("df").
+<<"Of course not">>
+(b@localhost)2> application:which_applications().
+[{crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(b@localhost)3> application:which_applications().
+[{crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(b@localhost)4> application:which_applications().
+[{crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(b@localhost)5> application:which_applications().
+[{crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(b@localhost)6> application:which_applications().
+[{echo,"Simple example application distributed","1.0.0"},
+ {crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(b@localhost)7> application:which_applications().
+[{echo,"Simple example application distributed","1.0.0"},
+ {crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(b@localhost)8> echo:ask("asdfasf").
+<<"Doubtful">>
+(b@localhost)9> echo:ask("asdfasf").
+<<"I don't like your tone">>
+(b@localhost)10> echo:ask("asdfasf").
+<<"Of course not">>
+(b@localhost)11> echo:ask("asdfasf").
+<<"Yes">>
+(b@localhost)12> echo:ask("asdfasf").
+<<"Of course">>
+(b@localhost)13> 
+=INFO REPORT==== 2-Jun-2012::21:13:20 ===
+    application: echo
+    exited: stopped
+    type: temporary
+
+(b@localhost)13> application:which_applications().
+[{crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(b@localhost)14>
+
+
+SLAYER C
+========
+
+$ erl -sname c -config config/c -pa ebin -eval 'application:start(crypto), application:start(echo)'
+Erlang R15B01 (erts-5.9.1) [source] [64-bit] [smp:4:4] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.9.1  (abort with ^G)
+(c@localhost)1> echo:ask("dfda").
+<<"*backs away slowly and runs away*">>
+(c@localhost)2> application:which_applications().
+[{crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(c@localhost)3> application:which_applications().
+[{crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(c@localhost)4> application:which_applications().
+[{crypto,"CRYPTO version 2","2.1"},
+ {stdlib,"ERTS  CXC 138 10","1.18.1"},
+ {kernel,"ERTS  CXC 138 10","2.15.1"}]
+(c@localhost)5>
