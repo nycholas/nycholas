@@ -1,0 +1,6 @@
+<div ng-controller="NotebookCtrl">
+  <h1>Notebook's</h1>
+  <ul ng-repeat="notebook in notebooks">
+    <li><a href="#/notebook/{{notebook.pk}}">{{notebook.fields.name}}</a></li>
+  </ul>
+</div>

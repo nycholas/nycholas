@@ -1,0 +1,35 @@
+[
+  {
+    "pk":1,
+    "model":"eapp.notebook",
+    "fields":{
+      "name":"Django",
+      "description":"Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.",
+      "date_joined":"2013-02-23 15:11:57",
+      "status":true
+    }
+  },
+
+  {
+    "pk":2,
+    "model":"eapp.notebook",
+    "fields":{
+      "name":"AngularJS",
+      "description":"HTML is great for declaring static documents, but it falters when we try to use it for declaring dynamic views in web-applications. AngularJS lets you extend HTML vocabulary for your application. The resulting environment is extraordinarily expressive, readable, and quick to develop.",
+      "date_joined":"2013-02-23 15:11:57",
+      "status":true
+    }
+  },
+
+  {
+    "pk":3,
+    "model":"eapp.notebook",
+    "fields":{
+      "name":"JSON",
+      "description":"JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write.",
+      "date_joined":"2013-02-23 15:11:57",
+      "status":true
+    }
+  }
+  
+]

@@ -1,0 +1,5 @@
+BOOTSTRAP
+=========
+
+  $ python manager.py syncdb
+  $ python manager.py runserver
