@@ -14,11 +14,11 @@ def factor(n):
       ...
     ValueError: n must be > 0
     >>> factor(13)
-
+    13
     >>> factor(620234234891)
     127
     >>> factor(1)
-
+    1
     >>> factor(293239)
     83
     """
@@ -29,7 +29,7 @@ def factor(n):
     while r != 0:
         F += 1
         if F > (n**0.5):
-            return None
+            return n
         q, r = divmod(n, F)
     return F
 
