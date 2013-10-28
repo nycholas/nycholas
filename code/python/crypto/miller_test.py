@@ -19,7 +19,6 @@ def test(n, accuracy=1):
     >>> test(561)
     'composite'
     """
-    
     if n <= 0:
         raise ValueError('n must be > 0')
     elif n == 2:
@@ -32,9 +31,6 @@ def test(n, accuracy=1):
         m = q
         q, r = divmod(m, 2)
         k += 1
-        #print(k, m)
-    #print('(2**{0})*{1}='.format(k-1, m), (2**(k-1))*m)
-
     for b in range(2, n):
         i = 0
         while i < k:
@@ -47,7 +43,6 @@ def test(n, accuracy=1):
         accuracy -= 1
         if accuracy == 0:
             return 'composite'
-
 
 if __name__ == '__main__':
     import doctest
