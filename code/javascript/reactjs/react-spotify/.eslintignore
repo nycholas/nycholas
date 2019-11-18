@@ -1,0 +1,15 @@
+**/node_modules
+**/public
+**/build
+dist
+.favorites.json
+coverage
+\.vscode/
+.idea
+babel.config.js
+metro.config.js
+reactotron.js
+*.spec.js
+*.min.js
+build
+serviceWorker.js
