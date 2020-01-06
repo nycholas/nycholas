@@ -1,0 +1,39 @@
+{
+  "name": "calculate",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html",
+    "heroku-postbuild": "parcel build ./src/index.html"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.7.0",
+    "@material-ui/core": "^4.7.0",
+    "@material-ui/lab": "^4.0.0-alpha.39",
+    "@types/react": "^16.8.6",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "rust": "^0.1.6"
+  }
+}
