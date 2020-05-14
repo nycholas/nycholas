@@ -46,15 +46,15 @@ evens([N | L]) ->
 median([]) ->
     [];
 median(L) when is_list(L) ->
-    LSort = lists:sort(L),
+    LSort = lists_sort(L),
     Len = length(LSort),
-    {L1, L2} = lists:split(Len div 2, LSort),
+    {L1, L2} = lists_split(Len div 2, LSort),
     case Len rem 2 of
         1 ->
             [E | _] = L2,
             [E];
         _ ->
-            E1 = lists:last(L1),
+            E1 = lists_last(L1),
             [E2 | _] = L2,
             [E1, E2]
     end.
@@ -62,18 +62,30 @@ median(L) when is_list(L) ->
 modes([]) ->
     [];
 modes(L) ->
-    LUSort = lists:usort(L),
-    LCount = [{N, count(N, L)} || N <- LUSort],
-    MaxCount = lists:max([X || {_, X} <- LCount]),
+    LUSort = lists_usort(L),
+    LCount = [{N, lists_count(N, L)} || N <- LUSort],
+    MaxCount = lists_max([X || {_, X} <- LCount]),
     [N || {N, C} <- LCount, C == MaxCount].
 
 tests() ->
+    %% Lists
+    [3, 2, 1] = lists_reverse([1, 2, 3]),
+    [1, 2, 3, 4, 5, 6] = lists_merge([1, 2, 3], [4, 5, 6]),
+    [1, 2, 3, -2, 4, 5, 6, -1] = lists_merge([1, 2, 3, -2], [4, 5, 6, -1]),
+    3 = lists_count(1, [1, 2, 3, 1, 2, 1]),
+    5 = lists_last([1, 2, 3, 4, 5]),
+    {[1, 2], [3, 4, 5]} = lists_split(2, [1, 2, 3, 4, 5]),
+    5 = lists_max([1, 4, 3, 5, 2, 1, 0]),
+    [-1, 1, 2, 2, 3, 4, 4, 6, 7, 8] = lists_sort([4, 2, 4, 6, 7, 8, 1, 2, -1, 3]),
+    [-1, 1, 2, 3, 4, 6, 7, 8] = lists_usort([4, 2, 4, 6, 7, 8, 1, 2, -1, 3]),
+
     %% Double
     [] = double([]),
     [2] = double([1]),
     [4] = double([2]),
     [2, 4, 6, 8] = double([1, 2, 3, 4]),
     [2, 4, 6, 8, 10] = double([1, 2, 3, 4, 5]),
+
     %% Evens
     [] = evens([]),
     [] = evens([1]),
@@ -81,6 +93,7 @@ tests() ->
     [2] = evens([2]),
     [2, 4, 6, 8] = evens([1, 2, 3, 4, 5, 6, 7, 8]),
     [2, 4, 6, 8, 10] = evens([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]),
+
     %% Median
     [] = median([]),
     [1] = median([1]),
@@ -88,6 +101,7 @@ tests() ->
     [2] = median([1, 2, 3]),
     [2] = median([1, 3, 2]),
     [3] = median([1, 3, 2, 4, 5]),
+    
     %% Modes
     [] = modes([]),
     [1, 2, 3, 4, 5] = modes([1, 2, 3, 4, 5]),
@@ -95,9 +109,80 @@ tests() ->
     [1, 2, 3] = modes([1, 1, 2, 2, 3, 3]),
     ok.
 
-count(_, []) -> 
+lists_usort(L) ->
+    [E1 | L2] = lists_sort(L),
+    lists_reverse(lists_usort(E1, L2, [])).
+
+lists_usort(E, [], Acc) ->
+    [E | Acc];
+lists_usort(E, [E | L], Acc) ->
+    lists_usort(E, L, Acc);
+lists_usort(E1, [E2 | L], Acc) ->
+    lists_usort(E2, L, [E1 | Acc]).
+
+lists_sort([]) ->
+    [];
+lists_sort([E | L]) ->
+    {Smaller, Larger} = lists_partition(E, L, [], []),
+    L1 = lists_merge(lists_sort(Smaller), [E]),
+    lists_merge(L1, lists_sort(Larger)).
+
+lists_partition(_, [], Smaller, Larger) -> 
+    {Smaller, Larger};
+lists_partition(E1, [E2 | L], Smaller, Larger) -> 
+    case E1 >= E2 of
+        true ->
+            lists_partition(E1, L, [E2 | Smaller], Larger);
+        _ ->
+            lists_partition(E1, L, Smaller, [E2 | Larger])
+    end.
+
+lists_max([E]) ->
+    E;
+lists_max([E | L]) ->
+    lists_max(L, E).
+
+lists_max([], Max) ->
+    Max;
+lists_max([E | L], Max) ->
+    lists_max(L, max(Max, E)).
+
+lists_split(0, L) ->
+    {[], L};
+lists_split(N, L) ->
+    lists_split(N, [], L).
+
+lists_split(0, L1, L2) ->
+    {lists_reverse(L1), L2};
+lists_split(N, L1, [E | L2]) ->
+    lists_split(N - 1, [E | L1], L2).
+
+lists_last([E]) -> E;
+lists_last([_ | L]) ->
+    lists_last(L).
+
+lists_count(_, []) -> 
     0;
-count(E, [E|L]) -> 
-    1 + count(E, L);
-count(E, [_|L]) -> 
-    count(E, L).
+lists_count(E, [E | L]) -> 
+    1 + lists_count(E, L);
+lists_count(E, [_ | L]) -> 
+    lists_count(E, L).
+
+lists_reverse(L) ->
+    lists_reverse(L, []).
+
+lists_reverse([], Acc) ->
+    Acc;
+lists_reverse([E | L], Acc) ->
+    lists_reverse(L, [E | Acc]).
+
+lists_merge(L1, []) ->
+    L1;
+lists_merge(L1, L2) ->
+    L3 = lists_reverse(L1),
+    lists_merge(L3, L2, L2).
+
+lists_merge([], _, Acc) ->
+    Acc;
+lists_merge([E | L1], L2, Acc) ->
+    lists_merge(L1, L2, [E | Acc]).
