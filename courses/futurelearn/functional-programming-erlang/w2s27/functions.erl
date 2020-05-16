@@ -24,53 +24,52 @@
 % CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 % ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 % POSSIBILITY OF SUCH DAMAGE.
--module(example).
+-module(functions).
 
--export([nub/1, tests/0]).
+-export([join/2, concat/1, member/2, tests/0]).
 
--spec nub([T]) -> [T].
-nub([]) -> 
+-spec join([any()], [any()]) -> [any()].
+join([], []) ->
     [];
-nub(L) -> 
-    nub(L, []).
+join([], [E | L2]) ->
+    [E | join([], L2)];
+join([E | L1], L2) ->
+    [E | join(L1, L2)].
 
--spec nub([T], [T]) -> [T].
-nub([], Acc) ->
-    lists_reverse(Acc);
-nub([E | L], Acc) ->
-    L1 = lists_delete(E, L),
-    nub(L1, [E | Acc]).
+-spec concat([any()]) -> [any()].
+concat([]) ->
+    [];
+concat([E1 | L]) ->
+    join(E1, concat(L)).
+
+-spec member(any(), [any()]) -> 'true' | 'false'.
+member(_, []) ->
+    false;
+member(E1, [E1 | _]) ->
+    true;
+member(E1, [_ | L]) ->
+    member(E1, L).
 
 -spec tests() -> ok.
 tests() ->
-    [] = lists_delete(0, []),
-    [1, 2, 3, 5] = lists_delete(4, [1, 2, 3, 4, 5]), 
-    [1, 2, 3, 3, 5] = lists_delete(4, [1, 2, 3, 3, 4, 5, 4, 4]), 
-    [] = nub([]),
-    [2, 4, 1, 3] = nub([2, 4, 1, 3, 3, 1]),
+    %% join
+    [] = join([], []),
+    [4, 5, 6] = join([], [4, 5, 6]),
+    [1, 2, 3] = join([1, 2, 3], []),
+    [1, 2, 3, 4, 5, 6] = join([1, 2, 3], [4, 5, 6]),
+    "hello" = join("hel", "lo"),
+
+    %% concat
+    [] = concat([]),
+    "goodbye" = concat(["goo","d","","by","e"]),
+
+    %% member
+    true = member(2, [2, 0, 0, 1]),
+    false = member(20, [2, 0, 0, 1]),
+
+    %% perms
+    % [[]] = perms([]),
+    % [[1, 2, 3], [2, 3, 1], [3, 1, 2], [2, 1, 3], [1, 3, 2], [3, 2, 1]] = perms([1, 2, 3]),
+
     ok.
 
--spec lists_delete(T, [T]) -> [T].
-lists_delete(_, []) ->
-    [];
-lists_delete(E, L) ->
-    lists_delete(E, L, []).
-
--spec lists_delete(T, [T], [T]) -> [T].
-lists_delete(_, [], Acc) ->
-    lists_reverse(Acc);
-lists_delete(E, [E | L], Acc) ->
-    lists_delete(E, L, Acc);
-lists_delete(E1, [E2 | L], Acc) ->
-    lists_delete(E1, L, [E2 | Acc]).
-
--spec lists_reverse([T]) -> [T].
-lists_reverse(L) ->
-    lists_reverse(L, []).
-
--spec lists_reverse([T], [T]) -> [T].
-lists_reverse([], Acc) ->
-    Acc;
-lists_reverse([E | L], Acc) ->
-    lists_reverse(L, [E | Acc]).
-    
