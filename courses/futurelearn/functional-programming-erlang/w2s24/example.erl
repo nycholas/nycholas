@@ -7,7 +7,7 @@ palindrome([]) ->
     true;
 palindrome(S) -> 
     S1 = string_strip(string_lowercase(S)),
-    S2 = lists_reverse(S1),
+    S2 = string_reverse(S1),
     S1 =:= S2.
 
 -spec tests() -> ok.
@@ -62,18 +62,18 @@ string_split(N, L) ->
 
 -spec string_split(integer(), [T], [T]) -> {[T], [T]}.
 string_split(0, L1, L2) ->
-    {lists_reverse(L1), L2};
+    {string_reverse(L1), L2};
 string_split(_, L1, []) ->
-    {lists_reverse(L1), []};
+    {string_reverse(L1), []};
 string_split(N, L1, [E | L2]) ->
     string_split(N - 1, [E | L1], L2).
 
--spec lists_reverse([T]) -> [T].
-lists_reverse(L) ->
-    lists_reverse(L, []).
+-spec string_reverse([T]) -> [T].
+string_reverse(L) ->
+    string_reverse(L, []).
 
--spec lists_reverse([T], [T]) -> [T].
-lists_reverse([], Acc) ->
+-spec string_reverse([T], [T]) -> [T].
+string_reverse([], Acc) ->
     Acc;
-lists_reverse([E | L], Acc) ->
-    lists_reverse(L, [E | Acc]).
+string_reverse([E | L], Acc) ->
+    string_reverse(L, [E | Acc]).
