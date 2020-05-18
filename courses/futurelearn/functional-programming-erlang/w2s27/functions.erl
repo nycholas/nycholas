@@ -42,7 +42,7 @@ concat([]) ->
 concat([E1 | L]) ->
     join(E1, concat(L)).
 
--spec member(any(), [any()]) -> 'true' | 'false'.
+-spec member(any(), [any()]) -> boolean().
 member(_, []) ->
     false;
 member(E1, [E1 | _]) ->
