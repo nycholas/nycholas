@@ -38,11 +38,11 @@ double(List) ->
 evens(List) -> 
     lists:filter(fun(N) -> N rem 2 == 0 end, List).
 
--spec product([integer()]) -> [integer()].
+-spec product([integer()]) -> integer().
 product(List) ->
     lists:foldr(fun(N, Acc) -> N * Acc end, 1, List).
 
--spec zip_v1([integer()], [integer()]) -> [{integer()}].
+-spec zip_v1([integer()], [integer()]) -> [{integer(), integer()}].
 zip_v1([], _List2) ->
     []; 
 zip_v1(_List1, []) ->
@@ -50,11 +50,11 @@ zip_v1(_List1, []) ->
 zip_v1([E1 | List1], [E2 | List2]) ->
     [{E1, E2} | zip_v1(List1, List2)].
 
--spec zip_v2([integer()], [integer()]) -> [{integer()}].
+-spec zip_v2([integer()], [integer()]) -> [{integer(), integer()}].
 zip_v2(List1, List2) ->
     zip_with_v2(fun(E1, E2) -> {E1, E2} end, List1, List2).
 
--spec zip_with_v1(function(), [integer()], [integer()]) -> [{integer()}].
+-spec zip_with_v1(function(), [integer()], [integer()]) -> [any()].
 zip_with_v1(_Fn, [], _List2) -> 
     [];
 zip_with_v1(_Fn, _List1, []) -> 
@@ -62,7 +62,7 @@ zip_with_v1(_Fn, _List1, []) ->
 zip_with_v1(Fn, [E1 | List1], [E2 | List2]) -> 
     [Fn(E1, E2) | zip_with_v1(Fn, List1, List2)].
 
--spec zip_with_v2(function(), [integer()], [integer()]) -> [{integer()}].
+-spec zip_with_v2(function(), [integer()], [integer()]) -> [any()].
 zip_with_v2(Fn, List1, List2) when length(List1) > length(List2) ->
     {List3, _} = lists:split(length(List2), List1),
     zip_with_v2(Fn, List3, List2);
