@@ -38,6 +38,7 @@ compose(Funs) ->
 twice(Fun) ->
     compose(Fun, Fun).
 
+-spec iterate(integer()) -> function().
 iterate(0) ->
     fun identify/1;
 iterate(N) ->
