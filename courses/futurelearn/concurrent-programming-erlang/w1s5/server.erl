@@ -38,9 +38,9 @@ server(From) ->
             io:format("Received message: from(~w) on server(~w)~n", [From, self()]),
             case palin:palindrome(Msg) of
                 true -> 
-                    From ! {result, io_lib:format("\"~s\" is a palindrome", [Msg])};
+                    From ! {result, "\"" ++ Msg ++ "\" is a palindrome"};
                 false ->
-                    From ! {result, io_lib:format("\"~s\" is not a palindrome", [Msg])}
+                    From ! {result, "\"" ++ Msg ++ "\" is not a palindrome"}
             end,
             server(From);
         _ ->
@@ -52,15 +52,15 @@ server(From) ->
 server() ->
     receive
         stop ->
-            % io:format("Stopped: server(~w)~n", [self()]),
+            io:format("Stopped: server(~w)~n", [self()]),
             ok;
         {check, From, Msg} ->
             io:format("Received message: from(~w) on server(~w)~n", [From, self()]),
             case palin:palindrome(Msg) of
                 true -> 
-                    From ! {result, io_lib:format("\"~s\" is a palindrome", [Msg])};
+                    From ! {result, "\"" ++ Msg ++ "\" is a palindrome"};
                 false ->
-                    From ! {result, io_lib:format("\"~s\" is not a palindrome", [Msg])}
+                    From ! {result, "\"" ++ Msg ++ "\" is not a palindrome"}
             end,
             server();
         _ ->
@@ -81,6 +81,6 @@ balancer(Server, [Next | Servers]) ->
             ok;
         Message ->
             io:format("Received message: balancer(~w) executing by server(~w)~n", [self(), Server]),
-            Server ! Message
-    end,
-    balancer(Next, Servers ++ [Server]).
+            Server ! Message,
+            balancer(Next, Servers ++ [Server])
+    end.

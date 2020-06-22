@@ -34,28 +34,40 @@
 simple_test() ->
     Self = self(),
     Server = spawn(server, server, [Self]),
+
     Server ! {check, "Madam I\'m Adam"},
-    receive
-        {resul, Result} ->
-            io:format("Result: ~s~n", [Result]);
-        _ ->
-            ok
-    end,
+    {ok, {result, Result}} = receive_result(),
+    ?assertEqual("\"Madam I\'m Adam\" is a palindrome", Result),
+
     Server ! stop,
+
+    Server ! {check, "Stopped?"},
+    timeouted = receive_result(),
+
     ok.
 
 -spec multi_client_test() -> ok.
 multi_client_test() ->
     Self = self(),
     Server = spawn(server, server, []),
+    Client = spawn(client, start, [Server]),
+
     Server ! {check, Self, "Madam I\'m Adam"},
-    receive
-        {resul, Result} ->
-            io:format("Result: ~s~n", [Result]);
-        _ ->
-            ok
-    end,
+    {ok, {result, Result1}} = receive_result(),
+    ?assertEqual("\"Madam I\'m Adam\" is a palindrome", Result1),
+
+    Client ! {check, Self, "madam"},
+    {ok, {result, Result2}} = receive_result(),
+    ?assertEqual("\"madam\" is a palindrome", Result2),
+
     Server ! stop,
+
+    Server ! {check, "Stopped?"},
+    timeouted = receive_result(),
+
+    Client ! {check, "Stopped?"},
+    timeouted = receive_result(),
+
     ok.
 
 -spec balancer_test() -> ok.
@@ -65,12 +77,37 @@ balancer_test() ->
     Server2 = spawn(server, server, []),
     Server3 = spawn(server, server, []),
     Balancer = spawn(server, balancer, [[Server1, Server2, Server3]]),
+
     Balancer ! {check, Self, "Madam I\'m Adam"},
-    receive
-        {resul, Result} ->
-            io:format("Result: ~s~n", [Result]);
-        _ ->
-            ok
-    end,
+    {ok, {result, Result1}} = receive_result(),
+    ?assertEqual("\"Madam I\'m Adam\" is a palindrome", Result1),
+
+    Balancer ! {check, Self, "asdf"},
+    {ok, {result, Result2}} = receive_result(),
+    ?assertEqual("\"asdf\" is not a palindrome", Result2),
+
+    Balancer ! {check, Self, "madam"},
+    {ok, {result, Result3}} = receive_result(),
+    ?assertEqual("\"madam\" is a palindrome", Result3),
+
     Balancer ! stop,
+
+    Balancer ! {check, Self, "Stopped?"},
+    timeouted = receive_result(),
+
+    Balancer ! {check, Self, "Stopped?"},
+    timeouted = receive_result(),
+
+    Balancer ! {check, Self, "Stopped?"},
+    timeouted = receive_result(),
+
     ok.
+
+-spec receive_result() -> any().
+receive_result() ->
+    receive
+        Message ->
+            {ok, Message}
+    after 500 ->
+        timeouted
+    end.
