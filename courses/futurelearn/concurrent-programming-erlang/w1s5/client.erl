@@ -34,9 +34,9 @@ start(Server) ->
         stop ->
             Server ! stop,
             ok;
-        {check, From, Msg} ->
+        {From, {check, Msg}} ->
             io:format("Received message: client(~w) executing by server(~w)~n", [self(), Server]),
-            Server ! {check, self(), Msg},
+            Server ! {self(), {check, Msg}},
             receive
                 Message ->
                     io:format("Received message: client(~w) by server(~w) executing by from(~w)~n", [self(), Server, From]),

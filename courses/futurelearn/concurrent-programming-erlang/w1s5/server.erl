@@ -54,7 +54,7 @@ server() ->
         stop ->
             io:format("Stopped: server(~w)~n", [self()]),
             ok;
-        {check, From, Msg} ->
+        {From, {check, Msg}} ->
             io:format("Received message: from(~w) on server(~w)~n", [From, self()]),
             case palin:palindrome(Msg) of
                 true -> 

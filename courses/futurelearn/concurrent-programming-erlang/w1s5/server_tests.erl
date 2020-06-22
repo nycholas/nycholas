@@ -52,20 +52,20 @@ multi_client_test() ->
     Server = spawn(server, server, []),
     Client = spawn(client, start, [Server]),
 
-    Server ! {check, Self, "Madam I\'m Adam"},
+    Server ! {Self, {check, "Madam I\'m Adam"}},
     {ok, {result, Result1}} = receive_result(),
     ?assertEqual("\"Madam I\'m Adam\" is a palindrome", Result1),
 
-    Client ! {check, Self, "madam"},
+    Client ! {Self, {check, "madam"}},
     {ok, {result, Result2}} = receive_result(),
     ?assertEqual("\"madam\" is a palindrome", Result2),
 
     Server ! stop,
 
-    Server ! {check, "Stopped?"},
+    Server ! {Self, {check, "Stopped?"}},
     timeouted = receive_result(),
 
-    Client ! {check, "Stopped?"},
+    Client ! {Self, {check, "Stopped?"}},
     timeouted = receive_result(),
 
     ok.
@@ -78,27 +78,27 @@ balancer_test() ->
     Server3 = spawn(server, server, []),
     Balancer = spawn(server, balancer, [[Server1, Server2, Server3]]),
 
-    Balancer ! {check, Self, "Madam I\'m Adam"},
+    Balancer ! {Self, {check, "Madam I\'m Adam"}},
     {ok, {result, Result1}} = receive_result(),
     ?assertEqual("\"Madam I\'m Adam\" is a palindrome", Result1),
 
-    Balancer ! {check, Self, "asdf"},
+    Balancer ! {Self, {check, "asdf"}},
     {ok, {result, Result2}} = receive_result(),
     ?assertEqual("\"asdf\" is not a palindrome", Result2),
 
-    Balancer ! {check, Self, "madam"},
+    Balancer ! {Self, {check, "madam"}},
     {ok, {result, Result3}} = receive_result(),
     ?assertEqual("\"madam\" is a palindrome", Result3),
 
     Balancer ! stop,
 
-    Balancer ! {check, Self, "Stopped?"},
+    Balancer ! {Self, {check, "Stopped?"}},
     timeouted = receive_result(),
 
-    Balancer ! {check, Self, "Stopped?"},
+    Balancer ! {Self, {check, "Stopped?"}},
     timeouted = receive_result(),
 
-    Balancer ! {check, Self, "Stopped?"},
+    Balancer ! {Self, {check, "Stopped?"}},
     timeouted = receive_result(),
 
     ok.
