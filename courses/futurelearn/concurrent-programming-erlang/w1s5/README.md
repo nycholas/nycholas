@@ -33,8 +33,8 @@ ok
 <0.78.0>
 21> Server = spawn(server, server_v2, []).
 <0.151.0>
-22> Server ! {check, Self, "A man, a plan, a canal, Panama!"}.
-{check,<0.78.0>,"A man, a plan, a canal, Panama!"}
+22> Server ! {Self, {check, "A man, a plan, a canal, Panama!"}}.
+{<0.78.0>,{check,"A man, a plan, a canal, Panama!"}}
 23> flush().
 Shell got {result,[34,"A man, a plan, a canal, Panama!",34,32,105,115,32,110,
                    111,116,32,97,32,112,97,108,105,110,100,114,111,109,101]}
@@ -50,8 +50,8 @@ ok
 <0.98.0>
 5> Client = spawn(client, start, [Server]).
 <0.100.0>
-6> Client ! {check, Self, "HA"}.
-{check,<0.78.0>,"HA"}
+6> Client ! {Self, {check, "HA"}}.
+{<0.78.0>,{check,"HA"}}
 7> flush().
 Shell got {result,[34,"HA",34,32,105,115,32,110,111,116,32,97,32,112,97,108,
                    105,110,100,114,111,109,101]}
@@ -71,21 +71,21 @@ ok
 <0.149.0>
 37> Balancer = spawn(server, balancer, [[S1, S2, S3]]).
 <0.151.0>
-38> Balancer ! {check, self(), "Madam I\'m Adam"}.     
+38> Balancer ! {self(), {check, "Madam I\'m Adam"}}.     
 Received message: balancer(<0.151.0>) executing by server(<0.145.0>)
-{check,<0.128.0>,"Madam I'm Adam"}
+{<0.128.0>,{check,"Madam I'm Adam"}}
 Received message: from(<0.128.0>) on server(<0.145.0>)
-40> Balancer ! {check, self(), "Madam I\'m Adam"}.
+40> Balancer ! {self(), {check, "Madam I\'m Adam"}}.
 Received message: balancer(<0.151.0>) executing by server(<0.147.0>)
 Received message: from(<0.128.0>) on server(<0.147.0>)
-{check,<0.128.0>,"Madam I'm Adam"}
-41> Balancer ! {check, self(), "Madam I\'m Adam"}.
+{<0.128.0>,{check,"Madam I'm Adam"}}
+41> Balancer ! {self(), {check, "Madam I\'m Adam"}}.
 Received message: balancer(<0.151.0>) executing by server(<0.149.0>)
-{check,<0.128.0>,"Madam I'm Adam"}
+{<0.128.0>,{check,"Madam I'm Adam"}}
 Received message: from(<0.128.0>) on server(<0.149.0>)
-42> Balancer ! {check, self(), "Madam I\'m Adam"}.
+42> Balancer ! {self(), {check, "Madam I\'m Adam"}}.
 Received message: balancer(<0.151.0>) executing by server(<0.145.0>)
-{check,<0.128.0>,"Madam I'm Adam"}
+{<0.128.0>,{check,"Madam I'm Adam"}}
 Received message: from(<0.128.0>) on server(<0.145.0>)
 43> flush().
 Shell got {result,[34,"Madam I'm Adam",34,32,105,115,32,97,32,112,97,108,105,
