@@ -9,24 +9,31 @@
 
 -export([start/0, init/0, stop/1, allocate/1, deallocate/2]).
 
+-type frequency() :: integer().
+-type state() :: {Free :: [frequency()], Allocated :: [{pid(), frequency()}]}. 
+
 %% ===================================================================
 %% API functions
 %% ===================================================================
 
+-spec start() -> {ok, pid()}.
 start() ->
     Pid = spawn(frequency, init, []),
     register(frequency, Pid),
     {ok, Pid}.
 
+-spec stop(pid()) -> ok.
 stop(From) ->
     frequency ! {request, From, stop},
     unregister(frequency),
     ok.
 
+-spec allocate(pid()) -> ok.
 allocate(From) ->
     frequency ! {request, From, allocate},
     ok.
 
+-spec deallocate(pid(), integer()) -> ok.
 deallocate(From, Freq) ->
     frequency ! {request, From, {deallocate, Freq}},
     ok.
@@ -35,10 +42,12 @@ deallocate(From, Freq) ->
 %% Server functions
 %% ===================================================================
 
+-spec init() -> {reply, stopped}.
 init() ->
     Frequencies = get_frequencies(),
     loop({Frequencies, []}).
 
+-spec loop(state()) -> {reply, stopped}.
 loop(Frequencies) ->
     receive
       {request, Pid, allocate} ->
@@ -57,6 +66,7 @@ loop(Frequencies) ->
 %% Private functions
 %% ===================================================================
 
+-spec handle_allocate(state(), pid()) -> {state(), {ok | error, any()}}.
 handle_allocate({[], Allocated}, _Pid) ->
     {{[], Allocated}, {error, no_frequency}};
 handle_allocate({[Freq | Free], Allocated}, Pid) ->
@@ -67,6 +77,7 @@ handle_allocate({[Freq | Free], Allocated}, Pid) ->
           {{Free, [{Freq, Pid} | Allocated]}, {ok, Freq}}
     end.
 
+-spec handle_deallocate(state(), frequency()) -> state().
 handle_deallocate({Free, Allocated}, Freq) ->
     case lists:keymember(Freq, 1, Allocated) of
       true ->
@@ -76,6 +87,7 @@ handle_deallocate({Free, Allocated}, Freq) ->
           {Free, Allocated}
     end.
 
+-spec get_frequencies() -> [frequency()].
 get_frequencies() ->
     [10, 11, 12, 13, 14, 15].
 

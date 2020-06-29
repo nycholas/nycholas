@@ -90,6 +90,7 @@ get_reply() ->
             Reply
     end.
 
+-spec new_client(pid()) -> any().
 new_client(From) ->
     receive 
         Msg ->
