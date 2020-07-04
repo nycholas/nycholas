@@ -70,8 +70,6 @@ loop(State) ->
       stop ->
           talk:stop(TalkPid),
           echo:stop(EchoPid),
-          unregister(talk),
-          unregister(echo),
           ok;
       {'EXIT', EchoPid, Reason} ->
           io:format("echo worker died: ~w. restart now...~n", [Reason]),
