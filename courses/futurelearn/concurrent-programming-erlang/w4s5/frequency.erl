@@ -101,10 +101,11 @@ handle_cast({inject, Freqs}, State) ->
 handle_cast(_Request, State) ->
     {noreply, State}.
     
-handle_info({'EXIT', Pid, Reason}, {_, Allocated} = State) ->
+handle_info({'EXIT', Pid, Reason}, {Free, Allocated}) ->
     io:format("worker died by reason: ~w.~n", [Reason]),
-    _ = [handle_deallocate(State, F) || {F, P} <- Allocated, P == Pid],
-    {noreply, State};
+    NewAllocated = [{F, P} || {F, P} <- Allocated, P =/= Pid],
+    Deallocated = [F || {F, P} <- Allocated, P == Pid],
+    {noreply, {Free ++ Deallocated, NewAllocated}};
 handle_info(_Info, State) ->
     {noreply, State}.
 
