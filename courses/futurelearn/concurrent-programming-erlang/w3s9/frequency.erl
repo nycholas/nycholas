@@ -93,7 +93,7 @@ handle_allocate({[Freq | Free], Allocated}, Pid) ->
 handle_deallocate({Free, Allocated}, Freq) ->
     case lists:keydelete(Freq, 1, Allocated) of
       Allocated ->
-          Allocated;
+          {Free, Allocated};
       NewAllocated ->
           {[Freq | Free], NewAllocated}
     end.
