@@ -1,8 +1,13 @@
-**:D**,
+**👋 Hi!**
+----
 
 Welcome to the fantastic wonderful world of Nycholas!
 
 I'm Nycholas, nice to meet you, this is my world but can be yours too, because here everything is **free**, ;).
+
+I've spent 20+ years working with technology.
+
+I'm interested in Python (Django and Flask), Java/Kotlin (Spring boot), Erlang/Elixir, and Rust.
 
 
 > ---
@@ -25,6 +30,3 @@ Labels
 ------
 
 Mathematics, Hacks, Algorithm, Geek, Anything, Fun, Anywhere, Crazy, Free 
-
-
-
