@@ -1,0 +1,13 @@
+[package]
+name = "calc"
+version = "0.1.0"
+edition = "2018"
+license = "BSD-3-Clause"
+
+[lib]
+name = "calc"
+path = "src/lib.rs"
+crate_type = ["dylib"]
+
+[dependencies]
+rustler = "0.26.0"

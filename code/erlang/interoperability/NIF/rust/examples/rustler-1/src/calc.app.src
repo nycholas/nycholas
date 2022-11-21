@@ -1,0 +1,15 @@
+{application, calc,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, {calc_app, []}},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {licenses, ["BSD-3-Clause"]},
+  {links, []}
+ ]}.
