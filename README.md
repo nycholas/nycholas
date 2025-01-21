@@ -3,11 +3,11 @@
 
 Welcome to the fantastic wonderful world of Nycholas!
 
-I'm Nycholas, nice to meet you, this is my world but can be yours too, because here everything is **free**, ;).
+I'm Nycholas, nice to meet you, this is my world but can be yours too because here everything is **free**, ;).
 
 I've spent 20+ years working with technology.
 
-I'm interested in Python (Django and Flask), Java/Kotlin (Spring boot), Erlang/Elixir, and Rust.
+I'm interested in Python (Django and Flask), Java/Kotlin (Spring boot), JavaScript/TypeScript (ReactJS), Erlang/Elixir, and Rust.
 
 
 > ---
