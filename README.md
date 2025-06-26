@@ -6,7 +6,8 @@ Welcome to the fantastic, wonderful world of Nycholas!
 Hi, I'm Nycholas—nice to meet you! This is my world, but it can be yours too because here, everything is **free**. 😉
 
 I’ve spent over 20 years working with technology.
-I’m passionate about a variety of languages and frameworks, including: Python (Django and Flask), Java/Kotlin (Spring boot), JavaScript/TypeScript (ReactJS), Erlang/Elixir, and Rust.
+
+I’m passionate about a variety of languages and frameworks, including Python (Django and Flask), Java/Kotlin (Spring boot), JavaScript/TypeScript (ReactJS), Erlang/Elixir, and Rust.
 
 > ---
 >
